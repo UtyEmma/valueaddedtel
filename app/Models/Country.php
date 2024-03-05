@@ -12,6 +12,9 @@ class Country extends Model
 
     protected $fillable = ['name', 'flag', 'iso_code', 'is_default'];
 
+    protected $primary_key = 'iso_code';
+    protected $incrementing = false;
+
     function currency(){
         return $this->hasOne(Currency::class, 'country_id');
     }

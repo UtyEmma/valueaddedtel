@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('k_y_c_verifications', function (Blueprint $table) {
             $table->uuid('id')->unique();
             $table->string('user_id');
+            $table->string('tier_id');
             $table->json('data');
             $table->string('status');
             $table->timestamps();

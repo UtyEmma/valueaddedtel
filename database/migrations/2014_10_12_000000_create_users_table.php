@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('phone');
             $table->string('pin')->nullable();
             $table->string('avatar')->nullable();
-            $table->string('country_id');
-            $table->string('currency_id');
-            $table->string('package_id');
+            $table->string('country_id')->nullable();
+            $table->string('currency_id')->nullable();
+            $table->string('package_id')->nullable();
             $table->string('tier_id')->nullable();
             $table->string('referrer_id')->nullable();
             $table->timestamp('email_verified_at')->nullable();

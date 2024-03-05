@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\Roles;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -15,12 +17,13 @@ class User extends Authenticatable {
 
     protected $fillable = ['firstname', 'lastname', 'username', 'email', 'password', 'phone', 'avatar', 'country_id', 'referrer_id', 'status', 'currency_id'];
 
-    protected $hidden = ['password', 'pin', 'referrer_id', 'country_id', 'tier_id', 'package_id', 'remember_token', ];
+    protected $hidden = ['password', 'pin', 'referrer_id', 'country_id', 'tier_id', 'package_id', 'remember_token'];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'pin' => 'hashed'
+        'pin' => 'hashed',
+        'status' => Roles::USER
     ];
 
     function country(){
@@ -32,7 +35,11 @@ class User extends Authenticatable {
     }
 
     function referrer(){
-        return $this->hasOne(User::class, 'referrer_id');
+        return $this->belongsTo(User::class, 'referrer_id');
+    }
+
+    function referrals(){
+        return $this->hasMany(User::class, 'referrer_id');
     }
 
     function tier(){
@@ -40,7 +47,36 @@ class User extends Authenticatable {
     }
 
     function package(){
-        return $this->hasOne(Package::class, 'tier_id');
+        return $this->hasOne(Package::class, 'package_id');
     }
+
+    function packageHistory(){
+        return $this->hasMany(PackageHistory::class, 'user_id');
+    }
+
+    function kycVerifications(){
+        return $this->hasMany(KYCVerification::class, 'user_id');
+    }
+
+    function confirmationCodes(){
+        return $this->hasMany(ConfirmationCode::class, 'user_id');
+    }
+
+    function getIsAdminAttribute(){
+        return ($this->role == Roles::ADMIN) || ($this->role == Roles::SUPERADMIN);
+    }
+
+    function getIsSuperAdminAttribute(){
+        return $this->role == Roles::SUPERADMIN;
+    }
+
+    public function canAccessPanel(Panel $panel): bool {
+        return $this->is_admin;
+    }
+
+    function getFilamentName(): string {
+        return implode(' ', [$this->firstname, $this->lastname]);
+    }
+
 
 }

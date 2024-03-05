@@ -2,7 +2,7 @@
 
 return [
 
-    "tier_1"=> [
+    "tier"=> [
 
     ],
 

@@ -29,10 +29,12 @@ enum Status:string {
     case DRAFT = 'DRAFT';
     case PUBLISHED = 'PUBLISHED';
     case UNPUBLISHED = 'UNPUBLISHED';
+    case VERIFIED = 'VERIFIED';
 
     static function color($status){
         $colors = [
             self::ACTIVE->value => 'success',
+            self::VERIFIED->value => 'success',
             self::INACTIVE->value => 'danger',
             self::EXPIRING->value => 'warning',
             self::PENDING->value => 'warning',

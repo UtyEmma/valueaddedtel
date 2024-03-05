@@ -15,9 +15,10 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('slug');
-            $table->integer('maximum_balance');
-            $table->integer('maximum_deposit');
-            $table->integer('maximum_withdrawal');
+            $table->integer('max_balance');
+            $table->integer('max_deposit');
+            $table->integer('max_withdrawal');
+            $table->boolean('is_default')->default(true);
             $table->timestamps();
         });
     }
