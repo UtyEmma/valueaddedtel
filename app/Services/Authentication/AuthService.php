@@ -1,10 +1,14 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Authentication;
 
 use App\Models\Country;
 use App\Models\Currency;
 use App\Models\User;
+use App\Services\CountryService;
+use App\Services\KYCService;
+use App\Services\PackageService;
+use App\Services\ReferralService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;

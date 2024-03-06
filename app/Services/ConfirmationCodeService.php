@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\ConfirmationActions;
 use App\Enums\Status;
 use App\Library\Token;
 use App\Mailables\ConfirmationCodeMessage;
@@ -12,7 +13,7 @@ class ConfirmationCodeService {
 
     private $confirmationCode = null;
 
-    function create($user, $action, $expires_in = 10){
+    function create($user, ConfirmationActions $action, $expires_in = 10){
         $expires_at = now()->addMinutes($expires_in);
         $code = $this->generate($user);
 
