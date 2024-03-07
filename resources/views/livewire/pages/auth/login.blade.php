@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
-new #[Layout('layouts.guest')] class extends Component
+new #[Layout('layouts.auth')] class extends Component
 {
     public LoginForm $form;
 
@@ -25,48 +25,57 @@ new #[Layout('layouts.guest')] class extends Component
     }
 }; ?>
 
+
 <div>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form wire:submit="login">
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="form.email" id="email" class="block mt-1 w-full" type="email" name="email" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    <x-slot:side>
+        <div class="p-10 pb-0 d-flex flex-column flex-center pb-lg-10 w-100">
+            <!--begin::Image-->
+            <img class="mx-auto mb-10 theme-light-show mw-100 w-150px w-lg-300px mb-lg-20" src="assets/media/auth/agency.png" alt="" />
+            <img class="mx-auto mb-10 theme-dark-show mw-100 w-150px w-lg-300px mb-lg-20" src="assets/media/auth/agency-dark.png" alt="" />
+            <!--end::Image-->
+            <!--begin::Title-->
+            <h1 class="text-center text-gray-800 fs-2qx fw-bold mb-7">Fast, Efficient and Productive</h1>
+            <!--end::Title-->
+            <!--begin::Text-->
+            <div class="text-center text-gray-600 fs-base fw-semibold">In this kind of post,
+            <a href="#" class="opacity-75-hover text-primary me-1">the blogger</a>introduces a person they’ve interviewed
+            <br />and provides some background information about
+            <a href="#" class="opacity-75-hover text-primary me-1">the interviewee</a>and their
+            <br />work following this is a transcript of the interview.</div>
+            <!--end::Text-->
         </div>
+    </x-slot:side>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+    <div class="d-flex flex-center flex-column flex-column-fluid">
+            <form class="form w-100" novalidate="novalidate" wire:submit="login">
+            <div class="mb-11">
+                <h1 class="mb-1 text-gray-900 fw-bolder">Welcome Back</h1>
+                <div class="text-gray-500 fw-semibold fs-6">Please log into your account</div>
+            </div>
 
-            <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            <div class="mb-8 fv-row">
+                <x-input.label>Username</x-input.label>
+                <x-input type="text" placeholder="Username" wire:model="username" autocomplete="off" class="bg-transparent form-control" />
+                <x-input.error key="username" />
+            </div>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+            <div class="mb-3 fv-row">
+                <x-input.label>Password</x-input.label>
+                <x-input type="password" placeholder="Password" wire:model="password" autocomplete="off" class="bg-transparent form-control" />
+                <x-input.error key="password" />
+            </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember" class="inline-flex items-center">
-                <input wire:model="form.remember" id="remember" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+            <div class="flex-wrap gap-3 mb-8 d-flex flex-stack fs-base fw-semibold">
+                <div></div>
+                <a href="{{route('password.request')}}" class="link-primary">Forgot Password ?</a>
+            </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}" wire:navigate>
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+            <div class="mb-10 d-grid">
+                <x-button class="btn-primary">Sign In</x-button>
+            </div>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
+            <div class="text-center text-gray-500 fw-semibold fs-6">Not a Member yet?
+            <a href="{{route('register')}}" class="link-primary">Sign up</a></div>
+        </form>
+    </div>
 </div>

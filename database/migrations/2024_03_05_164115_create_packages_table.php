@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('amount');
             $table->string('bonus');
-            $table->string('comission')->default(0);
+            $table->string('max_level')->default(0);
             $table->string('point_value')->default(0);
             $table->string('status');
             $table->boolean('is_default')->default(false);

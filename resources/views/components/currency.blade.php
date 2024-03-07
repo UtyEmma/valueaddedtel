@@ -1,0 +1,1 @@
+<span>{{$currentCurrency->symbol}}</span>

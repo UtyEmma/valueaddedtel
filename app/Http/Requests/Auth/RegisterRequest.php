@@ -30,7 +30,7 @@ class RegisterRequest extends FormRequest
             'email' => ['required', 'email', 'unique:users,email'],
             'phone' => ['required', 'phone:'.$this->country],
             'password' => ['required', Password::default()],
-            'referrer' => ['nullable', 'exists:users,user'],
+            'referrer' => ['required', 'exists:users,username'],
             'username' => ['required', 'unique:users,username']
         ];
     }

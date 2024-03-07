@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('account_tiers', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->string('slug');
+            $table->integer('level');
             $table->integer('max_balance');
             $table->integer('max_deposit');
             $table->integer('max_withdrawal');

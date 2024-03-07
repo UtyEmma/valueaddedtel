@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\HasStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Package extends Model {
-    use HasFactory, HasUuids;
+class Package extends Model{
+    use HasFactory, HasUuids, HasStatus;
 
-    protected $fillable = ['name', 'amount', 'bonus', 'comission', 'point_value', 'status', 'is_default'];
+    protected $fillable = ['name', 'fee', 'bonus', 'max_level', 'point_value', 'is_default'];
 
     function scopeIsDefault($query){
         $query->where('is_default', true);
@@ -18,5 +19,7 @@ class Package extends Model {
     function users(){
         return $this->hasMany(User::class, 'package_id');
     }
+
+
 
 }

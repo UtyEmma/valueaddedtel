@@ -26,8 +26,16 @@ class User extends Authenticatable {
         'status' => Roles::USER
     ];
 
+    static function booted() {
+
+    }
+
     function country(){
         return $this->belongsTo(Country::class);
+    }
+
+    function wallet(){
+        return $this->hasOne(Wallet::class);
     }
 
     function currency(){

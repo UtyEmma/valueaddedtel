@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class AccountTier extends Model {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['name', 'slug', 'max_balance', 'max_deposit', 'max_withdrawal', 'is_default'];
+    protected $fillable = ['name', 'level', 'max_balance', 'max_deposit', 'max_withdrawal', 'is_default'];
 
     function scopeIsDefault($query){
         $query->where('is_default', true);
