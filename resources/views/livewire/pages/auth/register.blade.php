@@ -66,9 +66,10 @@ new #[Layout('layouts.auth')] class extends Component
             <div class="mb-8 row g-5">
                 <div class="fv-row">
                     <x-input.label>Select your Country</x-input.label>
-                    <x-input.select placeholder="Country" wire:model="country" placeholder="Select Country" class="bg-transparent form-control">
+                    {{-- <x-input.select placeholder="Country" wire:model="country" placeholder="Select Country" class="bg-transparent form-control">
                         <option value=""></option>
-                    </x-input.select>
+                    </x-input.select> --}}
+                    <x-input.countries name="country" />
                     <x-input.error key="country" />
                 </div>
 

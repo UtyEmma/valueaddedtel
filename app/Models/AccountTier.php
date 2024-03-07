@@ -11,6 +11,8 @@ class AccountTier extends Model {
 
     protected $fillable = ['name', 'level', 'max_balance', 'max_deposit', 'max_withdrawal', 'is_default'];
 
+    protected $primary_key = 'level';
+
     function scopeIsDefault($query){
         $query->where('is_default', true);
     }

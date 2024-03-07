@@ -9,10 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 class Currency extends Model {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['name', 'country_id', 'code', 'is_default', 'symbol'];
+    protected $fillable = ['name', 'country_code', 'code', 'is_default', 'symbol'];
 
     protected $primary_key = 'code';
-    protected $incrementing = false;
+    public $incrementing = false;
+
+    function scopeIsDefault($query){
+        $query->where('is_default', true);
+    }
 
     function country(){
         return $this->belongsTo(Country::class, 'country_id');

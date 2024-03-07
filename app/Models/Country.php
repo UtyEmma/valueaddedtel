@@ -13,14 +13,22 @@ class Country extends Model
     protected $fillable = ['name', 'flag', 'iso_code', 'intl_phone', 'is_default'];
 
     protected $primary_key = 'iso_code';
-    protected $incrementing = false;
+    public $incrementing = false;
 
     protected $attributes = [
         'is_default' => true
     ];
 
+    function scopeIsDefault($query){
+        $query->where('is_default', true);
+    }
+
     function currency(){
         return $this->hasOne(Currency::class, 'country_id');
+    }
+
+    function supported(){
+        return $this->hasOne(SupportedCountry::class, 'country_id');
     }
 
     function users(){

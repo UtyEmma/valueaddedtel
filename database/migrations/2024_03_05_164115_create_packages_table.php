@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('packages', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->string('amount');
+            $table->string('fee');
             $table->string('bonus');
             $table->string('max_level')->default(0);
             $table->string('point_value')->default(0);

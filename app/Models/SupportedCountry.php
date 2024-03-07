@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class SupportedCountry extends Model {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['currency_id', 'status'];
+    protected $fillable = ['country_id', 'status'];
 
-    function currency(){
-        return $this->belongsTo(Currency::class, 'currency_id');
+    function country(){
+        return $this->belongsTo(Country::class, 'country_id');
     }
 }

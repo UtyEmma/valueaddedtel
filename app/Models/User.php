@@ -5,7 +5,9 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Enums\Roles;
+use App\Traits\HasStatus;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,9 +15,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable {
-    use HasApiTokens, HasFactory, Notifiable, HasUuids;
+    use HasApiTokens, HasFactory, Notifiable, HasUuids, HasStatus;
 
-    protected $fillable = ['firstname', 'lastname', 'username', 'email', 'password', 'phone', 'avatar', 'country_id', 'referrer_id', 'status', 'currency_id'];
+    protected $fillable = ['firstname', 'lastname', 'username', 'email', 'password', 'phone', 'avatar', 'country_id', 'referrer_id', 'currency_id'];
 
     protected $hidden = ['password', 'pin', 'referrer_id', 'country_id', 'tier_id', 'package_id', 'remember_token'];
 
@@ -26,8 +28,16 @@ class User extends Authenticatable {
         'status' => Roles::USER
     ];
 
-    static function booted() {
+    function scopeAdmin(Builder $query){
+        $query->where('role', Roles::ADMIN)->orWhere('role', Roles::SUPERADMIN);
+    }
 
+    function scopeSuperAdmin(Builder $query){
+        $query->where('role', Roles::SUPERADMIN);
+    }
+
+    function scopeUser(Builder $query){
+        $query->where('role', Roles::USER);
     }
 
     function country(){
@@ -51,11 +61,11 @@ class User extends Authenticatable {
     }
 
     function tier(){
-        return $this->hasOne(AccountTier::class, 'tier_id');
+        return $this->belongsTo(AccountTier::class, 'tier_id');
     }
 
     function package(){
-        return $this->hasOne(Package::class, 'package_id');
+        return $this->belongsTo(Package::class, 'package_id');
     }
 
     function packageHistory(){

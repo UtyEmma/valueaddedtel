@@ -1,6 +1,7 @@
-<x-input.select {{$attributes}} parent="{{$parent ?? ''}}" class="select-country" search placeholder="{{$placeholder ?? 'Select a Country'}}" :name="$name">
+<x-input.select {{$attributes}}  parent="{{$parent ?? ''}}" class="select-country" search placeholder="{{$placeholder ?? 'Select a Country'}}" :name="$name"
+    >
     <option></option>
-    @forelse ($countries->all() as $country)
+    @forelse ($countries->has('supported')->get() as $country)
         <option @selected(($value ?? null) == $country->name) data-country="{{asset($country->flag)}}">
             {{$country->name}}
         </option>
@@ -8,7 +9,7 @@
     @endforelse
 </x-input.select>
 
-@pushOnce('scripts')
+{{-- @pushOnce('scripts')
     <script>
         var optionFormat = function(item) {
             if ( !item.id ) return item.text;
@@ -29,4 +30,4 @@
             templateResult: optionFormat,
         });
     </script>
-@endPushOnce
+@endPushOnce --}}

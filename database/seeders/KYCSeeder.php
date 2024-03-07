@@ -17,7 +17,7 @@ class KYCSeeder extends Seeder
 
         foreach ($tiers as $tier) {
             AccountTier::firstOrCreate([
-                'slug' => $tier['slug']
+                'level' => $tier['level']
             ], $tier);
         }
     }

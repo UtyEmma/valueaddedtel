@@ -6,6 +6,6 @@ enum Roles:string {
 
     case USER  = 'user' ;
     case ADMIN = 'admin';
-    case SUPERADMIN = 'superadmin';
+    case SUPERADMIN = 'super_admin';
     case ALLUSERS = 'all_users';
 }

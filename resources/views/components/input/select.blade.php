@@ -24,7 +24,7 @@
             (e) => $wire.set(e.target.name, $(e.target).select2('val'))
         );
 
-    " {{$attributes->merge(['class' => 'form-select form-select-solid border'])}}  {{$attributes}}  >
+    " {{$attributes->merge(['class' => 'form-select bg-transparent border'])}}  {{$attributes}}  >
         {{$slot}}
     </select>
 </span>

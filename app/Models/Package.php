@@ -20,6 +20,4 @@ class Package extends Model{
         return $this->hasMany(User::class, 'package_id');
     }
 
-
-
 }

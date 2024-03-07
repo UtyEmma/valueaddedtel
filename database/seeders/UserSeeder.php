@@ -8,14 +8,13 @@ use App\Models\Country;
 use App\Models\Currency;
 use App\Models\Package;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder {
 
     public function run(): void {
-        if(!User::isSuperAdmin()->exists()){
+        if(!User::superAdmin()->exists()){
             $country = Country::isDefault()->first();
             $currency = Currency::isDefault()->first();
 
@@ -26,6 +25,8 @@ class UserSeeder extends Seeder {
                 'firstname' => 'Super',
                 'lastname' => 'Admin',
                 'email' => env('APP_EMAIL'),
+                'username' => 'ceoxtravalue',
+                'phone' => '08037610045',
                 'role' => Roles::SUPERADMIN,
                 'password' => Hash::make('1234567890'),
                 'email_verified_at' => now()
@@ -37,7 +38,6 @@ class UserSeeder extends Seeder {
             $user->tier()->associate($tier);
 
             $user->save();
-
             $user->wallet()->create();
         }
 
