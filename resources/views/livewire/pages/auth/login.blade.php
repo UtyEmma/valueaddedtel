@@ -71,7 +71,7 @@ new #[Layout('layouts.auth')] class extends Component
             </div>
 
             <div class="mb-10 d-grid">
-                <x-button class="btn-primary">Sign In</x-button>
+                <x-button class="btn-primary" wire:loading wire:target="login">Sign In</x-button>
             </div>
 
             <div class="text-center text-gray-500 fw-semibold fs-6">Not a Member yet?

@@ -6,7 +6,10 @@ namespace App\Models;
 
 use App\Enums\Roles;
 use App\Traits\HasStatus;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
 use Filament\Panel;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +17,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable {
+class User extends Authenticatable implements FilamentUser, HasName, MustVerifyEmail {
     use HasApiTokens, HasFactory, Notifiable, HasUuids, HasStatus;
 
     protected $fillable = ['firstname', 'lastname', 'username', 'email', 'password', 'phone', 'avatar', 'country_id', 'referrer_id', 'currency_id'];
@@ -81,20 +84,19 @@ class User extends Authenticatable {
     }
 
     function getIsAdminAttribute(){
-        return ($this->role == Roles::ADMIN) || ($this->role == Roles::SUPERADMIN);
+        return ($this->role == Roles::ADMIN->value) || ($this->role == Roles::SUPERADMIN->value);
     }
 
     function getIsSuperAdminAttribute(){
-        return $this->role == Roles::SUPERADMIN;
+        return $this->role == Roles::SUPERADMIN->value;
     }
 
     public function canAccessPanel(Panel $panel): bool {
         return $this->is_admin;
     }
 
-    function getFilamentName(): string {
-        return implode(' ', [$this->firstname, $this->lastname]);
+    public function getFilamentName(): string{
+        return "{$this->firstname} {$this->lastname}";
     }
-
 
 }
