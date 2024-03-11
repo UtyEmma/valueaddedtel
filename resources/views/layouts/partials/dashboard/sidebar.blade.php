@@ -1075,7 +1075,7 @@
                 </div>
 
                 <div class="menu-item">
-                    <a href="#" class="menu-link">
+                    <a href="{{route('profile.wallet')}}" class="menu-link {{request()->routeIs('profile.wallet') ? 'active' : ''}}">
                         <span class="menu-icon">
                             <i class="ki-outline ki-wallet  fs-2">
                             </i>
@@ -1085,7 +1085,7 @@
                 </div>
 
                 <div class="menu-item">
-                    <a href="#" class="menu-link">
+                    <a href="{{route('profile.index')}}" class="menu-link {{request()->routeIs('profile.index') ? 'active' : ''}}">
                         <span class="menu-icon">
                             <i class="ki-outline ki-profile-user  fs-2">
                             </i>
@@ -1095,7 +1095,7 @@
                 </div>
 
                 <div class="menu-item">
-                    <a href="#" class="menu-link">
+                    <a href="{{route('profile.referrals')}}" class="menu-link {{request()->routeIs('profile.referrals') ? 'active' : ''}}">
                         <span class="menu-icon">
                             <i class="ki-outline ki-data  fs-2">
                             </i>

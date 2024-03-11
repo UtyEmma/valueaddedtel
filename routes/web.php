@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +19,16 @@ Route::view('/', 'welcome');
 Route::middleware(['auth', 'verified', 'user.pin'])->group(function(){
     Route::view('dashboard', 'dashboard')->name('dashboard');
 
-    Route::view('profile', 'profile')->name('profile');
+    Route::prefix('profile')->group(function(){
+        Route::get('', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('wallet', [ProfileController::class, 'wallet'])->name('profile.wallet');
+        Route::get('referrals', [ProfileController::class, 'referrals'])->name('profile.referrals');
+        Route::get('edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    });
+
+    Route::prefix('airtime')->group(function(){
+
+    });
 });
 
 

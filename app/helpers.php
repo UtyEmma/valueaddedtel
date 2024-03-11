@@ -6,7 +6,7 @@ use App\Library\Upload;
 use App\Models\User;
 
 if(!function_exists('status')) {
-    function status(bool $status, $message = '', $data = []){
+    function status($status, $message = '', $data = []){
         return [$status, $message, $data];
     }
 }
