@@ -7,7 +7,7 @@
     <select x-init="
         $($el).select2({
             placeholder: `{{$placeholder ?? 'Select an Option'}}`,
-            minimumResultsForSearch: @isset($search) null @else Infinity @endisset,
+            minimumResultsForSearch: @if(isset($search)) null @else Infinity @endif,
             multiple: @js(isset($multiple)),
             allowClear: @js(isset($clearable)),
             closeOnSelect: true,

@@ -24,7 +24,7 @@ class Country extends Model
     }
 
     function currency(){
-        return $this->hasOne(Currency::class, 'country_id');
+        return $this->hasOne(Currency::class, 'country_code', 'iso_code');
     }
 
     function supported(){

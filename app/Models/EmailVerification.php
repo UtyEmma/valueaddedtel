@@ -35,6 +35,22 @@ class EmailVerification extends Model {
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    function getIsValidAttribute(){
+        return now()->lessThanOrEqualTo($this->expires_at);
+    }
+
+    function getIsExpiredAttribute(){
+        return now()->greaterThan($this->expires_at);
+    }
+
+    function getIsUsedAttribute(){
+        return $this->status == Status::VERIFIED;
+    }
+
+    function getIsUnusedAttribute(){
+        return $this->status == Status::PENDING;
+    }
+
 
 
 }

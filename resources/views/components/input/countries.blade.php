@@ -1,8 +1,7 @@
-<x-input.select {{$attributes}}  parent="{{$parent ?? ''}}" class="select-country" search placeholder="{{$placeholder ?? 'Select a Country'}}" :name="$name"
+<x-input.select {{$attributes}}  parent="{{$parent ?? ''}}" class="select-country" placeholder="{{$placeholder ?? 'Select a Country'}}" :name="$name"
     >
-    <option></option>
     @forelse ($countries->has('supported')->get() as $country)
-        <option @selected(($value ?? null) == $country->name) data-country="{{asset($country->flag)}}">
+        <option @selected(($value ?? null) == $country->name) value="{{$country->iso_code}}" data-country="{{asset($country->flag)}}">
             {{$country->name}}
         </option>
     @empty

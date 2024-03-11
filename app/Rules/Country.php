@@ -14,7 +14,7 @@ class Country implements ValidationRule
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void {
-        if(!$country = ModelsCountry::find($value)){
+        if(!ModelsCountry::where('iso_code', $value)->first()){
             $fail('The selected :attribute is invalid');
         }
 

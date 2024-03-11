@@ -9,14 +9,14 @@ use App\Models\User;
 class CountryService {
 
     function setCountry(User $user, $code) {
-        if(!$country = Country::find($code)) return false;
+        if(!$country = Country::where('iso_code', $code)->first()) return false;
         $user->country_id = $country->iso_code;
         $user->save();
         return $user;
     }
 
     function setCurrency(User $user, $code = null){
-        if($currency = Currency::where('code', $code)->has('supported')->first()) {
+        if($currency = Currency::where('code', $code)->first()) {
             $user->currency_id = $currency->code;
         }else{
             $currency = Currency::isDefault()->first();

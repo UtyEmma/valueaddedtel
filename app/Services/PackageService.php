@@ -18,7 +18,7 @@ class PackageService {
     function saveHistory(User $user, Package $package){
         $user->packageHistory()->create([
             'package_id' => $package->id,
-            'fee' => $package->amount,
+            'fee' => $package->fee,
             'currency_code' => $user->currency?->code
         ]);
     }

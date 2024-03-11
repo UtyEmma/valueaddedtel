@@ -7,3 +7,5 @@
 @stack('drawers')
 
 @livewireScripts()
+
+<x-toast />

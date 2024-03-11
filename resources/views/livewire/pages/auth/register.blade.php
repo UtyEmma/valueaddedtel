@@ -10,6 +10,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Services\Authentication\AuthService;
+use App\Models\Country;
 
 new #[Layout('layouts.auth')] class extends Component
 {
@@ -19,14 +20,22 @@ new #[Layout('layouts.auth')] class extends Component
     public $firstname, $lastname, $email, $password, $password_confirmation, $username;
     public $referrer, $phone, $country;
 
+    public $tel;
+
+    function mount(){
+        $defaultCountry = Country::has('supported')->where('is_default', true)->first();
+        $this->country = $defaultCountry?->iso_code;
+        $this->tel = $defaultCountry->intl_phone;
+    }
+
     function rules(){
         $rules  = collect((new RegisterRequest)->rules());
-        return $rules->when($this->step == 1, fn($rules) => $rules->except(['password', 'phone', 'username']))->toArray();
+        return $rules->when($this->step == 1, fn($rules) => $rules->except(['password', 'username', 'referrer']))->toArray();
     }
 
     function start(){
         $this->validate();
-        $this->step == 2;
+        $this->step = 2;
     }
 
     public function register(): void
@@ -37,7 +46,7 @@ new #[Layout('layouts.auth')] class extends Component
 
         Auth::login($user);
 
-        $this->redirect(RouteServiceProvider::HOME, navigate: true);
+        $this->redirect(RouteServiceProvider::HOME);
     }
 }; ?>
 
@@ -64,14 +73,13 @@ new #[Layout('layouts.auth')] class extends Component
 
        @if($step == 1)
             <div class="mb-8 row g-5">
-                <div class="fv-row">
+                <div class="fv-row col-md-6">
                     <x-input.label>Select your Country</x-input.label>
-                    {{-- <x-input.select placeholder="Country" wire:model="country" placeholder="Select Country" class="bg-transparent form-control">
-                        <option value=""></option>
-                    </x-input.select> --}}
-                    <x-input.countries name="country" />
+                    <x-input.countries value="{{$country}}" name="country" />
                     <x-input.error key="country" />
                 </div>
+
+                <div class="col-md-6"></div>
 
                 <div class="fv-row col-6">
                     <x-input.label>First Name</x-input.label>
@@ -94,7 +102,7 @@ new #[Layout('layouts.auth')] class extends Component
                 <div class="fv-row">
                     <x-input.label>Phone Number</x-input.label>
                     <x-input.group type="text" placeholder="Phone Number" wire:model="phone"  >
-                        <x-slot:left>+234</x-slot:left>
+                        <x-slot:left>+{{$this->tel}}</x-slot:left>
                     </x-input.group>
                     <x-input.error key="phone" />
                 </div>

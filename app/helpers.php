@@ -1,6 +1,7 @@
 <?php
 
 use App\Library\Response;
+use App\Library\Toast;
 use App\Library\Upload;
 use App\Models\User;
 
@@ -27,3 +28,10 @@ if(!function_exists('upload')) {
         return new Upload($files);
     }
 }
+
+if(!function_exists('toast')) {
+    function toast($message, $title = null){
+        return new Toast($message, $title);
+    }
+}
+

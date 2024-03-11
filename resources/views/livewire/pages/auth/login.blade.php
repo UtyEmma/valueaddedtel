@@ -5,6 +5,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
+use App\Services\AuthService;
 
 new #[Layout('layouts.auth')] class extends Component
 {
@@ -13,15 +14,13 @@ new #[Layout('layouts.auth')] class extends Component
     /**
      * Handle an incoming authentication request.
      */
-    public function login(): void
-    {
-        $this->validate();
-
+    public function login(): void {
+        $data = $this->validate();
         $this->form->authenticate();
 
         Session::regenerate();
 
-        $this->redirectIntended(default: RouteServiceProvider::HOME, navigate: true);
+        $this->redirectIntended(default: RouteServiceProvider::HOME);
     }
 }; ?>
 
@@ -47,7 +46,7 @@ new #[Layout('layouts.auth')] class extends Component
     </x-slot:side>
 
     <div class="d-flex flex-center flex-column flex-column-fluid">
-            <form class="form w-100" novalidate="novalidate" wire:submit="login">
+        <form class="form w-100" novalidate="novalidate" wire:submit="login">
             <div class="mb-11">
                 <h1 class="mb-1 text-gray-900 fw-bolder">Welcome Back</h1>
                 <div class="text-gray-500 fw-semibold fs-6">Please log into your account</div>
@@ -55,15 +54,17 @@ new #[Layout('layouts.auth')] class extends Component
 
             <div class="mb-8 fv-row">
                 <x-input.label>Username</x-input.label>
-                <x-input type="text" placeholder="Username" wire:model="username" autocomplete="off" class="bg-transparent form-control" />
-                <x-input.error key="username" />
+                <x-input type="text" placeholder="Username" wire:model="form.username" autocomplete="off" class="bg-transparent form-control" />
+                <x-input.error key="form.username" />
             </div>
 
             <div class="mb-3 fv-row">
                 <x-input.label>Password</x-input.label>
-                <x-input type="password" placeholder="Password" wire:model="password" autocomplete="off" class="bg-transparent form-control" />
-                <x-input.error key="password" />
+                <x-input type="password" placeholder="Password" wire:model="form.password" autocomplete="off" class="bg-transparent form-control" />
+                <x-input.error key="form.password" />
             </div>
+
+            <x-input.checkbox wire:model="form.remember">Remember Me</x-input.checkbox>
 
             <div class="flex-wrap gap-3 mb-8 d-flex flex-stack fs-base fw-semibold">
                 <div></div>

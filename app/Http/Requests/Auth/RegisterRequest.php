@@ -28,7 +28,7 @@ class RegisterRequest extends FormRequest
             'lastname' => ['required', 'string', 'max:255'],
             'country' => ['required', 'string', new Country()],
             'email' => ['required', 'email', 'unique:users,email'],
-            'phone' => ['required', 'phone:'.$this->country],
+            'phone' => ['required'],
             'password' => ['required', Password::default()],
             'referrer' => ['required', 'exists:users,username'],
             'username' => ['required', 'unique:users,username']

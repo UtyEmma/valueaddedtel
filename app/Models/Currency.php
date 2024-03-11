@@ -19,7 +19,7 @@ class Currency extends Model {
     }
 
     function country(){
-        return $this->belongsTo(Country::class, 'country_id');
+        return $this->belongsTo(Country::class, 'country_code', 'iso_code');
     }
 
 

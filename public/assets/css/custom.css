@@ -1,0 +1,19 @@
+.code-input{
+    letter-spacing: 8px;
+    appearance: none !important;
+}
+
+.appearance-none::-webkit-outer-spin-button,
+.appearance-none::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.appearance-none[type=number] {
+    -moz-appearance: textfield;
+}
+
+.code-input::placeholder{
+    letter-spacing: normal;
+}

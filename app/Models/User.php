@@ -5,7 +5,9 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Enums\Roles;
+use App\Enums\Status;
 use App\Traits\HasStatus;
+use App\Traits\VerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
@@ -18,7 +20,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements FilamentUser, HasName, MustVerifyEmail {
-    use HasApiTokens, HasFactory, Notifiable, HasUuids, HasStatus;
+    use HasApiTokens, HasFactory, Notifiable, HasUuids, HasStatus, VerifyEmail;
 
     protected $fillable = ['firstname', 'lastname', 'username', 'email', 'password', 'phone', 'avatar', 'country_id', 'referrer_id', 'currency_id'];
 
@@ -28,7 +30,13 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'pin' => 'hashed',
-        'status' => Roles::USER
+        'status' => Status::class,
+        'role' => Roles::class,
+    ];
+
+    protected $attributes = [
+        'role' => Roles::USER,
+        'status' => Status::ACTIVE,
     ];
 
     function scopeAdmin(Builder $query){
@@ -52,7 +60,7 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
     }
 
     function currency(){
-        return $this->belongsTo(Currency::class);
+        return $this->belongsTo(Currency::class, 'currency_id', 'code');
     }
 
     function referrer(){
@@ -84,11 +92,11 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
     }
 
     function getIsAdminAttribute(){
-        return ($this->role == Roles::ADMIN->value) || ($this->role == Roles::SUPERADMIN->value);
+        return ($this->role == Roles::ADMIN) || ($this->role == Roles::SUPERADMIN);
     }
 
     function getIsSuperAdminAttribute(){
-        return $this->role == Roles::SUPERADMIN->value;
+        return $this->role == Roles::SUPERADMIN;
     }
 
     public function canAccessPanel(Panel $panel): bool {
