@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Models\Payment;
+namespace App\Models\Transactions;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PaymentMethod extends Model {
+class VtuHistory extends Model
+{
     use HasFactory;
 }

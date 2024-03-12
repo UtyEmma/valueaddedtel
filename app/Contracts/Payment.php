@@ -2,7 +2,7 @@
 
 namespace App\Contracts;
 
-use App\Models\Payment\Transaction;
+use App\Models\Transactions\Transaction;
 use Closure;
 
 interface Payment {

@@ -4,6 +4,7 @@ namespace App\Services\PaymentMethods;
 
 use App\Contracts\Payment;
 use App\Enums\PaymentStatus;
+use App\Models\Transactions\Transaction;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
@@ -27,7 +28,7 @@ class PaystackService implements Payment {
         return [PaymentStatus::FAILED];
     }
 
-    function pay($transaction){
+    function pay(Transaction $transaction){
         $data = [
             'email' => $transaction->payer->email,
             'amount' => $transaction->amount * 100,

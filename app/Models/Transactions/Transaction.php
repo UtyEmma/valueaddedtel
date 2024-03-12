@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\Payment;
+namespace App\Models\Transactions;
 
 use App\Enums\PaymentStatus;
+use App\Models\Account\User;
 use App\Models\Currency;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['reference', 'user_id', 'narration', 'amount', 'transactable_id', 'transactable_type', 'type', 'currency_code', 'payment_method_id', 'status'];
+    protected $fillable = ['reference', 'payment_method_id', 'user_id', 'narration', 'amount', 'transactable_id', 'transactable_type', 'type', 'currency_code', 'status'];
 
     protected $casts = [
         'status' => PaymentStatus::class,
@@ -43,6 +43,7 @@ class Transaction extends Model {
     }
 
     function getPaymentMethodAttribute(){
-        return new $this->paymentMethod->handler();
+        $payment_methods = config('payments.methods');
+        return new $payment_methods[$this->paymentMethod->slug]();
     }
 }

@@ -1,11 +1,19 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Account;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Enums\Roles;
 use App\Enums\Status;
+use App\Models\ConfirmationCode;
+use App\Models\Country;
+use App\Models\Currency;
+use App\Models\KYC\AccountTier;
+use App\Models\KYC\KYCVerification;
+use App\Models\Packages\Package;
+use App\Models\Packages\PackageHistory;
+use App\Models\Wallet;
 use App\Traits\HasStatus;
 use App\Traits\VerifyEmail;
 use Filament\Models\Contracts\FilamentUser;

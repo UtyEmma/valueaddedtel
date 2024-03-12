@@ -38,7 +38,7 @@ class TransactionService {
     }
 
     function init(Transaction $transaction){
-        return $transaction->paymentMethod->init();
+        return $transaction->payment_method->init();
     }
 
 }

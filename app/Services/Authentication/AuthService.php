@@ -2,8 +2,8 @@
 
 namespace App\Services\Authentication;
 
-use App\Models\Country;
-use App\Models\User;
+use App\Models\Account\User;
+use App\Models\Countries\Country;
 use App\Services\Account\KYCService;
 use App\Services\CountryService;
 use App\Services\PackageService;

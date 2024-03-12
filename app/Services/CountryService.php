@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Country;
-use App\Models\Currency;
-use App\Models\User;
+use App\Models\Account\User;
+use App\Models\Countries\Country;
+use App\Models\Countries\Currency;
 
 class CountryService {
 

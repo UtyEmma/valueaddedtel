@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vtu_histories', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('transaction_id');
-            $table->string('service_code');
-            $table->string('user_id');
-            $table->integer('amount');
+        Schema::create('country_payment_methods', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();
         });
     }
@@ -26,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vtu_histories');
+        Schema::dropIfExists('country_payment_methods');
     }
 };

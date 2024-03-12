@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 use App\Rules\ValidCode;
-use App\Models\User;
+use App\Models\Account\User;
 use App\Traits\Livewire\WithToast;
-use App\Models\EmailVerification;
+use App\Models\Account\EmailVerification;
 use Illuminate\Support\Facades\Hash;
 
 new #[Layout('layouts.auth')] class extends Component {

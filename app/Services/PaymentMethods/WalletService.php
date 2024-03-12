@@ -3,7 +3,7 @@
 namespace App\Services\PaymentMethods;
 use App\Contracts\Payment;
 use App\Enums\PaymentStatus;
-use App\Models\Payment\Transaction;
+use App\Models\Transactions\Transaction;
 
 class WalletService implements Payment {
 

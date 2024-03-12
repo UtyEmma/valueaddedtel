@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\Account\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +10,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Services\Authentication\AuthService;
-use App\Models\Country;
+use App\Models\Countries\Country;
 
 new #[Layout('layouts.auth')] class extends Component
 {

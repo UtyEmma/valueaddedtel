@@ -2,7 +2,7 @@
 
 namespace App\Services\Authentication;
 
-use App\Models\User;
+use App\Models\Account\User;
 
 class EmailVerificationService {
 

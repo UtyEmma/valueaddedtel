@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Package;
-use App\Models\User;
+use App\Models\Account\User;
+use App\Models\Packages\Package;
 
 class PackageService {
 

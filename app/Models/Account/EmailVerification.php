@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Account;
 
 use App\Enums\Status;
-use App\Mailables\EmailVerificationMessage;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
-
 use function Illuminate\Events\queueable;
 
 class EmailVerification extends Model {
