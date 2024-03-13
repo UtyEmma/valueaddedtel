@@ -2,7 +2,7 @@
 
 namespace App\Models\Services;
 
-use App\Models\Country;
+use App\Models\Countries\Country;
 use App\Traits\HasStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

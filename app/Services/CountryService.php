@@ -14,7 +14,7 @@ class CountryService {
         $currency = Currency::isDefault()->first();
 
         if($user) {
-            $country = $$user->country;
+            $country = $user->country;
             $currency = $user->currency;
         }else{
             // Fetch the user's country and determine the currency from there
@@ -31,17 +31,17 @@ class CountryService {
 
     function setCountry(User $user, $code) {
         if(!$country = Country::where('iso_code', $code)->first()) return false;
-        $user->country_id = $country->iso_code;
+        $user->currency_code = $country->iso_code;
         $user->save();
         return $user;
     }
 
     function setCurrency(User $user, $code = null){
         if($currency = Currency::where('code', $code)->first()) {
-            $user->currency_id = $currency->code;
+            $user->currency_code = $currency->code;
         }else{
             $currency = Currency::isDefault()->first();
-            $user->currency_id = $currency->code;
+            $user->currency_code = $currency->code;
         }
 
         $user->save();

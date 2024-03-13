@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('service_product_items', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('service_product_id');
+            $table->string('service_product_code');
             $table->string('name');
             $table->string('shortcode');
-            $table->integer('amount');
+            $table->json('meta')->nullable();
+            $table->integer('amount')->nullable();
+            $table->string('status');
             $table->timestamps();
         });
     }

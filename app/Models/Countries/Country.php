@@ -24,6 +24,10 @@ class Country extends Model
         $query->where('is_default', true);
     }
 
+    function scopeIsSupported($query){
+        $query->has('supported');
+    }
+
     function currency(){
         return $this->hasOne(Currency::class, 'country_code', 'iso_code');
     }

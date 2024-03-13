@@ -3,25 +3,23 @@
 namespace App\Models\Services;
 
 use App\Models\Country;
+use App\Traits\HasStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ServiceProvider extends Model {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, HasStatus;
 
-    protected $fillable = ['name', 'shortcode', 'status'];
+    protected $fillable = ['name', 'shortcode'];
 
     protected $primaryKey = 'shortcode';
     public $incrementing = false;
     public $keyType = 'string';
 
-    function country(){
-
+    function countries(){
+        // return $this->hasMany(Country::class, )
     }
 
-    function provider(){
-        // return $this->belongsTo(ServiceProvider)
-    }
 
 }

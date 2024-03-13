@@ -9,11 +9,8 @@ trait HasStatus{
 
     public function initializeHasStatus(){
         $this->casts['status'] = Status::class;
-
         $this->attributes['status'] = Status::ACTIVE;
-
         $this->fillable[] = 'status';
-
     }
 
     function scopeStatus (Builder $query, Status $status) {

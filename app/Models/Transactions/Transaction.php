@@ -3,8 +3,8 @@
 namespace App\Models\Transactions;
 
 use App\Enums\PaymentStatus;
-use App\Models\Account\User;
-use App\Models\Currency;
+use App\Models\Countries\Currency;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['reference', 'payment_method_id', 'user_id', 'narration', 'amount', 'transactable_id', 'transactable_type', 'type', 'currency_code', 'status'];
+    protected $fillable = ['reference', 'payment_method_code', 'user_id', 'narration', 'amount', 'transactable_id', 'transactable_type', 'type', 'currency_code', 'status'];
 
     protected $casts = [
         'status' => PaymentStatus::class,

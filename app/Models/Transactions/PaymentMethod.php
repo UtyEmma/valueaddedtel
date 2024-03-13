@@ -2,7 +2,8 @@
 
 namespace App\Models\Transactions;
 
-use App\Models\Country;
+use App\Models\Countries\Country;
+use App\Models\Countries\CountryPaymentMethod;
 use App\Traits\HasStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,11 +18,11 @@ class PaymentMethod extends Model {
     public $incrementing = false;
 
     function transactions(){
-        return $this->hasMany(Transaction::class, 'payment_method_id');
+        return $this->hasMany(Transaction::class, 'payment_method_code');
     }
 
     function countries(){
-        return $this->hasManyThrough(CountryPaymentMethod::class, Country::class, 'payment_method_id', 'country_id');
+        return $this->hasManyThrough(CountryPaymentMethod::class, Country::class, 'payment_method_code', 'country_code');
     }
 
 

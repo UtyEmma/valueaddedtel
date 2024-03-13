@@ -20,4 +20,8 @@ class CountryService extends Model {
         return $this->belongsTo(Country::class, 'country_code');
     }
 
+    // function provider(){
+    //     return $this->belongsTo(ServiceProvider::class, 'provider_code');
+    // }
+
 }

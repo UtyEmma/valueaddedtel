@@ -12,11 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('service_products', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('provider_code');
+            $table->string('country_code');
             $table->string('shortcode');
-            $table->integer('amount');
+            $table->string('cashback')->nullable();
+            $table->string('cashback_type')->nullable();
+            $table->json('meta')->nullable();
+            $table->integer('amount')->nullable();
+            $table->string('status');
             $table->softDeletes();
             $table->timestamps();
         });
