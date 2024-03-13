@@ -2,6 +2,7 @@
 
 namespace App\Models\Services;
 
+use App\Models\Countries\Country;
 use App\Traits\HasStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,18 @@ class Service extends Model {
 
     protected $primary = 'shortcode';
     public $incrementing = false;
+
+    function products(){
+        return $this->hasMany(ServiceProduct::class, 'service_code', 'shortcode');
+    }
+
+    function countries(){
+        return $this->hasManyThrough(Country::class, CountryService::class, 'service_code', 'iso_code', 'shortcode', 'country_code');
+    }
+
+    function serviceCountries(){
+        return $this->hasMany(CountryService::class, 'service_code', 'shortcode');
+    }
 
 
 }

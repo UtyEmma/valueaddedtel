@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('provider_code');
+            $table->string('service_code');
             $table->string('country_code');
             $table->string('shortcode');
             $table->string('cashback')->nullable();

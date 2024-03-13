@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('iso_code');
             $table->string('intl_phone');
             $table->string('is_default');
+            $table->string('status');
             $table->timestamps();
         });
     }

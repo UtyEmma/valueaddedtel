@@ -5,6 +5,9 @@ namespace App\Filament\Resources\Services;
 use App\Enums\Status;
 use App\Filament\Resources\Services\ServiceResource\Pages;
 use App\Filament\Resources\Services\ServiceResource\RelationManagers;
+use App\Filament\Resources\Services\ServiceResource\RelationManagers\CountriesRelationManager;
+use App\Filament\Resources\Services\ServiceResource\RelationManagers\ProductsRelationManager;
+use App\Filament\Resources\Services\ServiceResource\RelationManagers\ServiceCountriesRelationManager;
 use App\Models\Services\Service;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -12,6 +15,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -35,6 +39,7 @@ class ServiceResource extends Resource
                 TextInput::make('shortcode')
                     ->required()
                     ->placeholder('Shortcode')
+                    ->disabled()
                     ->unique()
                     ->maxLength(255),
                 Select::make('status')
@@ -53,8 +58,6 @@ class ServiceResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('shortcode')
-                    ->searchable(),
                 TextColumn::make('status')
                     ->badge()
                     ->searchable(),
@@ -64,19 +67,18 @@ class ServiceResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-
                 ]),
             ]);
     }
 
-    public static function getRelations(): array
-    {
+    public static function getRelations(): array {
         return [
-            //
+            ProductsRelationManager::class,
+            ServiceCountriesRelationManager::class,
         ];
     }
 

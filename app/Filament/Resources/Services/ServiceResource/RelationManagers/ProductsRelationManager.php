@@ -1,34 +1,29 @@
 <?php
 
-namespace App\Filament\Resources\Services;
+namespace App\Filament\Resources\Services\ServiceResource\RelationManagers;
 
 use App\Enums\Status;
-use App\Filament\Resources\Services\ServiceProductResource\Pages;
-use App\Filament\Resources\Services\ServiceProductResource\RelationManagers;
 use App\Models\Countries\Country;
-use App\Models\Services\ServiceProduct;
 use App\Models\Services\ServiceProvider;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
-use Filament\Resources\Resource;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\RawJs;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
 
-class ServiceProductResource extends Resource
+class ProductsRelationManager extends RelationManager
 {
-    protected static ?string $model = ServiceProduct::class;
+    protected static string $relationship = 'products';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public $providers = [];
 
-    protected static ?string $navigationGroup = 'Services';
-
-    public static function form(Form $form): Form
-    {
+    public function form(Form $form): Form {
+        $service = $this->getOwnerRecord();
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
@@ -84,9 +79,10 @@ class ServiceProductResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('shortcode')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('service.name')
@@ -104,39 +100,19 @@ class ServiceProductResource extends Resource
                     ->badge(),
             ])
             ->filters([
+                //
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListServiceProducts::route('/'),
-            'create' => Pages\CreateServiceProduct::route('/create'),
-            'view' => Pages\ViewServiceProduct::route('/{record}'),
-            'edit' => Pages\EditServiceProduct::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 }

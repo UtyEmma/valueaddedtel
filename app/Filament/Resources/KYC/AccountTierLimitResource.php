@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\KYC;
 
-use App\Filament\Resources\AccountTierResource\Pages;
-use App\Filament\Resources\AccountTierResource\RelationManagers;
-use App\Filament\Resources\AccountTierResource\RelationManagers\LimitsRelationManager;
-use App\Models\KYC\AccountTier;
+use App\Filament\Resources\KYC\AccountTierLimitResource\Pages;
+use App\Filament\Resources\KYC\AccountTierLimitResource\RelationManagers;
+use App\Models\KYC\AccountTierLimit;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,35 +13,31 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class AccountTierResource extends Resource
+class AccountTierLimitResource extends Resource
 {
-    protected static ?string $model = AccountTier::class;
-
-    protected static ?string $navigationGroup = 'KYC';
+    protected static ?string $model = AccountTierLimit::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'KYC';
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('level')
+                Forms\Components\TextInput::make('service_code')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('max_balance')
+                Forms\Components\TextInput::make('country_code')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('max_deposit')
+                Forms\Components\TextInput::make('daily_limit')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('max_withdrawal')
-                    ->required()
+                Forms\Components\TextInput::make('lifetime_limit')
                     ->numeric(),
-                Forms\Components\Toggle::make('is_default')
-                    ->required(),
+                Forms\Components\TextInput::make('single_limit')
+                    ->numeric(),
             ]);
     }
 
@@ -50,22 +45,21 @@ class AccountTierResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('level')
+                Tables\Columns\TextColumn::make('service_code')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('max_balance')
+                Tables\Columns\TextColumn::make('country_code')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('max_deposit')
+                Tables\Columns\TextColumn::make('daily_limit')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('max_withdrawal')
+                Tables\Columns\TextColumn::make('lifetime_limit')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_default')
-                    ->boolean(),
+                Tables\Columns\TextColumn::make('single_limit')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -92,17 +86,17 @@ class AccountTierResource extends Resource
     public static function getRelations(): array
     {
         return [
-            LimitsRelationManager::class
+            //
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAccountTiers::route('/'),
-            'create' => Pages\CreateAccountTier::route('/create'),
-            'view' => Pages\ViewAccountTier::route('/{record}'),
-            'edit' => Pages\EditAccountTier::route('/{record}/edit'),
+            'index' => Pages\ListAccountTierLimits::route('/'),
+            'create' => Pages\CreateAccountTierLimit::route('/create'),
+            'view' => Pages\ViewAccountTierLimit::route('/{record}'),
+            'edit' => Pages\EditAccountTierLimit::route('/{record}/edit'),
         ];
     }
 }

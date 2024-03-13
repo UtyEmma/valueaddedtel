@@ -18,7 +18,11 @@ class ServiceProvider extends Model {
     public $keyType = 'string';
 
     function countries(){
-        // return $this->hasMany(Country::class, )
+        // return $this->hasManyThrough(Country::class, '');
+    }
+
+    function providerCountries(){
+        return $this->hasMany(CountryServiceProvider::class, 'provider_code', 'shortcode');
     }
 
 

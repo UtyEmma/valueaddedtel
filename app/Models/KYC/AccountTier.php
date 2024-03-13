@@ -22,4 +22,8 @@ class AccountTier extends Model {
         return $this->hasMany(User::class, 'tier_id');
     }
 
+    function limits(){
+        return $this->hasMany(AccountTierLimit::class, 'tier_id');
+    }
+
 }

@@ -7,6 +7,7 @@ enum Status:string {
 
     case ACTIVE = 'ACTIVE';
     case INACTIVE = 'INACTIVE';
+    case DELAYED = 'DELAYED';
     case SUSPENDED = 'SUSPENDED';
     case EXPIRING = 'EXPIRING';
     case PENDING = 'PENDING';
@@ -35,6 +36,7 @@ enum Status:string {
         $colors = [
             self::ACTIVE->value => 'success',
             self::VERIFIED->value => 'success',
+            self::DELAYED->value => 'warning',
             self::INACTIVE->value => 'danger',
             self::EXPIRING->value => 'warning',
             self::PENDING->value => 'warning',

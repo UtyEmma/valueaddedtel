@@ -65,12 +65,13 @@ class ServiceSeeder extends Seeder
                                     $product['provider_code'] = $provider->shortcode;
                                     $product['country_code'] = $country->iso_code;
                                     $product['meta'] = [];
+                                    $product['shortcode'] = implode('_', [$service->shortcode, $product['shortcode']]);
 
                                     $items = $product['items'] ?? null;
 
                                     if(isset($product['items'])) unset($product['items']);
 
-                                    $newProduct = ServiceProduct::create($product);
+                                    $newProduct = $service->products()->create($product);
 
                                     if($items) {
                                         foreach($items as $item){

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 class ServiceProduct extends Model {
     use HasFactory, HasUuids, HasStatus;
 
-    protected $fillable = ['name', 'shortcode', 'provider_code', 'country_code', 'cashback', 'cashback_type', 'meta', 'amount'];
+    protected $fillable = ['name', 'shortcode', 'service_code', 'provider_code', 'country_code', 'cashback', 'cashback_type', 'meta', 'amount'];
 
     protected $casts = [
         'meta' => 'array',
@@ -27,12 +27,16 @@ class ServiceProduct extends Model {
         return $this->hasMany(ServiceProductItem::class, 'service_product_code', 'shortcode');
     }
 
+    function service(){
+        return $this->belongsTo(Service::class, 'service_code', 'shortcode');
+    }
+
     function provider(){
         return $this->belongsTo(ServiceProvider::class, 'provider_code');
     }
 
     function country(){
-        return $this->belongsTo(Country::class, 'country_code');
+        return $this->belongsTo(Country::class, 'country_code', 'iso_code');
     }
 
 }

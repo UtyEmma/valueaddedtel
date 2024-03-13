@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CurrencyResource\Pages;
 use App\Filament\Resources\CurrencyResource\RelationManagers;
+use App\Models\Countries\Country;
 use App\Models\Countries\Currency;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -26,14 +27,21 @@ class CurrencyResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->label('Currency Name')
+                    ->placeholder('Currency Name')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('country_code')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('country_code')
+                    ->label('Country')
+                    ->options(Country::pluck('name', 'iso_code'))
+                    ->placeholder('Country')
+                    ->native(false)
+                    ->required(),
                 Forms\Components\TextInput::make('code')
+                    ->placeholder('Currency Code')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('symbol')
+                    ->placeholder('Currency Symbol')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Toggle::make('is_default')

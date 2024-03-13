@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('account_tier_limits', function (Blueprint $table) {
-            $table->id();
-            $table->integer('service_code');
-            $table->integer('country_code');
+            $table->uuid('id')->primary();
+            $table->string('service_code');
+            $table->string('country_code');
+            $table->string('tier_id');
             $table->integer('daily_limit');
             $table->integer('lifetime_limit')->nullable();
             $table->integer('single_limit')->nullable();
