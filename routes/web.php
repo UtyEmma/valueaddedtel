@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Services;
 use App\Http\Controllers\ProfileController;
 use App\Livewire\Pages\Services\AirtimeTopup;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +28,10 @@ Route::middleware(['auth', 'verified', 'user.pin'])->group(function(){
         Route::get('edit', [ProfileController::class, 'edit'])->name('profile.edit');
     });
 
-    Route::get('airtime', AirtimeTopup::class)->name('services.airtime');
+    Route::middleware('service.module:'.Services::AIRTIME->value)->group(function(){
+        Route::get('airtime', AirtimeTopup::class)->name('services.airtime');
+
+    });
 });
 
 

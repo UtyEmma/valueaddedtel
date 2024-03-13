@@ -31,7 +31,7 @@ class CountryService {
 
     function setCountry(User $user, $code) {
         if(!$country = Country::where('iso_code', $code)->first()) return false;
-        $user->currency_code = $country->iso_code;
+        $user->country_code = $country->iso_code;
         $user->save();
         return $user;
     }

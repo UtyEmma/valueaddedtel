@@ -13,6 +13,8 @@ use App\Models\KYC\AccountTier;
 use App\Models\KYC\KYCVerification;
 use App\Models\Packages\Package;
 use App\Models\Packages\PackageHistory;
+use App\Models\Services\CountryService;
+use App\Models\Services\Service;
 use App\Traits\HasStatus;
 use App\Traits\VerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
@@ -98,12 +100,20 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
         return $this->hasMany(ConfirmationCode::class, 'user_id');
     }
 
+    function services(){
+        return $this->hasManyThrough(Service::class, CountryService::class, 'country_code', 'shortcode', 'country_code', 'service_code')->where('services.status', Status::ACTIVE);
+    }
+
     function getIsAdminAttribute(){
         return ($this->role == Roles::ADMIN) || ($this->role == Roles::SUPERADMIN);
     }
 
     function getIsSuperAdminAttribute(){
         return $this->role == Roles::SUPERADMIN;
+    }
+
+    function service($code) {
+        return $this->services()->where('shortcode', $code)->first();
     }
 
     public function canAccessPanel(Panel $panel): bool {

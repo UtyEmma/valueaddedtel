@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Enums\Roles;
+use App\Enums\Services;
 use App\Enums\Status;
 use App\Models\Countries\Country;
 use App\Models\Countries\Currency;
@@ -32,7 +33,8 @@ class AppServiceProvider extends ServiceProvider
                 'roles' => Roles::class,
                 'settings' => new Setting(),
                 'countries' => new Country(),
-                'currencies' => new Currency()
+                'currencies' => new Currency(),
+                'modules' => Services::class
             ]);
         }
     }

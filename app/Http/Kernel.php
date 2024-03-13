@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckCountryService;
 use App\Http\Middleware\CheckUserPin;
 use App\Http\Middleware\SetSessionCountry;
 use App\Http\Middleware\ShareAuthenticatedUser;
@@ -69,6 +70,7 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'user.pin' => CheckUserPin::class
+        'user.pin' => CheckUserPin::class,
+        'service.module' => CheckCountryService::class
     ];
 }

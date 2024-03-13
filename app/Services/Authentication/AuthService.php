@@ -26,6 +26,7 @@ class AuthService {
 
         // Save Country
         $country = Country::where('iso_code', $data['country'])->first();
+
         (new CountryService)->setCountry($user, $country->iso_code);
         (new CountryService)->setCurrency($user, $country->currency->code);
 

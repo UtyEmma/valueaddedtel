@@ -2,7 +2,7 @@
 
 namespace App\Models\Packages;
 
-use App\Models\Account\User;
+use App\Models\User;
 use App\Traits\HasStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

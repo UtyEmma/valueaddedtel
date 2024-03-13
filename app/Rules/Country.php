@@ -18,7 +18,7 @@ class Country implements ValidationRule
             $fail('The selected :attribute is invalid');
         }
 
-        if (!CountriesCountry::where("iso_code", $value)->whereHas('supported')->exists()) {
+        if (!CountriesCountry::where("iso_code", $value)->has('supported')->exists()) {
             $fail('The selected :attribute is not supported');
         }
     }

@@ -16,6 +16,8 @@ class Service extends Model {
     protected $primary = 'shortcode';
     public $incrementing = false;
 
+    protected $with = ['products'];
+
     function products(){
         return $this->hasMany(ServiceProduct::class, 'service_code', 'shortcode');
     }
@@ -27,6 +29,5 @@ class Service extends Model {
     function serviceCountries(){
         return $this->hasMany(CountryService::class, 'service_code', 'shortcode');
     }
-
 
 }

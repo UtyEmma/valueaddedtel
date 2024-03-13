@@ -2,10 +2,15 @@
 
 namespace App\Filament\Resources\Services;
 
+use App\Enums\Status;
 use App\Filament\Resources\Services\CountryServiceResource\Pages;
 use App\Filament\Resources\Services\CountryServiceResource\RelationManagers;
+use App\Models\Countries\Country;
 use App\Models\Services\CountryService;
+use App\Models\Services\Service;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -25,7 +30,15 @@ class CountryServiceResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Select::make('service_code')
+                    ->options(Service::pluck('name', 'shortcode')),
+                Select::make('country_code')
+                    ->options(Country::pluck('name', 'iso_code')),
+                Select::make('status')
+                    ->options([
+                        Status::ACTIVE->value => Status::ACTIVE->value,
+                        Status::INACTIVE->value => Status::INACTIVE->value,
+                    ]),
             ]);
     }
 

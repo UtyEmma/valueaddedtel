@@ -4,6 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\Countries\Country;
+use App\Models\Countries\Currency;
+use App\Models\KYC\AccountTier;
+use App\Models\Packages\Package;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -31,29 +35,43 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->email()
+                    ->unique('users', 'email')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('username')
                     ->required()
+                    ->unique('users', 'username')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone')
                     ->tel()
+                    ->unique('users', 'phone')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('pin')
-                    ->maxLength(255),
+                    ->maxLength(4),
                 Forms\Components\TextInput::make('avatar')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('country_id')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('currency_id')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('package_id')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('tier_id')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('referrer_id')
-                    ->maxLength(255),
+                Forms\Components\Select::make('country_id')
+                    ->label("Country")
+                    ->options(Country::isSupported()->pluck('name', 'iso_code'))
+                    ->native(false),
+                Forms\Components\Select::make('currency_id')
+                    ->label("Currency")
+                    ->options(Currency::pluck('name', 'code'))
+                    ->native(false),
+                Forms\Components\Select::make('package_id')
+                    ->label("Package")
+                    ->options(Package::pluck('name', 'id'))
+                    ->native(false),
+                Forms\Components\Select::make('tier_id')
+                    ->label("Account Tier")
+                    ->options(AccountTier::pluck('name', 'id'))
+                    ->native(false),
+                Forms\Components\Select::make('referrer_id')
+                    ->label("Referrer")
+                    ->searchable()
+                    ->options(User::pluck('username', 'id'))
+                    ->native(false),
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
@@ -82,23 +100,16 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('pin')
+                Tables\Columns\TextColumn::make('country.name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('avatar')
+                Tables\Columns\TextColumn::make('currency.name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('country_id')
+                Tables\Columns\TextColumn::make('package.name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('currency_id')
+                Tables\Columns\TextColumn::make('tier.name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('package_id')
+                Tables\Columns\TextColumn::make('referrer.name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('tier_id')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('referrer_id')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('role')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
