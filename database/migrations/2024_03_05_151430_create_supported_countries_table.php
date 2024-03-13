@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('supported_countries', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('country_id');
+            $table->string('country_code');
             $table->string('status');
             $table->timestamps();
         });

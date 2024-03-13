@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        <div class="app-navbar d-flex align-items-center" id="kt_app_header_navbar">
+        {{-- <div class="app-navbar d-flex align-items-center" id="kt_app_header_navbar">
             <div class="app-navbar-item ms-1 ms-md-3">
                 <!--begin::Menu- wrapper-->
                 <div class="btn btn-icon btn-custom btn-color-gray-600 btn-active-light btn-active-color-primary w-35px h-35px w-md-40px h-md-40px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
@@ -691,6 +691,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>

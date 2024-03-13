@@ -2,8 +2,8 @@
 
 namespace App\Services\Account;
 
-use App\Models\Account\User;
 use App\Models\KYC\AccountTier;
+use App\Models\User;
 
 class KYCService {
 

@@ -4,9 +4,7 @@ namespace App\Traits;
 
 use App\Enums\Status;
 use App\Library\Token;
-use App\Models\EmailVerification;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Account\EmailVerification;
 
 trait VerifyEmail {
 

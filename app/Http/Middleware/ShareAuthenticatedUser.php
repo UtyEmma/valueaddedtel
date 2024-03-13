@@ -2,8 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Enums\Status;
-use App\Models\PlanDuration;
 use Closure;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -46,11 +44,8 @@ class ShareAuthenticatedUser
     {
         $user = $this->user;
         $this->factory->share('authenticated', $user);
-        $this->factory->share('isEmployer', $user?->is_employer);
-        $this->factory->share('isCandidate', $user?->is_candidate);
         $this->factory->share('isAdmin', $user?->is_admin);
         $this->factory->share('currency', config('app.currency'));
-
         return $next($request);
     }
 }

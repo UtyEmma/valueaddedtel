@@ -2,16 +2,17 @@
 
 namespace App\Models\Countries;
 
+use App\Traits\HasStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SupportedCountry extends Model {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, HasStatus;
 
-    protected $fillable = ['country_id', 'status'];
+    protected $fillable = ['country_code'];
 
     function country(){
-        return $this->belongsTo(Country::class, 'country_id');
+        return $this->belongsTo(Country::class, 'iso_code');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Models\Countries;
 
-use App\Models\Account\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,7 +29,7 @@ class Country extends Model
     }
 
     function supported(){
-        return $this->hasOne(SupportedCountry::class, 'country_id');
+        return $this->hasOne(SupportedCountry::class, 'country_code', 'iso_code');
     }
 
     function users(){

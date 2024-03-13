@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('country_payment_methods', function (Blueprint $table) {
-            $table->id();
+        Schema::create('service_product_items', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('service_product_id');
+            $table->string('name');
+            $table->string('shortcode');
+            $table->integer('amount');
             $table->timestamps();
         });
     }
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('country_payment_methods');
+        Schema::dropIfExists('service_product_items');
     }
 };

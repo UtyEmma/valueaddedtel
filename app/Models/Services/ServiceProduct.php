@@ -10,5 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 class ServiceProduct extends Model {
     use HasFactory, HasUuids, HasStatus;
 
-    protected $fillable = ['name', 'shortcode', 'provider_code'];
+    protected $fillable = ['name', 'shortcode', 'provider_code', 'amount'];
+
 }

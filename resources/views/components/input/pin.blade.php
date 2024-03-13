@@ -40,15 +40,20 @@
 
             if(value){
                 this.next(position)
-            }else{
-                this.previous(position)
             }
+            {{-- else{
+                this.previous(position)
+            } --}}
         },
         pasteText(event){
             let pasted = event.clipboardData.getData('text');
             pasted = pasted.replace(/\D/g, '');
             pasted = pasted.substring(0, this.length);
-            if (pasted) this.entries = pasted.split('');
+            if (pasted) {
+                this.entries = pasted.split('');
+                this.value = this.entries.join('');
+            }
+
         }
     }"
     x-init="
@@ -76,6 +81,9 @@
                     if(current > length && position == 0) return $el.focus();
                     if(current == position) return $el.focus();
                 })
+            "
+            x-on:keyup="
+                $event.key == 'Backspace' ? previous(position) : null;
             "
             placeholder="{{$placeholder}}"
             class="w-50px appearance-none h-50px text-center fs-1"

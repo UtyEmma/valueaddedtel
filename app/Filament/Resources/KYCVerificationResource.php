@@ -3,8 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\KYCVerificationResource\Pages;
-use App\Filament\Resources\KYCVerificationResource\RelationManagers;
-use App\Models\KYCVerification;
+use App\Models\KYC\KYCVerification;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,6 +15,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class KYCVerificationResource extends Resource
 {
     protected static ?string $model = KYCVerification::class;
+
+    protected static ?string $navigationLabel = 'KYC Verifications';
+    protected static ?string $navigationGroup = 'KYC';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

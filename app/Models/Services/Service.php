@@ -10,7 +10,7 @@ class Service extends Model
 {
     use HasFactory, HasStatus;
 
-    protected $fillable = ['name', 'shortcode', 'status'];
+    protected $fillable = ['name', 'shortcode'];
 
     protected $primary = 'shortcode';
     public $incrementing = false;

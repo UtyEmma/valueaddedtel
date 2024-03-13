@@ -5,8 +5,8 @@ namespace App\Filament\Resources;
 use App\Enums\Status;
 use App\Filament\Resources\SupportedCountryResource\Pages;
 use App\Filament\Resources\SupportedCountryResource\RelationManagers;
-use App\Models\Country;
-use App\Models\SupportedCountry;
+use App\Models\Countries\Country;
+use App\Models\Countries\SupportedCountry;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class SupportedCountryResource extends Resource
 {
     protected static ?string $model = SupportedCountry::class;
+    protected static ?string $navigationGroup = 'Countries';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

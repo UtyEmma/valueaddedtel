@@ -3,7 +3,7 @@
 namespace App\Services\Authentication;
 
 use App\Enums\ConfirmationActions;
-use App\Models\Account\User;
+use App\Models\User;
 use App\Services\ConfirmationCodeService;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;

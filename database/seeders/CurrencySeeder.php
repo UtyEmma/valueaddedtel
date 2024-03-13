@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Currency;
+use App\Models\Countries\Currency;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 

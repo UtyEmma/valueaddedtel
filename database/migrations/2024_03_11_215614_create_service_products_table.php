@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('service_products', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('provider_code');
+            $table->string('shortcode');
+            $table->integer('amount');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

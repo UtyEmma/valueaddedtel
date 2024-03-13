@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AccountTierResource\Pages;
 use App\Filament\Resources\AccountTierResource\RelationManagers;
-use App\Models\AccountTier;
+use App\Models\KYC\AccountTier;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class AccountTierResource extends Resource
 {
     protected static ?string $model = AccountTier::class;
+
+    protected static ?string $navigationGroup = 'KYC';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

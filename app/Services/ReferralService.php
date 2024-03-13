@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Account\User;
+use App\Models\User;
 
 class ReferralService {
 

@@ -902,7 +902,7 @@
                     </a>
                 </div>
 
-                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                <div data-kt-menu-trigger="click" class="menu-item menu-accordion show">
                     <span class="menu-link">
                         <span class="menu-icon">
                             <i class="ki-outline ki-phone fs-2">
@@ -914,7 +914,7 @@
 
                     <div class="menu-sub menu-sub-accordion">
                         <div class="menu-item">
-                            <a class="menu-link" href="index.html">
+                            <a class="menu-link" href="{{route('services.airtime')}}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>

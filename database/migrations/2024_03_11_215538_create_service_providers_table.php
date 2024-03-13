@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('service_providers', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('shortcode');
+            $table->string('status');
             $table->timestamps();
         });
     }

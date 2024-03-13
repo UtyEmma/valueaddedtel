@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Account\User;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -73,13 +73,11 @@ new #[Layout('layouts.auth')] class extends Component
 
        @if($step == 1)
             <div class="mb-8 row g-5">
-                <div class="fv-row col-md-6">
+                <div class="fv-row col-md-7">
                     <x-input.label>Select your Country</x-input.label>
                     <x-input.countries value="{{$country}}" name="country" />
                     <x-input.error key="country" />
                 </div>
-
-                <div class="col-md-6"></div>
 
                 <div class="fv-row col-6">
                     <x-input.label>First Name</x-input.label>
@@ -129,13 +127,13 @@ new #[Layout('layouts.auth')] class extends Component
 
                 <div class=" fv-row">
                     <x-input.label>Password</x-input.label>
-                    <x-input type="password" placeholder="Password" wire:model="password" autocomplete="off" class="bg-transparent form-control" />
+                    <x-input.password placeholder="Password" wire:model="password" />
                     <x-input.error key="password" />
                 </div>
 
                 <div class=" fv-row">
                     <x-input.label>Confirm Password</x-input.label>
-                    <x-input type="password" placeholder="Password" wire:model="password_confirmation" autocomplete="off" class="bg-transparent form-control" />
+                    <x-input.password placeholder="Confirm Password" wire:model="password_confirmation" />
                     <x-input.error key="password_confirmation" />
                 </div>
             </div>

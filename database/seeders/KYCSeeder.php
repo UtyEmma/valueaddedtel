@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\AccountTier;
+use App\Models\KYC\AccountTier;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('reference');
-            $table->string('payment_method_id');
+            $table->string('reference')->unique();
+            $table->string('payment_method_code');
             $table->string('user_id');
             $table->string('type');
             $table->string('currency_code');

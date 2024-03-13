@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('account_tier_limits', function (Blueprint $table) {
             $table->id();
+            $table->integer('service_code');
+            $table->integer('country_code');
+            $table->integer('daily_limit');
+            $table->integer('lifetime_limit')->nullable();
+            $table->integer('single_limit')->nullable();
             $table->timestamps();
         });
     }

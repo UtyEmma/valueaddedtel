@@ -115,13 +115,15 @@ return [
             'name' => 'Nigerian Naira',
             'symbol' => '₦',
             'code' => 'NGN',
-            'country_code' => 'NG'
+            'country_code' => 'NG',
+            'is_default' => true
         ],
         [
             'name' => 'Ghanian Cedi',
             'symbol' => 'GH₵',
             'code' => 'GHS',
-            'country_code' => 'GH'
+            'country_code' => 'GH',
+            'is_default' => false
         ],
     ]
 

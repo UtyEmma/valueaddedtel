@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('service_kyc_limits', function (Blueprint $table) {
-            $table->id();
+        Schema::create('country_payment_methods', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('country_code');
+            $table->string('payment_method_code');
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('service_kyc_limits');
+        Schema::dropIfExists('country_payment_methods');
     }
 };

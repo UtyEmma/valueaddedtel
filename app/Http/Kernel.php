@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\CheckUserPin;
+use App\Http\Middleware\SetSessionCountry;
 use App\Http\Middleware\ShareAuthenticatedUser;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -38,7 +39,8 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            ShareAuthenticatedUser::class
+            ShareAuthenticatedUser::class,
+            SetSessionCountry::class
         ],
 
         'api' => [

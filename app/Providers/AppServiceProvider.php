@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use App\Enums\Roles;
 use App\Enums\Status;
-use App\Models\Country;
-use App\Models\Currency;
+use App\Models\Countries\Country;
+use App\Models\Countries\Currency;
 use App\Models\Setting;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;

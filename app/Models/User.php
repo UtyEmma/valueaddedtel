@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Models\Account;
+namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Enums\Roles;
 use App\Enums\Status;
 use App\Models\ConfirmationCode;
-use App\Models\Country;
-use App\Models\Currency;
+use App\Models\Countries\Country;
+use App\Models\Countries\Currency;
 use App\Models\KYC\AccountTier;
 use App\Models\KYC\KYCVerification;
 use App\Models\Packages\Package;
 use App\Models\Packages\PackageHistory;
-use App\Models\Wallet;
 use App\Traits\HasStatus;
 use App\Traits\VerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
@@ -30,9 +29,9 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable implements FilamentUser, HasName, MustVerifyEmail {
     use HasApiTokens, HasFactory, Notifiable, HasUuids, HasStatus, VerifyEmail;
 
-    protected $fillable = ['firstname', 'lastname', 'username', 'email', 'password', 'phone', 'avatar', 'country_id', 'referrer_id', 'currency_id'];
+    protected $fillable = ['firstname', 'lastname', 'username', 'email', 'password', 'phone', 'avatar', 'country_code', 'currency_code', 'referrer_id'];
 
-    protected $hidden = ['password', 'pin', 'referrer_id', 'country_id', 'tier_id', 'package_id', 'remember_token'];
+    protected $hidden = ['password', 'pin', 'referrer_id', 'country_code', 'currency_code', 'tier_id', 'package_id', 'remember_token'];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -60,7 +59,7 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
     }
 
     function country(){
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(Country::class, 'country_code', 'iso_code');
     }
 
     function wallet(){
@@ -68,7 +67,7 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
     }
 
     function currency(){
-        return $this->belongsTo(Currency::class, 'currency_id', 'code');
+        return $this->belongsTo(Currency::class, 'currency_code', 'code');
     }
 
     function referrer(){

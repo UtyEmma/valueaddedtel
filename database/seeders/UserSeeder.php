@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Enums\Roles;
-use App\Models\AccountTier;
-use App\Models\Country;
-use App\Models\Currency;
-use App\Models\Package;
+use App\Models\Countries\Country;
+use App\Models\Countries\Currency;
+use App\Models\KYC\AccountTier;
+use App\Models\Packages\Package;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;

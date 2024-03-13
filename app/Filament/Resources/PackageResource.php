@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PackageResource\Pages;
 use App\Filament\Resources\PackageResource\RelationManagers;
-use App\Models\Package;
+use App\Models\Packages\Package;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PackageResource extends Resource
 {
     protected static ?string $model = Package::class;
+
+    protected static ?string $navigationGroup = 'Packages';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

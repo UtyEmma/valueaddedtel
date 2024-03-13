@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 use App\Rules\ValidCode;
-use App\Models\Account\User;
+use App\Models\User;
 use App\Traits\Livewire\WithToast;
 use App\Models\Account\EmailVerification;
 use Illuminate\Support\Facades\Hash;
