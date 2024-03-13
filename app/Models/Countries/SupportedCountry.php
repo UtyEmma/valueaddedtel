@@ -13,6 +13,6 @@ class SupportedCountry extends Model {
     protected $fillable = ['country_code'];
 
     function country(){
-        return $this->belongsTo(Country::class, 'iso_code');
+        return $this->belongsTo(Country::class, 'country_code', 'iso_code');
     }
 }

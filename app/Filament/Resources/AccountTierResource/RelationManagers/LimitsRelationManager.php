@@ -19,12 +19,12 @@ class LimitsRelationManager extends RelationManager
 {
     protected static string $relationship = 'limits';
 
-    public function form(Form $form): Form
-    {
+    public function form(Form $form): Form {
+        $tier = $this->getOwnerRecord();
         return $form
             ->schema([
                 Forms\Components\Select::make('tier_id')
-                    ->options(AccountTier::pluck('name', 'id'))
+                    ->options(AccountTier::where('id', $tier?->id)->pluck('name', 'id'))
                     ->label('Account Tier')
                     ->native(false)
                     ->required(),
