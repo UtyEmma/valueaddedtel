@@ -13,10 +13,12 @@ class AirtimeTopup extends Component {
 
     public User $user;
     public Service $service;
+    public $products = [];
 
     function mount(){
         $this->user = authenticated();
         $this->service = $this->user->service(Services::AIRTIME);
+        $this->products = $this->service->products()->where('country_code', $this->user->country_code)->get();
 
     }
 

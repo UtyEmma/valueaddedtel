@@ -10,7 +10,7 @@
                                     <div class="mb-8 fw-row">
                                         <x-input.label>Select Network</x-input.label>
                                         <div class="row row-cols-md-4 row-cols-3 g-3">
-                                            @forelse ($service->products as $product)
+                                            @forelse ($products as $product)
                                                 <div>
                                                     <label type="button" class="btn btn-light-primary w-100" data-kt-docs-advanced-forms="interactive">{{$product->name}}</label>
                                                 </div>
