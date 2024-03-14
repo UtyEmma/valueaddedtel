@@ -11,9 +11,11 @@ use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -45,7 +47,10 @@ class PaymentMethodResource extends Resource
                     ->options([
                         Status::ACTIVE->value => Status::ACTIVE->value,
                         Status::INACTIVE->value => Status::INACTIVE->value,
-                    ])
+                    ]),
+                Toggle::make('isOnline')
+                    ->default(true)
+                    ->required()
             ]);
     }
 
@@ -55,6 +60,7 @@ class PaymentMethodResource extends Resource
             ->columns([
                 TextColumn::make('name'),
                 TextColumn::make('shortcode'),
+                IconColumn::make('isOnline')->boolean(),
                 TextColumn::make('status'),
             ])
             ->filters([

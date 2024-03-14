@@ -3,12 +3,12 @@
     'footer',
     'body',
     'id',
-    'class'
+    'class',
 ])
 
 
 
-<div class="modal fade" role="dialog" wire:ignore.self id="{{$id}}" >
+<div class="modal fade" role="dialog" wire:ignore.self id="{{$id}}" {{$attributes->except(['class'])}}>
     <div class="modal-dialog modal-dialog-centered overflow-hidden {{$class ?? ''}}" role="document">
         <div class="modal-content">
             @isset($header)

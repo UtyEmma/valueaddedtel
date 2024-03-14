@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,13 +10,35 @@ use Illuminate\Database\Eloquent\Model;
 class Wallet extends Model {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['user_id', 'main_bal', 'cashback_bal', 'bonus_bal', 'accumulated_pv'];
+    protected $fillable = ['user_id', 'main_bal', 'cashback_bal', 'bonus_bal', 'accumulated_pv', 'total_pv'];
+
+    protected function main_bal(): Attribute {
+        $targetCurrency = session('currency');
+        return Attribute::make(
+            get: fn (string $value) => $this->currency->convert($value, $targetCurrency)
+        );
+    }
+
+    protected function cashback_bal(): Attribute {
+        $targetCurrency = session('currency');
+        return Attribute::make(
+            get: fn (string $value) => $this->currency->convert($value, $targetCurrency)
+        );
+    }
+
+    protected function bonus_bal(): Attribute {
+        $targetCurrency = session('currency');
+        return Attribute::make(
+            get: fn (string $value) => $this->currency->convert($value, $targetCurrency)
+        );
+    }
 
     protected $attributes = [
         'main_bal' => 0,
         'cashback_bal' => 0,
         'bonus_bal' => 0,
         'accumulated_pv' => 0,
+        'total_pv' => 0,
     ];
 
     function user(){

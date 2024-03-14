@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('shortcode');
             $table->string('image')->nullable();
             $table->string('status');
+            $table->boolean('isOnline');
             $table->timestamps();
         });
     }

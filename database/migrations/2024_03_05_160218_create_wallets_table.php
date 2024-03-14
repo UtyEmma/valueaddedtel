@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('main_bal')->default(0);
             $table->string('cashback_bal')->default(0);
             $table->string('bonus_bal')->default(0);
+            $table->integer('total_pv')->default(0);
             $table->string('accumulated_pv')->default(0);
             $table->timestamps();
         });

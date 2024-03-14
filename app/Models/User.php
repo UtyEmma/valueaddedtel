@@ -8,6 +8,7 @@ use App\Enums\Roles;
 use App\Enums\Status;
 use App\Models\ConfirmationCode;
 use App\Models\Countries\Country;
+use App\Models\Countries\CountryPaymentMethod;
 use App\Models\Countries\Currency;
 use App\Models\KYC\AccountTier;
 use App\Models\KYC\KYCVerification;
@@ -15,6 +16,8 @@ use App\Models\Packages\Package;
 use App\Models\Packages\PackageHistory;
 use App\Models\Services\CountryService;
 use App\Models\Services\Service;
+use App\Models\Transactions\PaymentMethod;
+use App\Models\Transactions\Transaction;
 use App\Traits\HasStatus;
 use App\Traits\VerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
@@ -34,6 +37,8 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
     protected $fillable = ['firstname', 'lastname', 'username', 'email', 'password', 'phone', 'avatar', 'country_code', 'currency_code', 'referrer_id'];
 
     protected $hidden = ['password', 'pin', 'referrer_id', 'country_code', 'currency_code', 'tier_id', 'package_id', 'remember_token'];
+
+    protected $with = ['wallet'];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -88,6 +93,10 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
         return $this->belongsTo(Package::class, 'package_id');
     }
 
+    function transactions(){
+        return $this->hasMany(Transaction::class, 'user_id');
+    }
+
     function packageHistory(){
         return $this->hasMany(PackageHistory::class, 'user_id');
     }
@@ -98,6 +107,10 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
 
     function confirmationCodes(){
         return $this->hasMany(ConfirmationCode::class, 'user_id');
+    }
+
+    function paymentMethods(){
+        return $this->hasManyThrough(PaymentMethod::class, CountryPaymentMethod::class, 'country_code', 'shortcode', 'country_code', 'payment_method_code')->isActive('payment_methods.status');
     }
 
     function services(){

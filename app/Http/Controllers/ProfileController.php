@@ -11,7 +11,7 @@ class ProfileController extends Controller {
     }
 
     function wallet() {
-        return view('pages.profile.wallet');
+        return view('pages.profile.wallet.index');
     }
 
     function referrals(){

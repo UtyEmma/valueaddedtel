@@ -2,6 +2,7 @@
 
 namespace App\Models\Services;
 
+use App\Enums\Services;
 use App\Models\Countries\Country;
 use App\Traits\HasStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -12,6 +13,10 @@ class CountryService extends Model {
     use HasFactory, HasUuids, HasStatus;
 
     protected $fillable = ['service_code', 'country_code'];
+
+    protected $casts = [
+        'service_code' => Services::class
+    ];
 
     function service(){
         return $this->belongsTo(Service::class, 'service_code', 'shortcode');

@@ -8,17 +8,26 @@ use App\Models\User;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('layouts.dashboard')]
+#[Layout('layouts.dashboard', [
+    'title' => 'Airtime Topup',
+    "breadcrumbs" => [
+        // ['title' => 'Overview', 'href' => route('dashboard')],
+        ['title' => 'Airtime Topup']
+    ]
+])]
 class AirtimeTopup extends Component {
 
     public User $user;
     public Service $service;
     public $products = [];
 
+    public $amount;
+
     function mount(){
         $this->user = authenticated();
         $this->service = $this->user->service(Services::AIRTIME);
         $this->products = $this->service->products()->where('country_code', $this->user->country_code)->get();
+
 
     }
 

@@ -2,7 +2,9 @@
 
 namespace App\Models\Services;
 
+use App\Enums\Services;
 use App\Models\Countries\Country;
+use App\Models\Transactions\PaymentMethod;
 use App\Traits\HasStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,8 +15,9 @@ class Service extends Model {
 
     protected $fillable = ['name', 'shortcode'];
 
-    protected $primary = 'shortcode';
-    public $incrementing = false;
+    protected $casts = [
+        'shortcode' => Services::class
+    ];
 
     protected $with = ['products'];
 
@@ -28,6 +31,14 @@ class Service extends Model {
 
     function serviceCountries(){
         return $this->hasMany(CountryService::class, 'service_code', 'shortcode');
+    }
+
+    function servicePaymentMethods(){
+        return $this->hasMany(ServicePaymentMethod::class, 'service_code', 'shortcode');
+    }
+
+    function paymentMethods(){
+        return $this->hasManyThrough(PaymentMethod::class, ServicePaymentMethod::class, 'service_code', 'shortcode', 'shortcode', 'payment_method_code');
     }
 
 }

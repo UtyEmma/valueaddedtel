@@ -17,6 +17,10 @@
     </script>
 @endpush
 
+@pushOnce('scripts')
+    <script src="{{asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
+@endPushOnce
+
 @pushOnce('styles')
     <link href="/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
 @endPushOnce

@@ -37,8 +37,6 @@ class ValidCode implements ValidationRule {
 
         $confirmationCode = $confirmation->first();
 
-        // dd($confirmationCode);
-
         if(!$confirmationCode) {
             $fail('The :attribute does not exist');
             return;

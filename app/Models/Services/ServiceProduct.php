@@ -2,6 +2,7 @@
 
 namespace App\Models\Services;
 
+use App\Enums\Services;
 use App\Enums\Status;
 use App\Models\Countries\Country;
 use App\Traits\HasStatus;
@@ -17,7 +18,8 @@ class ServiceProduct extends Model {
 
     protected $casts = [
         'meta' => 'array',
-        'status' => Status::class
+        'status' => Status::class,
+        'service_code' => Services::class
     ];
 
     protected $attributes = [

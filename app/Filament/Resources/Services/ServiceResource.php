@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Services;
 
 use App\Enums\Status;
+use App\Filament\Resources\Services\ServicePaymentMethodResource\RelationManagers\ServicePaymentMethodsRelationManager;
 use App\Filament\Resources\Services\ServiceResource\Pages;
 use App\Filament\Resources\Services\ServiceResource\RelationManagers;
 use App\Filament\Resources\Services\ServiceResource\RelationManagers\CountriesRelationManager;
@@ -85,6 +86,7 @@ class ServiceResource extends Resource
         return [
             ProductsRelationManager::class,
             ServiceCountriesRelationManager::class,
+            ServicePaymentMethodsRelationManager::class
         ];
     }
 

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Enums\ConfirmationActions;
 use App\Enums\Status;
-use App\Models\Account\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

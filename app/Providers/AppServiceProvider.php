@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Enums\PaymentMethods;
+use App\Enums\PaymentStatus;
 use App\Enums\Roles;
 use App\Enums\Services;
 use App\Enums\Status;
@@ -34,7 +36,9 @@ class AppServiceProvider extends ServiceProvider
                 'settings' => new Setting(),
                 'countries' => new Country(),
                 'currencies' => new Currency(),
-                'modules' => Services::class
+                'modules' => Services::class,
+                'paymentStatuses' => PaymentStatus::class,
+                'paymentTypes' => PaymentMethods::class
             ]);
         }
     }

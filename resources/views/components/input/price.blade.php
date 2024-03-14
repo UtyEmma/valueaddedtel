@@ -1,7 +1,3 @@
-@pushOnce('scripts')
-    <script src="{{asset('custom/js/imask.js')}}"></script>
-@endPushOnce
-
 <span x-data="{
     amount: @if($attributes->whereStartsWith('wire:model')) $wire.entangle(@js($name)).live @else '' @endif,
     symbol: @js($symbol ?? $currentCurrency->symbol),

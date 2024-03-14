@@ -34,34 +34,20 @@
     <div class="toolbar container-xxl justify-content-between d-flex align-items-stretch">
         <div class="py-6 py-lg-0 d-flex flex-column flex-lg-row align-items-lg-stretch justify-content-lg-between">
            <div class="page-title d-flex justify-content-center flex-column me-5">
-                <!--begin::Title-->
-                <h1 class="mb-0 text-gray-900 d-flex flex-column fw-bold fs-3">Dashboard</h1>
-                <!--end::Title-->
-                <!--begin::Breadcrumb-->
-                <ul class="pt-1 breadcrumb breadcrumb-separatorless fw-semibold fs-7">
-                    <!--begin::Item-->
-                    <li class="breadcrumb-item text-muted">
-                        <a href="index.html" class="text-muted text-hover-primary">Home</a>
-                    </li>
-                    <!--end::Item-->
-                    <!--begin::Item-->
-                    <li class="breadcrumb-item">
-                        <span class="bg-gray-300 bullet w-5px h-2px"></span>
-                    </li>
-                    <!--end::Item-->
-                    <!--begin::Item-->
-                    <li class="breadcrumb-item text-muted">Dashboards</li>
-                    <!--end::Item-->
-                    <!--begin::Item-->
-                    <li class="breadcrumb-item">
-                        <span class="bg-gray-300 bullet w-5px h-2px"></span>
-                    </li>
-                    <!--end::Item-->
-                    <!--begin::Item-->
-                    <li class="text-gray-900 breadcrumb-item">Default</li>
+            <h1 class="mb-0 text-gray-900 d-flex flex-column fw-bold fs-3">{{$title}}</h1>
 
-                </ul>
-            </div>
+            <ul class="pt-1 breadcrumb breadcrumb-line fw-semibold fs-7">
+                @foreach ($breadcrumbs as $breadcrumb)
+                    <li class="breadcrumb-item text-muted">
+                        @isset($breadcrumb['href'])
+                            <a href="{{$breadcrumb['href']}}" class="text-muted text-hover-primary">{{$breadcrumb['title']}}</a>
+                        @else
+                            {{$breadcrumb['title']}}
+                        @endif
+                    </li>
+                @endforeach
+            </ul>
+        </div>
         </div>
 
         {{-- <div class="app-navbar d-flex align-items-center" id="kt_app_header_navbar">

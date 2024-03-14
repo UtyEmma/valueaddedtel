@@ -2,6 +2,7 @@
 
 namespace App\Models\Transactions;
 
+use App\Enums\PaymentMethods;
 use App\Enums\PaymentStatus;
 use App\Models\Countries\Currency;
 use App\Models\User;
@@ -17,6 +18,7 @@ class Transaction extends Model {
 
     protected $casts = [
         'status' => PaymentStatus::class,
+        'payment_method_code' => PaymentMethods::class
     ];
 
     protected function amount(): Attribute {
