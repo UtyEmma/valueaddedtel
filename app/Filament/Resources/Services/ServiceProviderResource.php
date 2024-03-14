@@ -3,8 +3,13 @@
 namespace App\Filament\Resources\Services;
 
 use App\Enums\Status;
-use App\Filament\Resources\Services\ServiceProviderResource\Pages;
+use App\Filament\Resources\Services\ServiceProviderResource\Pages\CreateServiceProvider;
+use App\Filament\Resources\Services\ServiceProviderResource\Pages\EditServiceProvider;
+use App\Filament\Resources\Services\ServiceProviderResource\Pages\ListServiceProviders;
+use App\Filament\Resources\Services\ServiceProviderResource\Pages\ViewServiceProvider;
 use App\Filament\Resources\Services\ServiceProviderResource\RelationManagers;
+use App\Filament\Resources\Services\ServiceProviderResource\RelationManagers\CountriesRelationManager;
+use App\Filament\Resources\Services\ServiceProviderResource\RelationManagers\ProviderCountriesRelationManager;
 use App\Models\Services\ServiceProvider;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -63,7 +68,7 @@ class ServiceProviderResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -75,24 +80,18 @@ class ServiceProviderResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ProviderCountriesRelationManager::class
         ];
     }
 
     public static function getPages(): array {
         return [
-            'index' => Pages\ListServiceProviders::route('/'),
-            'create' => Pages\CreateServiceProvider::route('/create'),
-            'view' => Pages\ViewServiceProvider::route('/{record}'),
-            'edit' => Pages\EditServiceProvider::route('/{record}/edit'),
+            'index' => ListServiceProviders::route('/'),
+            'create' => CreateServiceProvider::route('/create'),
+            'view' => ViewServiceProvider::route('/{record}'),
+            'edit' => EditServiceProvider::route('/{record}/edit'),
         ];
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
+
 }

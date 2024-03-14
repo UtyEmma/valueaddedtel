@@ -10,8 +10,7 @@ class EditServiceProvider extends EditRecord
 {
     protected static string $resource = ServiceProviderResource::class;
 
-    protected function getHeaderActions(): array
-    {
+    protected function getHeaderActions(): array {
         return [
             Actions\ViewAction::make(),
             Actions\DeleteAction::make(),

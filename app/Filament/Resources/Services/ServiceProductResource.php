@@ -6,6 +6,7 @@ use App\Enums\Status;
 use App\Filament\Resources\Services\ServiceProductResource\Pages;
 use App\Filament\Resources\Services\ServiceProductResource\RelationManagers;
 use App\Models\Countries\Country;
+use App\Models\Services\Service;
 use App\Models\Services\ServiceProduct;
 use App\Models\Services\ServiceProvider;
 use Filament\Forms;
@@ -31,10 +32,19 @@ class ServiceProductResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('service_code')
+                    ->options(Service::pluck('name', 'shortcode'))
+                    ->native(false)
+                    ->searchable()
+                    ->required(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->placeholder('Name')
                     ->maxLength(255),
+                Forms\Components\FileUpload::make('image')
+                    ->image()
+                    ->preserveFilenames()
+                    ->label('Logo'),
                 Forms\Components\TextInput::make('shortcode')
                     ->required()
                     ->placeholder('Short Code')
@@ -64,8 +74,7 @@ class ServiceProductResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('cashback')
                     ->numeric()
-                    ->placeholder('Cashback')
-                    ->maxLength(255),
+                    ->placeholder('Cashback'),
                 Forms\Components\Select::make('cashback_type')
                     ->native(false)
                     ->options([

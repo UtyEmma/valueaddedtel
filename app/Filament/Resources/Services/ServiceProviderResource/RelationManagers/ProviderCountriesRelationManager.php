@@ -1,59 +1,45 @@
 <?php
 
-namespace App\Filament\Resources\Services\ServiceResource\RelationManagers;
+namespace App\Filament\Resources\Services\ServiceProviderResource\RelationManagers;
 
 use App\Enums\Status;
 use App\Models\Countries\Country;
+use App\Models\Services\ServiceProvider;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ServiceCountriesRelationManager extends RelationManager
+class ProviderCountriesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'serviceCountries';
+    protected static string $relationship = 'providerCountries';
 
-    public function form(Form $form): Form
-    {
-        $service = $this->getOwnerRecord();
-        $serviceCountry = $form->getRecord();
-
+    public function form(Form $form): Form {
+        $provider = $this->getOwnerRecord();
         return $form
             ->schema([
                 Forms\Components\Select::make('country_code')
-                    ->label('Country')
-                    ->native(false)
-                    ->options(
-                            Country::isSupported()
-                                // ->whereDoesntHave('services', function (Builder $query) use($service) {
-                                //     $query->where('shortcode', $service?->shortcode);
-                                // })
-                                ->pluck('name', 'iso_code')
-                        )
+                    ->options(Country::pluck('name', 'iso_code'))
                     ->required(),
                 Forms\Components\Select::make('status')
-                    ->label('Status')
-                    ->native(false)
                     ->options([
                         Status::ACTIVE->value => Status::ACTIVE->value,
-                        Status::DELAYED->value => Status::DELAYED->value,
                         Status::INACTIVE->value => Status::INACTIVE->value,
                     ])
                     ->required(),
             ]);
     }
 
-    public function table(Table $table): Table
-    {
+    public function table(Table $table): Table {
         return $table
             ->recordTitleAttribute('shortcode')
             ->columns([
-                TextColumn::make('country.name'),
-                TextColumn::make('status')
+                Tables\Columns\TextColumn::make('country.name'),
+                Tables\Columns\TextColumn::make('provider.name'),
+                Tables\Columns\TextColumn::make('status')
                     ->badge(),
             ])
             ->filters([

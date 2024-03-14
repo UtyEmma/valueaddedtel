@@ -8,11 +8,12 @@ use App\Traits\HasStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 
 class ServiceProduct extends Model {
     use HasFactory, HasUuids, HasStatus;
 
-    protected $fillable = ['name', 'shortcode', 'service_code', 'provider_code', 'country_code', 'cashback', 'cashback_type', 'meta', 'amount'];
+    protected $fillable = ['name', 'shortcode', 'service_code', 'provider_code', 'country_code', 'cashback', 'cashback_type', 'meta', 'amount', 'image'];
 
     protected $casts = [
         'meta' => 'array',
@@ -23,6 +24,12 @@ class ServiceProduct extends Model {
         'status' => Status::ACTIVE
     ];
 
+    protected static function booted(): void
+    {
+        static::addGlobalScope('active', function ($builder) {
+            $builder->whereNot('status', Status::INACTIVE);
+        });
+    }
     function items(){
         return $this->hasMany(ServiceProductItem::class, 'service_product_code', 'shortcode');
     }

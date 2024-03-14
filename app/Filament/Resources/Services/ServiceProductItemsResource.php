@@ -36,7 +36,6 @@ class ServiceProductItemsResource extends Resource
                 //
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

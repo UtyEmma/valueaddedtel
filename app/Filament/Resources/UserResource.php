@@ -27,6 +27,9 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\FileUpload::make('avatar')
+                    ->avatar()
+                    ->image(),
                 Forms\Components\TextInput::make('firstname')
                     ->required()
                     ->maxLength(255),
@@ -35,37 +38,37 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->email()
-                    ->unique('users', 'email')
+                    ->unique('users', 'email', ignoreRecord: true)
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('username')
                     ->required()
-                    ->unique('users', 'username')
+                    ->unique('users', 'username', ignoreRecord: true)
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone')
                     ->tel()
-                    ->unique('users', 'phone')
+                    ->unique('users', 'phone', ignoreRecord: true)
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('pin')
-                    ->maxLength(4),
-                Forms\Components\TextInput::make('avatar')
-                    ->maxLength(255),
-                Forms\Components\Select::make('country_id')
+                Forms\Components\Select::make('country_code')
                     ->label("Country")
                     ->options(Country::isSupported()->pluck('name', 'iso_code'))
+                    ->required()
                     ->native(false),
-                Forms\Components\Select::make('currency_id')
+                Forms\Components\Select::make('currency_code')
                     ->label("Currency")
                     ->options(Currency::pluck('name', 'code'))
+                    ->required()
                     ->native(false),
                 Forms\Components\Select::make('package_id')
                     ->label("Package")
                     ->options(Package::pluck('name', 'id'))
+                    ->required()
                     ->native(false),
                 Forms\Components\Select::make('tier_id')
                     ->label("Account Tier")
                     ->options(AccountTier::pluck('name', 'id'))
+                    ->required()
                     ->native(false),
                 Forms\Components\Select::make('referrer_id')
                     ->label("Referrer")
@@ -73,10 +76,6 @@ class UserResource extends Resource
                     ->options(User::pluck('username', 'id'))
                     ->native(false),
                 Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\TextInput::make('role')
                     ->required()
                     ->maxLength(255),

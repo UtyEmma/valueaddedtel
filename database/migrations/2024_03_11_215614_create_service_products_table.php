@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('provider_code');
             $table->string('service_code');
             $table->string('country_code');
+            $table->string('image')->nullable();
             $table->string('shortcode');
             $table->string('cashback')->nullable();
             $table->string('cashback_type')->nullable();

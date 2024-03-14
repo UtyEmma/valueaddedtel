@@ -33,6 +33,7 @@ class ProductsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('shortcode')
                     ->required()
                     ->placeholder('Short Code')
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 Forms\Components\Select::make('country_code')
                     ->label('Country')
@@ -58,9 +59,7 @@ class ProductsRelationManager extends RelationManager
                     ->stripCharacters(',')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('cashback')
-                    ->numeric()
-                    ->placeholder('Cashback')
-                    ->maxLength(255),
+                    ->placeholder('Cashback'),
                 Forms\Components\Select::make('cashback_type')
                     ->native(false)
                     ->options([

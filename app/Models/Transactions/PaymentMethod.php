@@ -12,9 +12,9 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentMethod extends Model {
     use HasFactory, HasStatus;
 
-    protected $fillable = ['name', 'slug', 'image'];
+    protected $fillable = ['name', 'shortcode', 'image'];
 
-    protected $primaryKey = 'slug';
+    protected $primaryKey = 'shortcode';
     public $incrementing = false;
 
     function transactions(){
@@ -23,6 +23,10 @@ class PaymentMethod extends Model {
 
     function countries(){
         return $this->hasManyThrough(CountryPaymentMethod::class, Country::class, 'payment_method_code', 'country_code');
+    }
+
+    function paymentMethodCountries(){
+        return $this->hasMany(CountryPaymentMethod::class, 'payment_method_code', 'shortcode');
     }
 
 

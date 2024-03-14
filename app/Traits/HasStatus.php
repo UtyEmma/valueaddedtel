@@ -13,20 +13,32 @@ trait HasStatus{
         $this->fillable[] = 'status';
     }
 
-    function scopeStatus (Builder $query, Status $status) {
-        $query->where('status', $status);
+    function scopeStatus (Builder $query, Status $status, $column = 'status') {
+        $query->where($column, $status);
     }
 
-    function scopeIsActive (Builder $query) {
-        $query->where('status', Status::ACTIVE);
+    function scopeIsActive (Builder $query, $column = 'status') {
+        $query->where($column, Status::ACTIVE);
     }
 
-    function scopeIsInActive (Builder $query) {
-        $query->where('status', Status::INACTIVE);
+    function scopeIsInActive (Builder $query, $column = 'status') {
+        $query->where($column, Status::INACTIVE);
+    }
+
+    function scopeIsDelayed (Builder $query, $column = 'status') {
+        $query->where($column, Status::DELAYED);
     }
 
     function getActiveAttribute(){
-        return $this->where('status', Status::ACTIVE)->get();
+        return $this->status == Status::ACTIVE;
+    }
+
+    function getInActiveAttribute(){
+        return $this->status == Status::INACTIVE;
+    }
+
+    function getDelayedAttribute(){
+        return $this->status == Status::DELAYED;
     }
 
 }

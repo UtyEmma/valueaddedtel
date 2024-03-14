@@ -14,10 +14,10 @@ class CountryPaymentMethod extends Model {
     protected $fillable = ['country_code', 'payment_method_code'];
 
     function country(){
-        return $this->belongsTo(Country::class, 'country_code');
+        return $this->belongsTo(Country::class, 'country_code', 'iso_code');
     }
 
     function paymentMethod(){
-        return $this->belongsTo(PaymentMethod::class, 'payment_method_code');
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_code', 'shortcode');
     }
 }

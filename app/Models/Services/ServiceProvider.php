@@ -2,14 +2,14 @@
 
 namespace App\Models\Services;
 
-use App\Models\Country;
+use App\Models\Countries\Country;
 use App\Traits\HasStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ServiceProvider extends Model {
-    use HasFactory, HasUuids, HasStatus;
+    use HasFactory, HasStatus;
 
     protected $fillable = ['name', 'shortcode'];
 
@@ -17,8 +17,10 @@ class ServiceProvider extends Model {
     public $incrementing = false;
     public $keyType = 'string';
 
+    protected $with = ['providerCountries'];
+
     function countries(){
-        // return $this->hasManyThrough(Country::class, '');
+        return $this->hasManyThrough(Country::class, CountryServiceProvider::class, 'provider_code', 'iso_code', 'shortcode', 'country_code');
     }
 
     function providerCountries(){

@@ -58,6 +58,12 @@ class ServiceResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
+                // TextColumn::make('serviceCountries_count')
+                //     ->name('Countries')
+                //     ->counts('serviceCountries'),
+                // TextColumn::make('products_count')
+                //     ->name('Products')
+                //     ->counts('products'),
                 TextColumn::make('status')
                     ->badge()
                     ->searchable(),

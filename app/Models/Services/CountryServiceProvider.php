@@ -13,10 +13,10 @@ class CountryServiceProvider extends Model {
     protected $fillable = ['country_code', 'provider_code'];
 
     function country() {
-        return $this->belongsTo(Country::class, 'country_code');
+        return $this->belongsTo(Country::class, 'country_code', 'iso_code');
     }
 
     function provider(){
-        return $this->belongsTo(ServiceProvider::class, 'provider_code');
+        return $this->belongsTo(ServiceProvider::class, 'provider_code', 'shortcode');
     }
 }
