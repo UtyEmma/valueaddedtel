@@ -1,4 +1,4 @@
-<label class="mb-5 cursor-pointer d-flex flex-stack">
+<label class="mb-5 d-flex flex-stack {{$disabled ?? false ? 'cursor-default' : 'cursor-pointer'}}" >
     <span class="gap-3 d-flex align-items-center me-2">
         <span class="symbol symbol-40px">
             <span class="symbol-label bg-light-primary">
@@ -16,6 +16,6 @@
     </span>
 
     <span class="form-check form-check-custom form-check-solid">
-        <input class="form-check-input" type="radio"  name="category" value="1"/>
+        <input class="form-check-input" type="radio" @disabled($disabled ?? false) {{$attributes->except(['icon', 'label', 'caption', 'disabled'])}}/>
     </span>
 </label>

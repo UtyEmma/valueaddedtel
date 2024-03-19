@@ -3,7 +3,7 @@
     symbol: @js($symbol ?? $currentCurrency->symbol),
     mask: null,
     amountInput: null
-}">
+}" {{$attributes->whereStartsWith('x-init')}}>
     <x-input  x-init="
         mask = IMask($el, {
                 mask: `${symbol} num`,
@@ -23,9 +23,7 @@
 
         $watch('amount', () => {
             mask.destroy();
-
             $el.value = amount
-
             mask = IMask($el, {
                     mask: `${symbol} num`,
                     blocks: {
@@ -44,7 +42,7 @@
 
             $refs.amountInput.value = mask.unmaskedValue; $refs.amountInput.dispatchEvent(new Event(`input`))
         })
-    " placeholder="0"  type="text" {{$attributes->except('name')->whereDoesntStartWith('wire:model')->merge([
+    " placeholder="0"  type="text" {{$attributes->except('name')->whereDoesntStartWith(['wire:model', 'x-init'])->merge([
         'x-on:keyup' => '$refs.amountInput.value = mask.unmaskedValue; $refs.amountInput.dispatchEvent(new Event(`input`))',
         'class' => 'appearance-none'
     ])}} name="{{isset($show) ? $name : null}}" />

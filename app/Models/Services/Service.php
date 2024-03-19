@@ -5,6 +5,7 @@ namespace App\Models\Services;
 use App\Enums\Services;
 use App\Models\Countries\Country;
 use App\Models\Transactions\PaymentMethod;
+use App\Models\User;
 use App\Traits\HasStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -39,6 +40,11 @@ class Service extends Model {
 
     function paymentMethods(){
         return $this->hasManyThrough(PaymentMethod::class, ServicePaymentMethod::class, 'service_code', 'shortcode', 'shortcode', 'payment_method_code');
+    }
+
+    function methods(User $user = null){
+        $user = $user ?? authenticated();
+        return $this->servicePaymentMethods()->where('country_code', $user->country_code)->get();
     }
 
 }

@@ -4,16 +4,14 @@ namespace App\Services;
 
 use App\Enums\PaymentMethods;
 use App\Enums\PaymentStatus;
-use App\Models\Currency;
-use App\Models\Payment\Transaction;
-use App\Services\PaymentMethods\PaystackService;
+use App\Models\Countries\Currency;
+use App\Models\Transactions\Transaction;
 use Illuminate\Support\Str;
 
 class TransactionService {
 
     function create($transactable, $user, $data, $status = PaymentStatus::PENDING){
         $currency = session('currency');
-
         $currency = Currency::find($currency->id);
 
         $transaction = new Transaction([
@@ -37,7 +35,7 @@ class TransactionService {
         return $reference;
     }
 
-    function init(Transaction $transaction){
+    function init(Transaction $transaction) {
         return $transaction->payment_method->init();
     }
 

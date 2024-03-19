@@ -3,7 +3,7 @@
     'type' => 'number',
     'value' => '',
     'placeholder' => "•",
-    'name' => ''
+    'name' => '',
 ])
 
 @php
@@ -11,7 +11,9 @@
 @endphp
 
 <div
-    class="d-flex justify-content-between"
+    {{$attributes->only('class')->merge([
+        'class' => 'd-flex justify-content-between'
+    ])}}
     x-data="{
         value: @js($value),
         entries: @js($entries),
@@ -41,9 +43,6 @@
             if(value){
                 this.next(position)
             }
-            {{-- else{
-                this.previous(position)
-            } --}}
         },
         pasteText(event){
             let pasted = event.clipboardData.getData('text');
@@ -82,11 +81,12 @@
                     if(current == position) return $el.focus();
                 })
             "
+            autocomplete="off"
             x-on:keyup="
                 $event.key == 'Backspace' ? previous(position) : null;
             "
             placeholder="{{$placeholder}}"
-            class="w-50px appearance-none h-50px text-center fs-1"
+            class="text-center appearance-none w-50px h-50px fs-1"
         />
     @endfor
 

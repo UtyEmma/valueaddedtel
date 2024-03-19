@@ -15,14 +15,22 @@
             tags: @js(isset($tags)),
             @isset($parent)
                 @if (!empty($parent))
-                    dropdownParent: $('#{{$parent}}')
+                    dropdownParent: $('#{{$parent}}'),
                 @endif
+            @endisset
+            @isset($templates)
+                templateSelection: optionFormat,
+                templateResult: optionFormat,
             @endisset
         });
 
-        $($el).on('change',
-            (e) => $wire.set(e.target.name, $(e.target).select2('val'))
-        );
+        $($el).on('change', (e) => {
+            for (const name of e.target.getAttributeNames()) {
+                if(name.includes('wire:model')) {
+                    $wire.set(e.target.getAttribute(name), $(e.target).select2('val'));
+                }
+            }
+        });
 
     " {{$attributes->merge(['class' => 'form-select bg-transparent border'])}}  {{$attributes}}  >
         {{$slot}}

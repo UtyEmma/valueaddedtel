@@ -1,70 +1,74 @@
 <div>
-    <div class="row">
-        <div class="col-md-9">
+    <div class="row g-10">
+        <div class="col-md-7">
             <div class="card">
-                <div class="card-body p-md-10">
-                    <div class="row g-10">
-                        <div class="col-md-7 ">
-                            <form wire:submit="initiate">
-                                <div >
-                                    <div>
-                                        <div class="mb-8 fw-row">
-                                            <x-input.label>Select Network</x-input.label>
-                                            <div class="row row-cols-md-4 row-cols-3 g-3">
-                                                @forelse ($products as $product)
-                                                    <div>
-                                                        <label type="button" class="btn btn-light-primary w-100" data-kt-docs-advanced-forms="interactive">{{$product->name}}</label>
-                                                    </div>
-                                                @empty
-                                                @endforelse
+                <div class="card-body p-md-10 py-md-20">
+                    <div class="mx-auto col-md-8">
+                        <div class="mb-8">
+                            <h2>Buy Airtime</h2>
+                        </div>
+                        <form wire:submit="initiate" x-data="{
+                            selectedAmount: null
+                        }">
+                            <div >
+                                <div>
+                                    <div class="mb-5 fv-row">
+                                        <x-input.label>Select Amount</x-input.label>
+                                        <div class="row row-cols-4 g-2">
+                                            <div>
+                                                <x-button type="button" x-on:click="selectedAmount = 100;"  class="p-3 text-center h-100 btn justify-content-center w-100" x-bind:class="selectedAmount == 100 ? 'bg-light-primary border border-2 border-primary' : 'btn-light'"><x-currency />100</span></x-button>
                                             </div>
-                                            <x-input.error key="network" />
+                                            <div>
+                                                <x-button type="button" x-on:click="selectedAmount = 200" class="p-3 text-center h-100 btn justify-content-center w-100" x-bind:class="selectedAmount == 200 ? 'bg-light-primary border border-2 border-primary' : 'btn-light'"><x-currency />200</x-button>
+                                            </div>
+                                            <div>
+                                                <x-button type="button" x-on:click="selectedAmount = 500" class="p-3 text-center h-100 btn justify-content-center w-100" x-bind:class="selectedAmount == 500 ? 'bg-light-primary border border-2 border-primary' : 'btn-light'"><x-currency />500</x-button>
+                                            </div>
+                                            <div>
+                                                <x-button type="button" x-on:click="selectedAmount = 1000"  class="p-3 text-center h-100 btn justify-content-center w-100" x-bind:class="selectedAmount == 1000 ? 'bg-light-primary border border-2 border-primary' : 'btn-light'"><x-currency />1,000</x-button>
+                                            </div>
                                         </div>
 
-                                        <div class="mb-8 fw-row">
-                                            <div class="d-flex justify-content-between align-items-start">
-                                                <x-input.label>Phone Number</x-input.label>
-                                                <a href="#">Select Beneficiary</a>
-                                            </div>
-                                            <x-input type="tel" wire:model="phone" placeholder="Phone Number" />
-                                            <x-input.error key="phone" />
-                                        </div>
-
-                                        <div class="mb-10 fw-row">
-                                            <x-input.label>Amount</x-input.label>
-                                            <div class="gap-5 mb-5 d-flex flex-stack">
-                                                <button type="button" class="btn btn-light-primary w-100" data-kt-docs-advanced-forms="interactive">10</button>
-                                                <button type="button" class="btn btn-light-primary w-100" data-kt-docs-advanced-forms="interactive">50</button>
-                                                <button type="button" class="btn btn-light-primary w-100" data-kt-docs-advanced-forms="interactive">100</button>
-                                            </div>
-                                            <x-input.price type="tel" name="amount" wire:model="amount" placeholder="Amount" />
-                                            <x-input.error key="amount" />
-                                        </div>
-
-                                        <div class="mt-8">
-                                            <x-button type="submit" wire:loading wire:target="initiate" class="btn-primary">Make Payment</x-button>
-                                        </div>
                                     </div>
 
-                                    <div class="mt-10 alert alert-success">
-                                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Est incidunt dignissimos vel dolore, excepturi explicabo nemo amet eos? Saepe, nesciunt.
+                                    <div class="mb-5 fw-row">
+                                        <x-input.label>Amount</x-input.label>
+                                        <x-input.price type="tel" name="amount" x-init="
+                                            $watch('selectedAmount', (value) => amount = value)
+                                            $watch('amount', (value) => selectedAmount = value)
+                                        " wire:model="amount" placeholder="Amount" />
+                                        <x-input.error key="amount" />
+                                    </div>
+
+                                    <div class="mb-5 fw-row" >
+                                        <x-input.label>Select Network</x-input.label>
+                                        <x-input.service wire:model="network" :products="$products" />
+                                        <x-input.error key="network" />
+                                    </div>
+
+                                    <div class="mb-5 fw-row">
+                                        <x-input.label>Phone Number</x-input.label>
+                                        <x-input type="tel" wire:model="phone" placeholder="0903 870 5881" />
+                                        <x-input.error key="phone" />
+                                    </div>
+
+                                    <div class="mt-8">
+                                        <x-button type="submit" wire:loading wire:target="initiate" class="btn-primary w-100">Next</x-button>
                                     </div>
                                 </div>
-                            </form>
-
-                            <x-modals.confirm id="confirm-modal" />
-                        </div>
-
-                        <div class="col-md-5">
-                            <div>
-                                <h4>Transaction History</h4>
                             </div>
-                        </div>
+                        </form>
+
+                        @include('components.modals.confirm', [
+                            'methods' => $methods,
+                            'id' => 'confirm-modal'
+                        ])
+                        {{-- <x-modals.confirm :methods="$methods" id="confirm-modal" /> --}}
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-5">
             <div class="card">
                 <div class="card-body">
 

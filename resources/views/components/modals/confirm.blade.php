@@ -1,58 +1,101 @@
-<div class="modal fade" id="{{$id}}" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" >
+<div class="modal fade" wire:ignore.self id="{{$id}}" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" >
     <div class="modal-dialog text-start w-md-450px modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-body">
-                <h3 class="mb-5">Confirm your purchase details</h3>
-                {{-- <div class="p-2 alert alert-warning">
-                    Please note that there might be a network delay on your MTN airtime purchases.
-                </div> --}}
-                <div >
-                    <table class="table table-sm fs-6">
-                        <tr>
-                            <td class="fw-bold">Phone Number</td>
-                            <td class="text-muted text-end">+234 903 870 5881</td>
-                        </tr>
-                        <tr>
-                            <td class="fw-bold">Network</td>
-                            <td class="text-muted text-end">MTN</td>
-                        </tr>
-                        <tr>
-                            <td class="w-50 fw-bold">Amount</td>
-                            <td class="w-50 text-muted text-end"><x-currency /> 10,000</td>
-                        </tr>
-                        {{-- <tr>
-                            <td class="fw-bold">Service</td>
-                            <td class="text-muted text-end">Airtime Top up</td>
-                        </tr> --}}
-                        {{-- <tr>
-                            <td class="fw-bold">Narration</td>
-                            <td class="text-muted text-end">Airtime Purchase</td>
-                        </tr> --}}
-                        <tr>
-                            <td class="fw-bold">Cashback</td>
-                            <td class="text-muted text-end">
-                                <span class="text-success">+<x-currency/>10</span>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+            @if ($step == 1)
+                <form wire:submit="pay" class="modal-body">
+                    <h3 class="mb-4">Confirm your purchase details</h3>
 
-                <div class="my-5 separator"></div>
+                    {{-- @if ($warning) --}}
+                        <div class="p-2 alert alert-warning fs-7">
+                            Please note that there is a delay on your MTN airtime purchases.
+                        </div>
+                    {{-- @endif --}}
 
-                <div class="">
-                    <h6 class="mb-3">Select Payment Method</h6>
-                    <div>
-                        <x-input.payment.methods :methods="[]" name="payment_method" />
+                    <div class="p-5 rounded bg-light" >
+                        <div class="gap-2 fs-6 d-flex flex-column">
+                            @if ($phone)
+                                <div class="d-flex justify-content-between">
+                                    <div class="fw-bold">Phone Number</div>
+                                    <div class="text-muted text-end">{{$phone}}</div>
+                                </div>
+                            @endif
+
+                            @if ($product)
+                                <div class="d-flex justify-content-between">
+                                    <div class="fw-bold">Network</div>
+                                    <div class="text-muted text-end">
+                                        @if ($product->logo)
+                                            <img src="{{$product->logo}}" class="rounded-circle img-fluid w-20px h-20px" style="object-fit: cover;" alt="">
+                                        @endif {{$product->name}}</div>
+                                </div>
+                            @endif
+
+                            @if ($amount)
+                                <div class="d-flex justify-content-between">
+                                    <div class="w-50 fw-bold">Amount</div>
+                                    <div class="w-50 text-muted text-end"><x-currency /> {{number_format($amount, 2)}}</div>
+                                </div>
+                            @endif
+
+                            @if ($service)
+                                <div class="d-flex justify-content-between">
+                                    <div class="fw-bold">Narration</div>
+                                    <div class="text-muted text-end">{{$service->name}}</div>
+                                </div>
+                            @endif
+
+                            @if ($product?->cashback)
+                                <div class="d-flex justify-content-between">
+                                    <div class="fw-bold">Cashback</div>
+                                    <div class="text-muted text-end">
+                                        <span class="text-success">+<x-currency/>{{$product->cashbackAmount($amount)}}</span>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
                     </div>
-                </div>
 
-                <div class="my-5 separator"></div>
+                    <div class="my-5 separator"></div>
 
-                <div class="gap-5 d-flex justify-content-end">
-                    <x-button data-bs-dismiss="modal" class="btn-light">Cancel</x-button>
-                    <x-button class="px-10 btn-primary">Pay</x-button>
-                </div>
-            </div>
+                    <div class="">
+                        <h6 class="mb-3">Select Payment Method</h6>
+                        <div>
+                            <x-input.payment.methods :amount="$amount" :methods="$methods" wire:model="payment_method" />
+                            <x-input.error key="payment_method" />
+                        </div>
+                    </div>
+
+                    <div class="my-5 separator"></div>
+
+                    <div class="gap-5 d-flex justify-content-end">
+                        <x-button type="button" data-bs-dismiss="modal" class="btn-light">Cancel</x-button>
+                        <x-button type="submit" wire:target="pay" wire:loading class="px-10 btn-primary">Pay</x-button>
+                    </div>
+                </form>
+            @endif
+
+            @if ($step == 2)
+                <form wire:submit="complete" class="modal-content">
+                    <div class="modal-body">
+                        <h3 class="mb-10 text-center">Enter your payment pin</h3>
+
+                        <div class="px-20 mb-5">
+                            <x-input.pin type="password" class="justify-content-start" />
+                        </div>
+
+                        <div class="text-center">
+                            <x-swal title="You are exiting your current purchase. Are you sure you wish to proceed?"  href="#">Forgot Payment Pin</x-swal>
+                        </div>
+
+                        <div class="my-5 separator"></div>
+
+                        <div class="gap-5 d-flex justify-content-end">
+                            <x-button type="button" wire:click="cancel" wire:loading wire:target="cancel" class="btn-light" color="muted">Cancel</x-button>
+                            <x-button type="submit" class="px-10 btn-primary">Pay</x-button>
+                        </div>
+                    </div>
+                </form>
+            @endif
         </div>
     </div>
 </div>

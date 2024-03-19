@@ -55,13 +55,13 @@ new #[Layout('layouts.auth')] class extends Component
             <div class="mb-8 fv-row">
                 <x-input.label>Username</x-input.label>
                 <x-input type="text" placeholder="Username" wire:model="form.username" autocomplete="off" class="bg-transparent form-control" />
-                <x-input.error key="form.username" />
+                <x-input.error key="username" />
             </div>
 
             <div class="mb-3 fv-row">
                 <x-input.label>Password</x-input.label>
                 <x-input type="password" placeholder="Password" wire:model="form.password" autocomplete="off" class="bg-transparent form-control" />
-                <x-input.error key="form.password" />
+                <x-input.error key="password" />
             </div>
 
             <x-input.checkbox wire:model="form.remember">Remember Me</x-input.checkbox>

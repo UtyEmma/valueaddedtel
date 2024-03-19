@@ -19,11 +19,11 @@ class ServiceProduct extends Model {
     protected $casts = [
         'meta' => 'array',
         'status' => Status::class,
-        'service_code' => Services::class
+        // 'service_code' => Services::class
     ];
 
     protected $attributes = [
-        'status' => Status::ACTIVE
+        // 'status' => Status::ACTIVE
     ];
 
     protected static function booted(): void
@@ -46,6 +46,21 @@ class ServiceProduct extends Model {
 
     function country(){
         return $this->belongsTo(Country::class, 'country_code', 'iso_code');
+    }
+
+    function getLogoAttribute(){
+        if($this->image) return asset('storage/'.$this->image);
+        return null;
+    }
+
+    function getIsAvailableAttribute(){
+        if($this->status == Status::INACTIVE) return false;
+        return $this->country->status == Status::ACTIVE;
+    }
+
+    function cashbackAmount($amount){
+        if($this->cashback_type == 'fixed') return $this->cashback;
+        if($this->cashback_type == 'percent') return $this->cashback / 100 * $amount;
     }
 
 }
