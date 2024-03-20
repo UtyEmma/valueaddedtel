@@ -17,4 +17,8 @@ class ReferralService {
         $user->save();
     }
 
+    function downlines(User $user){
+        // dd($user->downlines);
+    }
+
 }

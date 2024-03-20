@@ -14,7 +14,7 @@ class Country extends Model
 {
     use HasFactory, HasUuids, HasStatus;
 
-    protected $fillable = ['name', 'flag', 'iso_code', 'intl_phone', 'is_default'];
+    protected $fillable = ['name', 'flag', 'iso_code', 'iso_code_3', 'intl_phone', 'is_default'];
 
     protected $primary_key = 'iso_code';
     public $incrementing = false;

@@ -21,8 +21,10 @@ class AuthService {
         $data["password"] = Hash::make($data["password"]);
 
         // Create User
-        $user = new User($data);
-        $user->save();
+        $user = User::create($data);
+
+        // Wallet
+        $user->wallet()->create();
 
         // Save Country
         $country = Country::where('iso_code', $data['country'])->first();

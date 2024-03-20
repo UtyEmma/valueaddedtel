@@ -1,27 +1,23 @@
 <x-dashboard-layout>
-    <div class="card mb-5 mb-xl-10">
-        <!--begin::Body-->
-        <div class="card-body py-10">
+    <div class="mb-5 card mb-xl-10">
+        <div class="py-10 card-body">
             <h2 class="mb-9">Referral Program</h2>
-            <!--begin::Overview-->
-            <div class="row mb-10">
-                <!--begin::Col-->
+            <div class="mb-10 row">
                 <div class="col-xl-6 mb-15 mb-xl-0 pe-5">
                     <h4 class="mb-0">How to use Referral Program</h4>
-                    <p class="fs-6 fw-semibold text-gray-600 py-4 m-0">Use images to enhance your post, improve its flow, add humor 
+                    <p class="py-4 m-0 text-gray-600 fs-6 fw-semibold">Use images to enhance your post, improve its flow, add humor
                     <br />and explain complex topics</p>
                     <a href="#" class="btn btn-light btn-active-light-primary fw-bold">Get Started</a>
                 </div>
-                <!--end::Col-->
-                <!--begin::Col-->
+
                 <div class="col-xl-6">
-                    <h4 class="text-gray-800 mb-0">Your Referral Link</h4>
-                    <p class="fs-6 fw-semibold text-gray-600 py-4 m-0">Plan your blog post by choosing a topic, creating an outline conduct 
+                    <h4 class="mb-0 text-gray-800">Your Referral Link</h4>
+                    <p class="py-4 m-0 text-gray-600 fs-6 fw-semibold">Plan your blog post by choosing a topic, creating an outline conduct
                     <br />research, and checking facts</p>
-                    <div class="d-flex">
-                        <input id="kt_referral_link_input" type="text" class="form-control form-control-solid me-3 flex-grow-1" name="search" value="https://keenthemes.com/reffer/?refid=345re66787k8" />
-                        <button id="kt_referral_program_link_copy_btn" class="btn btn-light btn-active-light-primary fw-bold flex-shrink-0" data-clipboard-target="#kt_referral_link_input">Copy Link</button>
-                    </div>
+                    <x-copy class="d-flex" :text="$authenticated->referral_link">
+                        <input type="text" class="form-control form-control-solid me-3 flex-grow-1" style="user-select: all;" name="search" value="{{$authenticated->referral_link}}" />
+                        <button x-on:click="copy" x-text="label" class="flex-shrink-0 btn btn-light btn-active-light-primary fw-bold">Copy</button>
+                    </x-copy>
                 </div>
                 <!--end::Col-->
             </div>
@@ -30,47 +26,28 @@
             <div class="row">
                 <!--begin::Col-->
                 <div class="col">
-                    <div class="card card-dashed flex-center min-w-175px my-3 p-6">
-                        <span class="fs-4 fw-semibold text-info pb-1 px-2">Net Earnings</span>
-                        <span class="fs-lg-2tx fw-bold d-flex justify-content-center">$
-                        <span data-kt-countup="true" data-kt-countup-value="63,240.00">0</span></span>
+                    <div class="p-6 my-3 card card-dashed flex-center min-w-175px">
+                        <span class="px-2 pb-1 fs-4 fw-semibold text-info">Referral Commission</span>
+                        <span class="fs-lg-2tx fw-bold d-flex justify-content-center"><x-currency />
+                        <span>{{$authenticated->wallet->bonus_bal}}</span></span>
                     </div>
                 </div>
                 <!--end::Col-->
                 <!--begin::Col-->
                 <div class="col">
-                    <div class="card card-dashed flex-center min-w-175px my-3 p-6">
-                        <span class="fs-4 fw-semibold text-success pb-1 px-2">Balance</span>
+                    <div class="p-6 my-3 card card-dashed flex-center min-w-175px">
+                        <span class="px-2 pb-1 fs-4 fw-semibold text-success">Direct Referrals</span>
                         <span class="fs-lg-2tx fw-bold d-flex justify-content-center">$
-                        <span data-kt-countup="true" data-kt-countup-value="8,530.00">0</span></span>
+                        <span>{{$authenticated->refferals->count()}}</span></span>
                     </div>
                 </div>
-                <!--end::Col-->
-                <!--begin::Col-->
-                <div class="col">
-                    <div class="card card-dashed flex-center min-w-175px my-3 p-6">
-                        <span class="fs-4 fw-semibold text-danger pb-1 px-2">Avg Deal Size</span>
-                        <span class="fs-lg-2tx fw-bold d-flex justify-content-center">$
-                        <span data-kt-countup="true" data-kt-countup-value="2,600">0</span></span>
-                    </div>
-                </div>
-                <!--end::Col-->
-                <!--begin::Col-->
-                <div class="col">
-                    <div class="card card-dashed flex-center min-w-175px my-3 p-6">
-                        <span class="fs-4 fw-semibold text-primary pb-1 px-2">Referral Signups</span>
-                        <span class="fs-lg-2tx fw-bold d-flex justify-content-center">$
-                        <span data-kt-countup="true" data-kt-countup-value="783&quot;">0</span></span>
-                    </div>
-                </div>
-                <!--end::Col-->
             </div>
             <!--end::Stats-->
             <!--begin::Info-->
-            <p class="fs-5 fw-semibold text-gray-600 py-6">Writing headlines for blog posts is as much an art as it is a science, and probably warrants its own post, but for now, all I’d advise is experimenting with what works for your audience, especially if it’s not resonating with your audience</p>
+            <p class="py-6 text-gray-600 fs-5 fw-semibold">Writing headlines for blog posts is as much an art as it is a science, and probably warrants its own post, but for now, all I’d advise is experimenting with what works for your audience, especially if it’s not resonating with your audience</p>
             <!--end::Info-->
             <!--begin::Notice-->
-            <div class="notice d-flex bg-light-primary rounded border-primary border border-dashed p-6">
+            <div class="p-6 border border-dashed rounded notice d-flex bg-light-primary border-primary">
                 <!--begin::Icon-->
                 <i class="ki-duotone ki-bank fs-2tx text-primary me-4">
                     <span class="path1"></span>
@@ -78,15 +55,15 @@
                 </i>
                 <!--end::Icon-->
                 <!--begin::Wrapper-->
-                <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
+                <div class="flex-wrap d-flex flex-stack flex-grow-1 flex-md-nowrap">
                     <!--begin::Content-->
                     <div class="mb-3 mb-md-0 fw-semibold">
                         <h4 class="text-gray-900 fw-bold">Withdraw Your Money to a Bank Account</h4>
-                        <div class="fs-6 text-gray-700 pe-7">Withdraw money securily to your bank account. Commision is $25 per transaction under $50,000</div>
+                        <div class="text-gray-700 fs-6 pe-7">Withdraw money securily to your bank account. Commision is $25 per transaction under $50,000</div>
                     </div>
                     <!--end::Content-->
                     <!--begin::Action-->
-                    <a href="#" class="btn btn-primary px-6 align-self-center text-nowrap">Withdraw Money</a>
+                    <a href="#" class="px-6 btn btn-primary align-self-center text-nowrap">Withdraw Money</a>
                     <!--end::Action-->
                 </div>
                 <!--end::Wrapper-->
@@ -108,7 +85,7 @@
             <!--begin::Toolbar-->
             <div class="card-toolbar">
                 <!--begin::Tab nav-->
-                <ul class="nav nav-stretch fs-5 fw-semibold nav-line-tabs border-transparent" role="tablist">
+                <ul class="border-transparent nav nav-stretch fs-5 fw-semibold nav-line-tabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a id="kt_referrals_tab_1" class="nav-link text-active-gray-800 me-4 active" data-bs-toggle="tab" role="tab" href="#kt_referrals_1">Month</a>
                     </li>
@@ -127,15 +104,15 @@
         <!--begin::Tab content-->
         <div id="kt_referred_users_tab_content" class="tab-content">
             <!--begin::Tab panel-->
-            <div id="kt_referrals_1" class="card-body p-0 tab-pane fade show active" role="tabpanel">
+            <div id="kt_referrals_1" class="p-0 card-body tab-pane fade show active" role="tabpanel">
                 <div class="table-responsive">
                     <!--begin::Table-->
-                    <table class="table table-row-bordered align-middle gy-6">
+                    <table class="table align-middle table-row-bordered gy-6">
                         <!--begin::Thead-->
-                        <thead class="border-bottom border-gray-200 fs-6 fw-bold bg-lighten">
+                        <thead class="border-gray-200 border-bottom fs-6 fw-bold bg-lighten">
                             <tr>
                                 <th class="min-w-125px ps-9">Order ID</th>
-                                <th class="min-w-125px px-0">User</th>
+                                <th class="px-0 min-w-125px">User</th>
                                 <th class="min-w-125px">Date</th>
                                 <th class="min-w-125px">Bonus</th>
                                 <th class="min-w-125px ps-0">Profit</th>
@@ -143,7 +120,7 @@
                         </thead>
                         <!--end::Thead-->
                         <!--begin::Tbody-->
-                        <tbody class="fs-6 fw-semibold text-gray-600">
+                        <tbody class="text-gray-600 fs-6 fw-semibold">
                             <tr>
                                 <td class="ps-9">678935899</td>
                                 <td class="ps-0">
@@ -215,15 +192,15 @@
             </div>
             <!--end::Tab panel-->
             <!--begin::Tab panel-->
-            <div id="kt_referrals_2" class="card-body p-0 tab-pane fade" role="tabpanel">
+            <div id="kt_referrals_2" class="p-0 card-body tab-pane fade" role="tabpanel">
                 <div class="table-responsive">
                     <!--begin::Table-->
-                    <table class="table table-row-bordered align-middle gy-6">
+                    <table class="table align-middle table-row-bordered gy-6">
                         <!--begin::Thead-->
-                        <thead class="border-bottom border-gray-200 fs-6 fw-bold bg-lighten">
+                        <thead class="border-gray-200 border-bottom fs-6 fw-bold bg-lighten">
                             <tr>
                                 <th class="min-w-125px ps-9">Order ID</th>
-                                <th class="min-w-125px px-0">User</th>
+                                <th class="px-0 min-w-125px">User</th>
                                 <th class="min-w-125px">Date</th>
                                 <th class="min-w-125px">Bonus</th>
                                 <th class="min-w-125px ps-0">Profit</th>
@@ -231,7 +208,7 @@
                         </thead>
                         <!--end::Thead-->
                         <!--begin::Tbody-->
-                        <tbody class="fs-6 fw-semibold text-gray-600">
+                        <tbody class="text-gray-600 fs-6 fw-semibold">
                             <tr>
                                 <td class="ps-9">256899235</td>
                                 <td class="ps-0">
@@ -303,15 +280,15 @@
             </div>
             <!--end::Tab panel-->
             <!--begin::Tab panel-->
-            <div id="kt_referrals_3" class="card-body p-0 tab-pane fade" role="tabpanel">
+            <div id="kt_referrals_3" class="p-0 card-body tab-pane fade" role="tabpanel">
                 <div class="table-responsive">
                     <!--begin::Table-->
-                    <table class="table table-row-bordered align-middle gy-6">
+                    <table class="table align-middle table-row-bordered gy-6">
                         <!--begin::Thead-->
-                        <thead class="border-bottom border-gray-200 fs-6 fw-bold bg-lighten">
+                        <thead class="border-gray-200 border-bottom fs-6 fw-bold bg-lighten">
                             <tr>
                                 <th class="min-w-125px ps-9">Order ID</th>
-                                <th class="min-w-125px px-0">User</th>
+                                <th class="px-0 min-w-125px">User</th>
                                 <th class="min-w-125px">Date</th>
                                 <th class="min-w-125px">Bonus</th>
                                 <th class="min-w-125px ps-0">Profit</th>
@@ -319,7 +296,7 @@
                         </thead>
                         <!--end::Thead-->
                         <!--begin::Tbody-->
-                        <tbody class="fs-6 fw-semibold text-gray-600">
+                        <tbody class="text-gray-600 fs-6 fw-semibold">
                             <tr>
                                 <td class="ps-9">578433345</td>
                                 <td class="ps-0">

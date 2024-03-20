@@ -70,7 +70,7 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
     }
 
     function wallet(){
-        return $this->hasOne(Wallet::class);
+        return $this->hasOne(Wallet::class, 'user_id');
     }
 
     function currency(){
@@ -117,12 +117,33 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
         return $this->hasManyThrough(Service::class, CountryService::class, 'country_code', 'shortcode', 'country_code', 'service_code')->where('services.status', Status::ACTIVE);
     }
 
+    function accounts(){
+        return $this->hasMany(VirtualAccount::class, 'user_id');
+    }
+
     function getIsAdminAttribute(){
         return ($this->role == Roles::ADMIN) || ($this->role == Roles::SUPERADMIN);
     }
 
     function getIsSuperAdminAttribute(){
         return $this->role == Roles::SUPERADMIN;
+    }
+
+    public function getReferralLinkAttribute(){
+        return route('register', [
+            'ref' => $this->username
+        ]);
+    }
+
+    public function getReferrerTreeAttribute() {
+        $referrer = $this->referrer;
+        $tree = collect([$referrer]);
+
+        if ($referrer) {
+            $tree = $tree->merge($referrer->referrerTree);
+        }
+
+        return $tree;
     }
 
     function service($code) {

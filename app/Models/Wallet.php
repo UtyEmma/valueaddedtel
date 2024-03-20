@@ -12,24 +12,24 @@ class Wallet extends Model {
 
     protected $fillable = ['user_id', 'main_bal', 'cashback_bal', 'bonus_bal', 'accumulated_pv', 'total_pv'];
 
-    protected function main_bal(): Attribute {
+    protected function mainBal(): Attribute {
         $targetCurrency = session('currency');
         return Attribute::make(
-            get: fn (string $value) => $this->currency->convert($value, $targetCurrency)
+            get: fn (string $value) => $this->user->currency->convert($value, $targetCurrency)
         );
     }
 
-    protected function cashback_bal(): Attribute {
+    protected function cashbackBal(): Attribute {
         $targetCurrency = session('currency');
         return Attribute::make(
-            get: fn (string $value) => $this->currency->convert($value, $targetCurrency)
+            get: fn (string $value) => $this->user->currency->convert($value, $targetCurrency)
         );
     }
 
-    protected function bonus_bal(): Attribute {
+    protected function bonusBal(): Attribute {
         $targetCurrency = session('currency');
         return Attribute::make(
-            get: fn (string $value) => $this->currency->convert($value, $targetCurrency)
+            get: fn (string $value) => $this->user->currency->convert($value, $targetCurrency)
         );
     }
 

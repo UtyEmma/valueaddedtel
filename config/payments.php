@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\PaymentMethods;
+use App\Services\PaymentMethods\MonnifyService;
 use App\Services\PaymentMethods\PaystackService;
 use App\Services\PaymentMethods\WalletService;
 use App\Services\Providers\TopUpAccessService;
@@ -13,16 +15,15 @@ return [
             'name' => 'VT Pass',
             'countries' => ['NG'],
             'shortcode' => 'vtpass',
-            'test_data' => [
-                'url' => '',
-                'key' => ''
-            ],
-            'live_data' => [
-                'url' => '',
-                'key' => ''
-            ],
             'mode' => 'test',
-            'meta' => []
+            'meta' => [
+                'VTPASS_TEST_URL' => env('VTPASS_TEST_URL'),
+                'VTPASS_LIVE_URL' => env('VTPASS_LIVE_URL'),
+                'VTPASS_LIVE_KEY' => env('VTPASS_LIVE_KEY'),
+                'VTPASS_PUBLIC_KEY' => env('VTPASS_PUBLIC_KEY'),
+                'VTPASS_SECRET_KEY' => env('VTPASS_SECRET_KEY'),
+                'VTPASS_TEST_KEY' => env('VTPASS_TEST_KEY'),
+            ]
         ],
 
         'topupaccess' => [
@@ -30,16 +31,13 @@ return [
             'name' => 'Top Up Access',
             'countries' => ['NG'],
             'shortcode' => 'topupaccess',
-            'test_data' => [
-                'url' => '',
-                'key' => ''
-            ],
-            'live_data' => [
-                'url' => '',
-                'key' => ''
-            ],
             'mode' => 'test',
-            'meta' => []
+            'meta' => [
+                'TOPUPACCESS_URL' => env('TOPUPACCESS_URL'),
+                'TOPUPACCESS_KEY' => env('TOPUPACCESS_KEY'),
+                'TOPUPACCESS_PIN' => env('TOPUPACCESS_PIN'),
+                'TOPUPACCESS_NUMBER' => env('TOPUPACCESS_NUMBER'),
+            ]
         ],
 
         'clubkonnect' => [
@@ -47,16 +45,12 @@ return [
             'name' => 'Club Konnect',
             'countries' => ['NG'],
             'shortcode' => 'clubkonnect',
-            'test_data' => [
-                'url' => '',
-                'key' => ''
-            ],
-            'live_data' => [
-                'url' => '',
-                'key' => ''
-            ],
             'mode' => 'test',
-            'meta' => []
+            'meta' => [
+                'CLUB_KONNECT_URL' => env('CLUB_KONNECT_URL'),
+                'CLUB_KONNECT_KEY' => env('CLUB_KONNECT_KEY'),
+                'CLUB_KONNECT_USER' => env('CLUB_KONNECT_USER'),
+            ]
         ],
     ],
 
@@ -68,6 +62,10 @@ return [
         [
             'name' => 'Withdrawal',
             'shortcode' => 'withdrawal',
+        ],
+        [
+            'name' => 'Virtual Account',
+            'shortcode' => 'virtual_account',
         ],
         [
             'name' => 'Airtime Topup',
@@ -264,17 +262,52 @@ return [
     'payment_providers' => [
         [
             'name' => 'Wallet',
-            'shortcode' => 'wallet',
+            'shortcode' => PaymentMethods::WALLET,
             'image' => '',
-            'countries' => ['NG', 'GH', 'US']
+            'countries' => ['NG', 'GH', 'US'],
+            'mode' => 'live',
+            'isOnline' => false
         ],
         [
             'name' => 'Paystack',
-            'shortcode' => 'paystack',
+            'shortcode' => PaymentMethods::PAYSTACK,
             'image' => '/storage/public/logos/paystack.png',
-            'countries' => ['NG', 'GH']
+            'countries' => ['NG', 'GH'],
+            'mode' => 'test',
+            'meta' => [
+                'PAYSTACK_URL' => env('PAYSTACK_URL'),
+                'PAYSTACK_LIVE_SECRET_KEY' => env('PAYSTACK_LIVE_SECRET_KEY'),
+                'PAYSTACK_TEST_SECRET_KEY' => env('PAYSTACK_TEST_SECRET_KEY'),
+                'PAYSTACK_TEST_PUBLIC_KEY' => env('PAYSTACK_TEST_PUBLIC_KEY'),
+                'PAYSTACK_LIVE_PUBLIC_KEY' => env('PAYSTACK_LIVE_PUBLIC_KEY'),
+                'PAYSTACK_ENCRYPTION_KEY' => env('PAYSTACK_ENCRYPTION_KEY'),
+            ],
+            'isOnline' => true
         ],
+        [
+            'name' => 'Monnify',
+            'shortcode' => PaymentMethods::MONNIFY,
+            'image' => '',
+            'countries' => ['NG'],
+            'mode' => 'test',
+            'meta' => [
+                'MONNIFY_LIVE_URL' => env('MONNIFY_LIVE_URL'),
+                'MONNIFY_TEST_URL' => env('MONNIFY_TEST_URL'),
+                'MONNIFY_LIVE_API_KEY' => env('MONNIFY_LIVE_API_KEY'),
+                'MONNIFY_TEST_API_KEY' => env('MONNIFY_TEST_API_KEY'),
+                'MONNIFY_TEST_CONTRACT_CODE' => env('MONNIFY_TEST_CONTRACT_CODE'),
+                'MONNIFY_LIVE_CONTRACT_CODE' => env('MONNIFY_LIVE_CONTRACT_CODE'),
+                'MONNIFY_LIVE_SECRET_KEY' => env('MONNIFY_LIVE_SECRET_KEY'),
+                'MONNIFY_TEST_SECRET_KEY' => env('MONNIFY_TEST_SECRET_KEY'),
+            ],
+            'isOnline' => true
+        ]
+    ],
+
+    'virtual_accounts' => [
+        'NG' => MonnifyService::class
     ]
+
 
 
 

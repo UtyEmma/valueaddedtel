@@ -26,7 +26,9 @@ class ServiceSeeder extends Seeder
                 $countries = $provider['countries'];
                 $provider = ServiceProvider::create([
                     'name' =>  $provider['name'],
-                    'shortcode' => $provider['shortcode']
+                    'shortcode' => $provider['shortcode'],
+                    'mode' => $provider['mode'],
+                    'meta' => $provider['meta']
                 ]);
                 foreach($countries as $country){
                     if($country = Country::where('iso_code', $country)->isSupported()->first()) {
@@ -65,7 +67,7 @@ class ServiceSeeder extends Seeder
                                     $product['provider_code'] = $provider->shortcode;
                                     $product['country_code'] = $country->iso_code;
                                     $product['meta'] = [];
-                                    $product['shortcode'] = implode('_', [$service->shortcode, $product['shortcode']]);
+                                    $product['shortcode'] = implode('_', [$service->shortcode->value, $product['shortcode']]);
 
                                     $items = $product['items'] ?? null;
 

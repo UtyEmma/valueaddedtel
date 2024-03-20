@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('shortcode');
+            $table->string('mode');
+            $table->json('meta')->nullable();
             $table->string('status');
             $table->timestamps();
         });

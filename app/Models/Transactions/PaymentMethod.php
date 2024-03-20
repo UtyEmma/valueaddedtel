@@ -15,11 +15,16 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentMethod extends Model {
     use HasFactory, HasStatus;
 
-    protected $fillable = ['name', 'shortcode', 'image', 'isOnline'];
+    protected $fillable = ['name', 'shortcode', 'image', 'mode', 'meta', 'isOnline'];
 
     protected $casts = [
-        'shortcode' => PaymentMethods::class
+        'shortcode' => PaymentMethods::class,
+        'meta' => 'array'
     ];
+
+    function scopeWhereName($query, $name){
+        return $query->where('shortcode', $name);
+    }
 
     function transactions(){
         return $this->hasMany(Transaction::class, 'payment_method_code');
@@ -43,6 +48,14 @@ class PaymentMethod extends Model {
 
     function getImageFileAttribute(){
         return asset('storage/'.$this->image);
+    }
+
+    function getIsTestModeAttribute(){
+        return $this->mode == 'test';
+    }
+
+    function getIsLiveModeAttribute(){
+        return $this->mode == 'live';
     }
 
 

@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('currencies', function (Blueprint $table) {
+        Schema::create('virtual_accounts', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
+            $table->string('user_id');
             $table->string('country_code');
-            $table->string('code');
-            $table->integer('rate');
-            $table->string('symbol');
-            $table->boolean('is_default')->default(false);
+            $table->string('account_name');
+            $table->string('account_no');
+            $table->string('reference')->nullable();
+            $table->string('bank');
+            $table->json('meta');
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('currencies');
+        Schema::dropIfExists('virtual_accounts');
     }
 };

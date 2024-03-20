@@ -3,7 +3,9 @@
 namespace App\Services\Account;
 
 use App\Enums\ConfirmationActions;
-use App\Models\Account\User;
+use App\Enums\PaymentMethods;
+use App\Enums\Services;
+use App\Models\User;
 use App\Services\ConfirmationCodeService;
 use Illuminate\Support\Facades\Hash;
 
@@ -53,6 +55,28 @@ class ProfileService {
         $user->save();
 
         return status(true, 'Email Address updated Successfully!');
+    }
+
+    function setBankAccounts(User $user){
+        if(!$service = $user->services()->whereShortcode(Services::VIRTUAL_ACCOUNT)->first()) {
+            return status(false, 'The requested service is not available in your country');
+        }
+
+        if(!$paymentMethod = $service->paymentMethods()->where('country_code', $user->country_code)->first()){
+            return status(false, 'The requested service is not available in your country');
+        }
+
+        $methods = config('providers.payments');
+        $class = $methods[$paymentMethod->shortcode->value];
+        [$status, $message, $accounts] = (new $class)->reserve($user);
+
+        if(!$status) return status($status, $message);
+
+        foreach ($accounts as $key => $account) {
+            $user->accounts()->create($account);
+        }
+
+        return status(true);
     }
 
 }

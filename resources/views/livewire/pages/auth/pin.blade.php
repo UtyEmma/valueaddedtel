@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Traits\Livewire\WithToast;
 use App\Models\Account\EmailVerification;
 use Illuminate\Support\Facades\Hash;
+use App\Services\Account\ProfileService;
 
 new #[Layout('layouts.auth')] class extends Component {
     use WithToast;
@@ -45,6 +46,11 @@ new #[Layout('layouts.auth')] class extends Component {
         $this->user->pin = Hash::make($this->pin);
         $this->user->save();
 
+        if(!$this->user->accounts->count()){
+            [$status, $message] = (new ProfileService)->setBankAccounts($this->user);
+            if(!$status && $message) $this->toast($message, 'Pin Updated')->error();
+        }
+
         return $this->redirectIntended(RouteServiceProvider::HOME);
     }
 
@@ -58,7 +64,7 @@ new #[Layout('layouts.auth')] class extends Component {
 
 <div>
     <div class="d-flex flex-center flex-column flex-column-fluid">
-        <div class="w-md-75 mx-auto">
+        <div class="mx-auto w-md-75">
             <div class="mb-10 text-center">
                 <img src="{{asset('assets/media/logos/default.svg')}}" class="h-25px" alt="">
             </div>
@@ -90,7 +96,7 @@ new #[Layout('layouts.auth')] class extends Component {
                     </div>
 
                     <div class="mb-10 d-grid">
-                        <x-button class="btn-primary w-100 mb-3" wire:loading wire:target="update">Update Pin</x-button>
+                        <x-button class="mb-3 btn-primary w-100" wire:loading wire:target="update">Update Pin</x-button>
                         <x-button class="btn-light w-100" type="button" wire:click="back" wire:loading wire:target="back">Back</x-button>
                     </div>
                 </form>

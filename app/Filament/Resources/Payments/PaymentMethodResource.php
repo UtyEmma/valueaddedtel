@@ -9,6 +9,7 @@ use App\Filament\Resources\Payments\PaymentMethodResource\RelationManagers\Payme
 use App\Models\Transactions\PaymentMethod;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -35,13 +36,23 @@ class PaymentMethodResource extends Resource
         return $form
             ->schema([
                 FileUpload::make('image')
-                    ->required()
+                    ->nullable()
                     ->image(),
                 TextInput::make('name')
                     ->required(),
                 TextInput::make('shortcode')
                     ->unique(ignoreRecord: true)
                     ->required(),
+                KeyValue::make('meta')
+                    ->columnSpanFull()
+                    ->deletable(false)
+                    ->addable(false),
+                Select::make('mode')
+                    ->native(false)
+                    ->options([
+                        'test' => 'Test',
+                        'live' => "Live",
+                    ]),
                 Select::make('status')
                     ->native(false)
                     ->options([

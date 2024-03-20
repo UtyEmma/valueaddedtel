@@ -22,6 +22,10 @@ class Service extends Model {
 
     protected $with = ['products'];
 
+    function scopeShortcode($query, $shortcode){
+        return $query->where('shortcode', $shortcode);
+    }
+
     function products(){
         return $this->hasMany(ServiceProduct::class, 'service_code', 'shortcode');
     }

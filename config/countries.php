@@ -89,6 +89,7 @@ return [
             'name' => 'Nigeria',
             'flag' => 'assets/media/flags/nigeria.svg',
             'iso_code' => 'NG',
+            'iso_code_3' => 'NGR',
             'intl_phone' => '234',
             'is_default' => true
         ],
@@ -97,6 +98,7 @@ return [
             'name' => 'Ghana',
             'flag' => 'assets/media/flags/ghana.svg',
             'iso_code' => 'GH',
+            'iso_code_3' => 'GHA',
             'intl_phone' => '233',
             'is_default' => false
         ],
@@ -105,6 +107,7 @@ return [
             'name' => 'United States of America',
             'flag' => 'assets/media/flags/united-states.svg',
             'iso_code' => 'US',
+            'iso_code_3' => 'USA',
             'intl_phone' => '1',
             'is_default' => false
         ],
@@ -116,14 +119,24 @@ return [
             'symbol' => '₦',
             'code' => 'NGN',
             'country_code' => 'NG',
-            'is_default' => true
+            'is_default' => true,
+            'rate' => 1500
         ],
         [
             'name' => 'Ghanian Cedi',
             'symbol' => 'GH₵',
             'code' => 'GHS',
             'country_code' => 'GH',
-            'is_default' => false
+            'is_default' => false,
+            'rate' => 500
+        ],
+        [
+            'name' => 'United States Dollar',
+            'symbol' => '$',
+            'code' => 'USD',
+            'country_code' => 'US',
+            'is_default' => false,
+            'rate' => 1
         ],
     ]
 

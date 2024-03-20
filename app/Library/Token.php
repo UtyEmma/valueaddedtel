@@ -16,4 +16,8 @@ class Token {
         return $code;
     }
 
+    function random() {
+
+    }
+
 }

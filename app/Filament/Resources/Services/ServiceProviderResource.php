@@ -12,6 +12,7 @@ use App\Filament\Resources\Services\ServiceProviderResource\RelationManagers\Cou
 use App\Filament\Resources\Services\ServiceProviderResource\RelationManagers\ProviderCountriesRelationManager;
 use App\Models\Services\ServiceProvider;
 use Filament\Forms;
+use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -43,6 +44,10 @@ class ServiceProviderResource extends Resource
                     ->placeholder('Shortcode')
                     ->unique()
                     ->maxLength(255),
+                KeyValue::make('meta')
+                    ->columnSpanFull()
+                    ->deletable(false)
+                    ->addable(false),
                 Select::make('status')
                     ->options([
                         Status::ACTIVE->value => Status::ACTIVE->value,

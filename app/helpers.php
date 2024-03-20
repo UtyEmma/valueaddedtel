@@ -35,3 +35,9 @@ if(!function_exists('toast')) {
     }
 }
 
+if(!function_exists('jsonify')) {
+    function jsonify(array $arr = []) : object {
+        return json_decode(json_encode($arr));
+    }
+}
+

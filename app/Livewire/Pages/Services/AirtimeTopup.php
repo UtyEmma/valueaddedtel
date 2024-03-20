@@ -49,7 +49,7 @@ class AirtimeTopup extends Component {
         $this->user = authenticated();
         $this->service = $this->user->service(Services::AIRTIME);
         $this->products = $this->service->products()->where('country_code', $this->user->country_code)->get();
-        $this->methods = (new PaymentMethodService())->service($this->service);
+        $this->methods = (new PaymentMethodService)->service($this->service);
     }
 
     function initiate(){
