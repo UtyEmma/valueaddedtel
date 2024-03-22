@@ -35,6 +35,10 @@ class ProductsRelationManager extends RelationManager
                     ->placeholder('Short Code')
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
+                Forms\Components\FileUpload::make('image')
+                    ->image()
+                    ->preserveFilenames()
+                    ->label('Logo'),
                 Forms\Components\Select::make('country_code')
                     ->label('Country')
                     ->native(false)
@@ -56,7 +60,6 @@ class ProductsRelationManager extends RelationManager
                     ->numeric()
                     ->placeholder('Amount')
                     ->mask(RawJs::make('$money($input)'))
-                    ->stripCharacters(',')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('cashback')
                     ->placeholder('Cashback'),

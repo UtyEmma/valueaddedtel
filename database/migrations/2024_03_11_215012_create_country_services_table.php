@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('service_code');
             $table->string('country_code');
+            $table->text('values')->nullable();
             $table->string('status');
             $table->timestamps();
         });

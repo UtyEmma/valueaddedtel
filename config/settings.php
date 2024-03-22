@@ -8,6 +8,12 @@ return [
         'value' => 'Leadaa Commerce'
     ],
 
+    'site_name' => [
+        'slug' => 'site_name',
+        'name' => 'Site Name',
+        'value' => 'Leadaa Commerce'
+    ],
+
     'site_logo' => [
         'slug' => 'site_logo',
         'name' => 'Site Logo',

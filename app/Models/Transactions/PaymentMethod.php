@@ -58,5 +58,9 @@ class PaymentMethod extends Model {
         return $this->mode == 'live';
     }
 
+    function isAvailableInCountry($country_code){
+        return $this->paymentMethodCountries()->where('country_code', $country_code)->exists();
+    }
+
 
 }

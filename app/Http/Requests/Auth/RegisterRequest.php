@@ -21,13 +21,14 @@ class RegisterRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array {
+    public function rules($country = null): array {
+        $country = $this->country ?? $country;
         return [
             "firstname" => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
             'country' => ['required', 'string', new Country()],
             'email' => ['required', 'email', 'unique:users,email'],
-            'phone' => ['required'],
+            'phone' => ['required', 'phone:country'],
             'password' => ['required', Password::default()],
             'referrer' => ['required', 'exists:users,username'],
             'username' => ['required', 'unique:users,username']

@@ -48,4 +48,6 @@ class Transaction extends Model {
         $payment_methods = config('payments.methods');
         return new $payment_methods[$this->paymentMethod->slug]();
     }
+
+
 }

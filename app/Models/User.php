@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Propaganistas\LaravelPhone\Casts\RawPhoneNumberCast;
 
 class User extends Authenticatable implements FilamentUser, HasName, MustVerifyEmail {
     use HasApiTokens, HasFactory, Notifiable, HasUuids, HasStatus, VerifyEmail;
@@ -38,7 +39,7 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
 
     protected $hidden = ['password', 'pin', 'referrer_id', 'country_code', 'currency_code', 'tier_id', 'package_id', 'remember_token'];
 
-    protected $with = ['wallet'];
+    // protected $with = ['wallet'];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -46,6 +47,7 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
         'pin' => 'hashed',
         'status' => Status::class,
         'role' => Roles::class,
+        'phone' => RawPhoneNumberCast::class.':country_code',
     ];
 
     protected $attributes = [
@@ -114,7 +116,7 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
     }
 
     function services(){
-        return $this->hasManyThrough(Service::class, CountryService::class, 'country_code', 'shortcode', 'country_code', 'service_code')->where('services.status', Status::ACTIVE);
+        return $this->hasManyThrough(Service::class, CountryService::class, 'country_code', 'shortcode', 'country_code', 'service_code');
     }
 
     function accounts(){

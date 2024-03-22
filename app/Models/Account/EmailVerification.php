@@ -3,6 +3,7 @@
 namespace App\Models\Account;
 
 use App\Enums\Status;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,14 +19,14 @@ class EmailVerification extends Model {
     ];
 
     protected static function booted() {
-        static::created(queueable(function($verification){
+        // static::created(queueable(function($verification){
             // notify(EmailVerificationMessage::class, [
             //     'verification' => $verification,
             //     'user' => $verification->user,
             //     'timeout' => 10,
             //     'code' => $verification->code
             // ])->send($verification->user, ['mail']);
-        }));
+        // }));
     }
 
     function user(){

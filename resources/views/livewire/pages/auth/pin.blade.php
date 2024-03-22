@@ -1,67 +1,3 @@
-<?php
-
-use App\Livewire\Actions\Logout;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-use Livewire\Attributes\Layout;
-use Livewire\Volt\Component;
-use App\Rules\ValidCode;
-use App\Models\User;
-use App\Traits\Livewire\WithToast;
-use App\Models\Account\EmailVerification;
-use Illuminate\Support\Facades\Hash;
-use App\Services\Account\ProfileService;
-
-new #[Layout('layouts.auth')] class extends Component {
-    use WithToast;
-
-    public $pin;
-    public $pin_confirmation;
-    public User $user;
-
-    public $step = 1;
-
-    function mount(){
-        $this->user = authenticated();
-    }
-
-    function next(){
-        $this->validate([
-            'pin' => ['required', 'digits:4']
-        ]);
-
-        $this->step = 2;
-    }
-
-    function back(){
-        $this->step = 1;
-    }
-
-    function update(){
-        $this->validate([
-            'pin' => ['required', 'confirmed', 'digits:4']
-        ]);
-
-        $this->user->pin = Hash::make($this->pin);
-        $this->user->save();
-
-        if(!$this->user->accounts->count()){
-            [$status, $message] = (new ProfileService)->setBankAccounts($this->user);
-            if(!$status && $message) $this->toast($message, 'Pin Updated')->error();
-        }
-
-        return $this->redirectIntended(RouteServiceProvider::HOME);
-    }
-
-    public function logout(Logout $logout): void
-    {
-        $logout();
-
-        $this->redirect('/');
-    }
-}; ?>
-
 <div>
     <div class="d-flex flex-center flex-column flex-column-fluid">
         <div class="mx-auto w-md-75">
@@ -77,7 +13,7 @@ new #[Layout('layouts.auth')] class extends Component {
                 <form wire:submit="next">
                     <div class="mb-8">
                         <x-input.label>Enter your Pin</x-input.label>
-                        <x-input.pin wire:model="pin" />
+                        <x-input.pin wire:model="pin" type="password" />
                         <x-input.error key="pin" />
                     </div>
 
@@ -91,13 +27,13 @@ new #[Layout('layouts.auth')] class extends Component {
                 <form wire:submit="update">
                     <div class="mb-8">
                         <x-input.label>Confirm your Pin</x-input.label>
-                        <x-input.pin wire:model="pin_confirmation" />
+                        <x-input.pin wire:model="pin_confirmation" type="password" />
                         <x-input.error key="pin" />
                     </div>
 
                     <div class="mb-10 d-grid">
                         <x-button class="mb-3 btn-primary w-100" wire:loading wire:target="update">Update Pin</x-button>
-                        <x-button class="btn-light w-100" type="button" wire:click="back" wire:loading wire:target="back">Back</x-button>
+                        <x-button class="btn-light w-100" type="button" color="muted" wire:click="back" wire:loading wire:target="back">Back</x-button>
                     </div>
                 </form>
             @endif

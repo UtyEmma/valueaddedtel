@@ -4,6 +4,7 @@ use App\Enums\Services;
 use App\Http\Controllers\ProfileController;
 use App\Livewire\Pages\Services\AirtimeTopup;
 use Illuminate\Support\Facades\Route;
+use Livewire\Livewire;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Livewire::setUpdateRoute(function ($handle) {
+    return Route::post('/wire/set', $handle);
+});
 
 Route::view('/', 'welcome');
 
@@ -30,7 +35,6 @@ Route::middleware(['auth', 'verified', 'user.pin'])->group(function(){
 
     Route::middleware('service.module:'.Services::AIRTIME->value)->group(function(){
         Route::get('airtime', AirtimeTopup::class)->name('services.airtime');
-
     });
 });
 

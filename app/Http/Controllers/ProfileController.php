@@ -22,4 +22,10 @@ class ProfileController extends Controller {
         return view('pages.profile.edit');
     }
 
+    function logout(Request $request){
+        auth()->logout();
+        $request->session()->invalidate();
+        return to_route('login');
+    }
+
 }

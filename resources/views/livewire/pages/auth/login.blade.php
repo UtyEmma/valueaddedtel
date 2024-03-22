@@ -7,8 +7,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 use App\Services\AuthService;
 
-new #[Layout('layouts.auth')] class extends Component
-{
+new #[Layout('layouts.auth')] class extends Component {
     public LoginForm $form;
 
     /**
@@ -28,20 +27,14 @@ new #[Layout('layouts.auth')] class extends Component
 <div>
     <x-slot:side>
         <div class="p-10 pb-0 d-flex flex-column flex-center pb-lg-10 w-100">
-            <!--begin::Image-->
             <img class="mx-auto mb-10 theme-light-show mw-100 w-150px w-lg-300px mb-lg-20" src="assets/media/auth/agency.png" alt="" />
             <img class="mx-auto mb-10 theme-dark-show mw-100 w-150px w-lg-300px mb-lg-20" src="assets/media/auth/agency-dark.png" alt="" />
-            <!--end::Image-->
-            <!--begin::Title-->
             <h1 class="text-center text-gray-800 fs-2qx fw-bold mb-7">Fast, Efficient and Productive</h1>
-            <!--end::Title-->
-            <!--begin::Text-->
             <div class="text-center text-gray-600 fs-base fw-semibold">In this kind of post,
             <a href="#" class="opacity-75-hover text-primary me-1">the blogger</a>introduces a person they’ve interviewed
             <br />and provides some background information about
             <a href="#" class="opacity-75-hover text-primary me-1">the interviewee</a>and their
             <br />work following this is a transcript of the interview.</div>
-            <!--end::Text-->
         </div>
     </x-slot:side>
 

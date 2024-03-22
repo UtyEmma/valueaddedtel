@@ -11,6 +11,7 @@ enum Status:string {
     case SUSPENDED = 'SUSPENDED';
     case EXPIRING = 'EXPIRING';
     case PENDING = 'PENDING';
+    case COMPLETED = 'COMPLETED';
     case SHORTLISTED = 'SHORTLISTED';
     case SUBMITTED = 'SUBMITTED';
     case REJECTED = 'REJECTED';

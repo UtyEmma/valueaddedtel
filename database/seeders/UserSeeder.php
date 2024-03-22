@@ -38,7 +38,9 @@ class UserSeeder extends Seeder {
             $user->tier()->associate($tier);
 
             $user->save();
-            $user->wallet()->create();
+            $user->wallet()->create([
+                'currency_code' => $user->currency->code
+            ]);
         }
 
     }

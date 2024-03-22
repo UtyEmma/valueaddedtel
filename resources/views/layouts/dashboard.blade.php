@@ -1,5 +1,6 @@
 <x-app-layout id="kt_body" class="aside-enabled" title="{{$title}}">
     <div class="d-flex flex-column flex-root">
+
         <div class="flex-row page d-flex flex-column-fluid">
             @include('layouts.partials.dashboard.sidebar')
 

@@ -12,10 +12,15 @@ use Illuminate\Database\Eloquent\Model;
 class CountryService extends Model {
     use HasFactory, HasUuids, HasStatus;
 
-    protected $fillable = ['service_code', 'country_code'];
+    protected $fillable = ['service_code', 'country_code', 'values'];
+
+    protected $attributes = [
+        'values' => []
+    ];
 
     protected $casts = [
-        'service_code' => Services::class
+        'service_code' => Services::class,
+        'values' => 'array'
     ];
 
     function service(){

@@ -35,6 +35,12 @@ class ServiceCountriesRelationManager extends RelationManager
                                 ->pluck('name', 'iso_code')
                         )
                     ->required(),
+                Forms\Components\TagsInput::make('values')
+                    // ->reorderable()
+                    ->label('Selectable Amounts')
+                    ->nestedRecursiveRules(['numeric'])
+                    ->columnSpanFull()
+                    ->nullable(),
                 Forms\Components\Select::make('status')
                     ->label('Status')
                     ->native(false)

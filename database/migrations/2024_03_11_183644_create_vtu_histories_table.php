@@ -13,10 +13,16 @@ return new class extends Migration
     {
         Schema::create('vtu_histories', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('transaction_id');
+            $table->string('transaction_id')->nullable();
             $table->string('service_code');
             $table->string('user_id');
             $table->integer('amount');
+            $table->string('provider_code');
+            $table->string('country_code');
+            $table->string('currency_code');
+            $table->string('narration');
+            $table->string('mode');
+            $table->json('data');
             $table->timestamps();
         });
     }

@@ -23,14 +23,18 @@ class AuthService {
         // Create User
         $user = User::create($data);
 
-        // Wallet
-        $user->wallet()->create();
-
         // Save Country
         $country = Country::where('iso_code', $data['country'])->first();
 
         (new CountryService)->setCountry($user, $country->iso_code);
         (new CountryService)->setCurrency($user, $country->currency->code);
+
+        $user->refresh();
+
+        // Wallet
+        $user->wallet()->create([
+            'currency_code' => $user->currency_code
+        ]);
 
         // Save Referrer
         $referrer = User::where('username', $data['referrer'])->first();

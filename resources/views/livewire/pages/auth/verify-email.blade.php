@@ -20,6 +20,10 @@ new #[Layout('layouts.auth')] class extends Component {
 
     function mount(){
         $this->user = authenticated();
+
+        if($this->user->hasVerifiedEmail()) {
+            return $this->redirectIntended(RouteServiceProvider::HOME);
+        }
     }
 
     public function resend(): void {
@@ -29,8 +33,6 @@ new #[Layout('layouts.auth')] class extends Component {
         }
 
         $this->user->sendVerificationEmail();
-
-        // Session::flash('status', 'verification-link-sent');
         $this->toast('Another email verification code was sent to '.$this->user->email, 'Verification code sent')->success();
     }
 
@@ -40,7 +42,10 @@ new #[Layout('layouts.auth')] class extends Component {
         ]);
 
         [$status, $message] = $this->user->verifyEmail($this->code);
-        if(!$status) return $this->toast($message, 'Email Verification Failed')->error();
+        if(!$status) {
+             $this->toast($message, 'Email Verification Failed')->error();
+             return;
+        }
 
         $this->toast($message, 'Success')->success();
 
@@ -84,12 +89,12 @@ new #[Layout('layouts.auth')] class extends Component {
             </div>
 
             <div class="text-center text-gray-500 fw-semibold fs-6">Did not recieve the code?
-            <span role="button" type="button" wire:click="resend" class="link-primary">Resend</span> <x-spinner color="primary" wire:loading wire:model="resend"  /></div>
+            <span role="button" type="button" wire:click="resend" class="link-primary">Resend</span> <x-spinner color="primary" wire:loading wire:target="resend"  /></div>
 
             <div class="my-5 separator"></div>
 
             <div class="text-center text-gray-500 fw-semibold fs-6">Wrong Email Address?
-            <span role="button" type="button" wire:click="logout" class="link-primary">Logout</span> <x-spinner color="primary" wire:loading wire:model="logout"  /></div>
+            <span role="button" type="button" wire:click="logout" class="link-primary">Logout</span> <x-spinner color="primary" wire:loading wire:target="logout"  /></div>
         </form>
     </div>
 </div>

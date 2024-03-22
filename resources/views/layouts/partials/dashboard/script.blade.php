@@ -10,7 +10,4 @@
 
 @stack('modals')
 @stack('drawers')
-
-@livewireScripts()
-
 <x-toast />

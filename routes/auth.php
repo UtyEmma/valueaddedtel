@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\ProfileController;
+use App\Livewire\Pages\Auth\Pin;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -29,7 +31,9 @@ Route::middleware('auth')->group(function () {
     Volt::route('confirm-password', 'pages.auth.confirm-password')
         ->name('password.confirm');
 
+    Route::get('logout', [ProfileController::class, 'logout'])->name('logout');
+
     Route::prefix('account')->group(function () {
-        Volt::route('secure', 'pages.auth.pin')->name('auth.pin');
+        Route::get('secure', Pin::class)->name('auth.pin');
     });
 });

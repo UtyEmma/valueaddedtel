@@ -29,7 +29,7 @@ new #[Layout('layouts.auth')] class extends Component
     }
 
     function rules(){
-        $rules  = collect((new RegisterRequest)->rules());
+        $rules  = collect((new RegisterRequest)->rules($this->country));
         return $rules->when($this->step == 1, fn($rules) => $rules->except(['password', 'username', 'referrer']))->toArray();
     }
 
