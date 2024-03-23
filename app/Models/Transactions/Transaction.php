@@ -21,6 +21,8 @@ class Transaction extends Model {
         'payment_method_code' => PaymentMethods::class
     ];
 
+    // protected $with = ['paymentMethod', 'user'];
+
     protected function amount(): Attribute {
         $targetCurrency = session('currency');
         return Attribute::make(
@@ -41,12 +43,7 @@ class Transaction extends Model {
     }
 
     function paymentMethod(){
-        return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
-    }
-
-    function getPaymentMethodAttribute(){
-        $payment_methods = config('payments.methods');
-        return new $payment_methods[$this->paymentMethod->slug]();
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_code', 'shortcode');
     }
 
 

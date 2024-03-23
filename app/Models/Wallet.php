@@ -14,21 +14,21 @@ class Wallet extends Model {
     protected $fillable = ['user_id', 'main_bal', 'currency_code', 'cashback_bal', 'bonus_bal', 'accumulated_pv', 'total_pv'];
 
     protected function mainBal(): Attribute {
-        $targetCurrency = session('currency');
+        $targetCurrency = $this->user->currency;
         return Attribute::make(
             get: fn (string $value) => $this->currency->convert($value, $targetCurrency)
         );
     }
 
     protected function cashbackBal(): Attribute {
-        $targetCurrency = session('currency');
+        $targetCurrency = $this->user->currency;
         return Attribute::make(
             get: fn (string $value) => $this->currency->convert($value, $targetCurrency)
         );
     }
 
     protected function bonusBal(): Attribute {
-        $targetCurrency = session('currency');
+        $targetCurrency = $this->user->currency;
         return Attribute::make(
             get: fn (string $value) => $this->currency->convert($value, $targetCurrency)
         );
@@ -47,7 +47,7 @@ class Wallet extends Model {
     }
 
     function currency(){
-        return $this->belongsTo(Currency::class, 'currency_code');
+        return $this->belongsTo(Currency::class, 'currency_code', 'code');
     }
 
 }

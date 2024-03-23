@@ -70,7 +70,6 @@ class ServiceProductResource extends Resource
                     ->numeric()
                     ->placeholder('Amount')
                     ->mask(RawJs::make('$money($input)'))
-                    ->stripCharacters(',')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('cashback')
                     ->numeric()

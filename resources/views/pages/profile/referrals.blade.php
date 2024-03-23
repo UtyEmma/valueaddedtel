@@ -38,7 +38,7 @@
                     <div class="p-6 my-3 card card-dashed flex-center min-w-175px">
                         <span class="px-2 pb-1 fs-4 fw-semibold text-success">Direct Referrals</span>
                         <span class="fs-lg-2tx fw-bold d-flex justify-content-center">$
-                        <span>{{$authenticated->refferals->count()}}</span></span>
+                        {{-- <span>{{$authenticated->refferals->count()}}</span></span> --}}
                     </div>
                 </div>
             </div>

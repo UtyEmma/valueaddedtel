@@ -6,6 +6,8 @@
 <script src="{{asset('assets/js/custom/widgets.js')}}"></script>
 <script src="{{asset('custom/js/imask.js')}}"></script>
 
+<script src="{{asset('assets/js/notiflix.min.js')}}"></script>
+
 @stack('scripts')
 
 @stack('modals')

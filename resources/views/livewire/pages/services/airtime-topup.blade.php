@@ -76,7 +76,7 @@
                             'id' => 'confirm-modal'
                         ])
 
-                        @include('gateways')
+                        @include('gateways.index')
                         {{-- <livewire:payment.checkout /> --}}
                         {{-- <x-modals.confirm :methods="$methods" id="confirm-modal" /> --}}
                     </div>

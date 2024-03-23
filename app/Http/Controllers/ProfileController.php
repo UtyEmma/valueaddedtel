@@ -10,8 +10,10 @@ class ProfileController extends Controller {
         return view('pages.profile.index');
     }
 
-    function wallet() {
-        return view('pages.profile.wallet.index');
+    function wallet(){
+        $user = authenticated();
+        $transactions = $user->transactions()->latest()->paginate();
+        return view('pages.profile.wallet.index', compact('transactions'));
     }
 
     function referrals(){

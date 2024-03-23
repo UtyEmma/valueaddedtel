@@ -2,7 +2,8 @@
     text: @js($text),
     label: 'Copy',
     copy(){
-        navigator.clipboard.writeText(this.text)
+        console.log('Copy');
+        window.navigator.clipboard.writeText(this.text)
         this.label = 'Copied';
         setTimeout(() => this.label = 'Copy', 2000)
     }

@@ -4,6 +4,7 @@ namespace App\Services\Transactions;
 
 use App\Enums\PaymentMethods;
 use App\Enums\PaymentStatus;
+use App\Enums\Services;
 use App\Enums\Status;
 use App\Models\Countries\Currency;
 use App\Models\Transactions\PaymentMethod;
@@ -22,7 +23,21 @@ class TransactionService {
             return status(false, 'No Payment method has been selected for this transaction.');
         }
 
-        if(!$paymentMethod = $this->getPaymentMethod($data['payment_method'])){
+        if(!isset($data['type'])) {
+            return status(false, 'The transaction details are invalid.');
+        }
+
+        if(!Services::tryFrom($data['type'])) {
+            return status(false, 'The transaction details are invalid.');
+        }
+
+        $data['amount'] = abs(filter_var($data['amount'], FILTER_SANITIZE_NUMBER_INT));
+
+        return status(true, '', collect($data)->only(['amount', 'payment_method', 'type', 'narration'])->toArray());
+    }
+
+    private function getPaymentMethod($shortcode, $user){
+        if(!$paymentMethod = PaymentMethod::whereShortcode($shortcode)->first()){
             return status(false, "The selected payment method is invalid");
         }
 
@@ -34,27 +49,31 @@ class TransactionService {
             return status(false, "The selected payment method is not available in your country");
         }
 
-        $data['amount'] = abs(filter_var($data['amount'], FILTER_SANITIZE_NUMBER_INT));
-
-        return status(true, '', collect($data)->only(['amount', 'payment_method'])->toArray());
+        return status(true, '', $paymentMethod);
     }
 
-    private function getPaymentMethod($shortcode){
-        return PaymentMethod::whereShortcode($shortcode)->first();
+    private function getPaymentClass($transaction){
+        $payment_methods = config('providers.payments');
+        $paymentMethod = $transaction->paymentMethod->shortcode->value;
+        return new $payment_methods[$paymentMethod];
     }
 
-    function create($data, User $user = null, $status = PaymentStatus::PENDING){
+    function create($data, User $user = null, $state = PaymentStatus::PENDING){
         $user = $user ?? authenticated();
 
         [$status, $message, $data] = $this->validate($data, $user);
         if(!$status) return status($status, $message, $data);
 
+        [$status, $message, $paymentMethod] = $this->getPaymentMethod($data['payment_method'], $user);
+        if(!$status) return status($status, $message);
+
         $transaction = Transaction::create([
             ...$data,
-            'currency' => $user->currency->code,
+            'payment_method_code' => $paymentMethod->shortcode,
+            'currency_code' => $user->currency->code,
             'user_id' => $user->id,
             'reference' => $this->reference(),
-            'status' => $status
+            'status' => $state
         ]);
 
         return status(true, '', $transaction);
@@ -66,14 +85,39 @@ class TransactionService {
         return $reference;
     }
 
-    function verify(Transaction $transaction){
+    function verify($transaction){
+        if(!$transaction) return status(false, 'The transaction does not exist');
+        $payment = $this->getPaymentClass($transaction);
 
+        try {
+            [$status, $message, $data] = $payment->verify($transaction->reference);
+        } catch (\Throwable $th) {
+            return status(false, $th->getMessage());
+        }
+
+        if(!$status) return status(false, $message, $transaction);
+
+        $transaction->status = $message;
+        $transaction->save();
+
+        if($transaction->status == PaymentStatus::SUCCESS) return status(true, PaymentStatus::SUCCESS, $transaction);
+        if($transaction->status == PaymentStatus::FAILED) return status(false, PaymentStatus::FAILED, $transaction);
     }
 
     function init(Transaction $transaction) {
-        $payment_methods = config('payments.methods');
-        $payment = new $payment_methods[$transaction->paymentMethod->shortcode]();
-        return $payment->init();
+        $payment = $this->getPaymentClass($transaction);
+        [$status, $message, $data] = $payment->initiate($transaction);
+
+        if(!$status) {
+            $transaction->delete();
+            return status($status, $message, $data);
+        }
+
+        return status(true, $message, [$transaction, $data]);
+    }
+
+    function cancel($transaction){
+        $transaction->delete();
     }
 
 }

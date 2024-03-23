@@ -3,7 +3,9 @@
 namespace App\Services\PaymentMethods;
 
 use App\Contracts\Payment;
+use App\Enums\PaymentMethods;
 use App\Enums\PaymentStatus;
+use App\Models\Transactions\PaymentMethod;
 use App\Models\Transactions\Transaction;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -11,21 +13,50 @@ use Illuminate\Support\Facades\Http;
 class PaystackService implements Payment {
 
     private $api;
+    private $paymentMethod;
+    private $keys;
 
     function __construct(){
-        $this->api = Http::baseUrl(env('PAYSTACK_URL'))
-                        ->withToken(env('PAYSTACK_SECRET_KEY'))
+        $this->paymentMethod = PaymentMethod::whereShortcode(PaymentMethods::PAYSTACK)->first();
+        $this->setKeys();
+        $this->api = Http::baseUrl($this->keys['URL'])
+                        ->withToken($this->keys['SECRET_KEY'])
                         ->acceptJson()
                         ->asJson();
     }
 
+    function setKeys(){
+        $meta = $this->paymentMethod->meta;
+
+        if($this->paymentMethod->is_live_mode) {
+            $this->keys = [
+                'URL' => $meta['PAYSTACK_URL'],
+                'PUBLIC_KEY' => $meta['PAYSTACK_TEST_PUBLIC_KEY'],
+                'SECRET_KEY' => $meta['PAYSTACK_LIVE_SECRET_KEY']
+            ];
+        }
+
+        if($this->paymentMethod->is_test_mode) {
+            $this->keys = [
+                'URL' => $meta['PAYSTACK_URL'],
+                'PUBLIC_KEY' => $meta['PAYSTACK_LIVE_PUBLIC_KEY'],
+                'SECRET_KEY' => $meta['PAYSTACK_TEST_SECRET_KEY']
+            ];
+        }
+
+        return $this->keys;
+    }
+
     function resolve(Response $req){
+
         if($req->ok()) {
             $data = $req->json();
-            if(!$data['status']) return [PaymentStatus::FAILED];
-            return [PaymentStatus::PENDING, $data];
+            if(!$data['status'] ?? null) return status(false, "Your transaction could not be verified at the moment. Please contact our support.");
+
+            return status(true, '', $data['data']);
         }
-        return [PaymentStatus::FAILED];
+
+        return status(false, 'Your request could not be completed');
     }
 
     function pay(Transaction $transaction){
@@ -43,20 +74,23 @@ class PaystackService implements Payment {
         return $this->resolve($this->api->post('transaction/initialize', $data));
     }
 
-    function inline($transaction){
+    function initiate(Transaction $transaction){
         $data = [
-            'key' => env('PAYSTACK_PUBLIC_KEY'),
-            'email' => $transaction->payer->email,
+            'key' => $this->keys['PUBLIC_KEY'],
+            'email' => $transaction->user->email,
             'amount' => $transaction->amount * 100,
             'ref' => $transaction->reference,
-            'currency' => $transaction->currency
+            'currency' => $transaction->currency_code
         ];
 
-        return $data;
+        return status(true, '', $data);
     }
 
     function verify($reference){
-        return $this->resolve($this->api->get("transaction/verify/$reference"));
+        [$status, $message, $data] = $this->resolve($this->api->get("transaction/verify/$reference"));
+        if(!$status) return status($status, $message);
+        if($data['status'] == 'success') return status(true, PaymentStatus::SUCCESS);
+        return status(true, PaymentStatus::FAILED);
     }
 
     function query($id){
