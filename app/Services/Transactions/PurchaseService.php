@@ -112,23 +112,39 @@ class PurchaseService {
         if(!$status) return status($status, $message);
         [$status, $message, $data] = $provider->handle();
         if(!$status) {
-            $this->purchase->status = PaymentStatus::CANCELLED;
-            $this->purchase->remark = $message;
-            $this->purchase->save();
+            $this->onCancelled($this->purchase, $message);
             return status(false, $message);
         };
 
         return $this->resolve($status, $message, $data);
     }
 
+    function onFailed(Purchase $purchase, $remark){
+        $this->purchase->status = PaymentStatus::FAILED;
+        $this->purchase->remark = $remark;
+        $this->purchase->save();
+        return $purchase;
+    }
+
+    function onCancelled(Purchase $purchase, $remark) {
+        $this->purchase->status = PaymentStatus::CANCELLED;
+        $this->purchase->remark = $remark;
+        $this->purchase->save();
+        return $purchase;
+    }
+
     function resolve($status, $message, $data) {
         if($status == PaymentStatus::FAILED) {
             [$status, $message, $data] = $this->verify($this->purchase);
-            if(!$status) return status(false, $message);
+            if(!$status) {
+                $this->onCancelled($this->purchase, $message);
+                return status($status, $message);
+            }
         }
 
         $this->purchase->status = $status;
         $this->purchase->meta = $data;
+        $this->purchase->remark = $message;
         $this->purchase->save();
 
         if(in_array($this->purchase->status, [PaymentStatus::SUCCESS, PaymentStatus::PENDING])) {
