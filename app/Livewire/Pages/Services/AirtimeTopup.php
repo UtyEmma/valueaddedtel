@@ -27,7 +27,6 @@ class AirtimeTopup extends Component {
 
     public User $user;
     public Service $service;
-
     public Transaction $transaction;
 
     public $products = [];
@@ -47,7 +46,7 @@ class AirtimeTopup extends Component {
         $this->user = authenticated();
         $this->service = $this->user->service(Services::AIRTIME);
         $this->countryService = $this->service->serviceCountries()->where('country_code', $this->user->country_code)->first();
-        $this->products = $this->service->products()->where('country_code', $this->user->country_code)->get();
+        $this->products = $this->countryService->products;
     }
 
     function rules(){
@@ -66,16 +65,21 @@ class AirtimeTopup extends Component {
 
     function cancel(){
         $this->step = 1;
-        $this->toast('If you are encountering any challenges, please contact our support center', 'Purchase Cancelled')->warning();
+        $this->reset(['amount', 'phone', 'network', 'product']);
+        // $this->toast('If you are encountering any challenges, please contact our support center', 'Purchase Cancelled')->warning();
         return $this->js("$('#confirm-modal').modal('hide')");
     }
 
-    function complete(){
+    function complete(AirtimeModule $airtimeModule){
         $validated = $this->validate();
+        $data = collect($validated)->only(['amount', 'phone', 'network'])->toArray();
+        [$status, $message, $purchase] = $airtimeModule->purchase($data, $this->user);
+        if(!$status) return $this->toast($message, 'Purchase Failed')->error();
+        return $this->toast($message, PaymentStatus::title($purchase->status), PaymentStatus::alert($purchase->status));
     }
 
     function pay(){
-        $validated = $this->validate();
+        $this->validate();
         return $this->step = 2;
     }
 
@@ -85,11 +89,14 @@ class AirtimeTopup extends Component {
 
     function initiate(){
         $this->validate();
-        $this->product = ServiceProduct::where('shortcode', $this->network)->first();
-        
-        if(!$this->product?->is_available) {
-            return $this->toast('The selected network is unavailable at the moment! Please try again later.', 'Network unavailable')->error();
-        }
+        // $product ServiceProduct::where('shortcode', $this->network)->first();
+        // dd($this->product);
+
+        // if(!$this->product?->is_available) {
+        //     return $this->toast('The selected network is unavailable at the moment! Please try again later.', 'Network unavailable')->error();
+        // }
+
+        // $this->product = $product;
 
         return $this->confirm();
     }

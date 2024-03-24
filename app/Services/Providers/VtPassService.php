@@ -7,7 +7,7 @@ use App\Enums\ServiceProviders;
 class VtPassService {
 
     function __construct() {
-        $instance = ServiceProviders::instance(ServiceProviders::VTPASS);
+        // $instance = ServiceProviders::instance(ServiceProviders::VTPASS);
     }
 
 }

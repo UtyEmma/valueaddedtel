@@ -3,6 +3,7 @@
 namespace App\Models\Services;
 
 use App\Enums\Services;
+use App\Enums\Status;
 use App\Models\Countries\Country;
 use App\Models\Transactions\PaymentMethod;
 use App\Models\User;

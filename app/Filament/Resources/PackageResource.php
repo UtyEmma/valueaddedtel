@@ -47,6 +47,8 @@ class PackageResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Toggle::make('is_default')
                     ->required(),
+                Forms\Components\Toggle::make('cashback')
+                    ->required(),
             ]);
     }
 
@@ -66,8 +68,10 @@ class PackageResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_default')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_default')
+                    ->label('Default Package'),
+                Tables\Columns\ToggleColumn::make('cashback')
+                    ->label('Earn Cashback'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

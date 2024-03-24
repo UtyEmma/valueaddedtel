@@ -87,6 +87,7 @@ class ServiceProductResource extends Resource
                     ->options([
                         Status::ACTIVE->value => Status::ACTIVE->value,
                         Status::INACTIVE->value => Status::INACTIVE->value,
+                        Status::DELAYED->value => Status::DELAYED->value,
                     ])
                     ->required(),
             ]);

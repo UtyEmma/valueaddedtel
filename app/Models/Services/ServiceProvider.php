@@ -2,6 +2,7 @@
 
 namespace App\Models\Services;
 
+use App\Enums\ServiceProviders;
 use App\Enums\Services;
 use App\Models\Countries\Country;
 use App\Traits\HasStatus;
@@ -15,7 +16,8 @@ class ServiceProvider extends Model {
     protected $fillable = ['name', 'shortcode', 'mode', 'meta'];
 
     protected $casts = [
-        'meta' => 'array'
+        'meta' => 'array',
+        // 'shortcode' => ServiceProviders::class
     ];
 
     protected $primaryKey = 'shortcode';

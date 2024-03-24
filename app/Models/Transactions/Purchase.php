@@ -3,6 +3,7 @@
 namespace App\Models\Transactions;
 
 use App\Enums\PaymentStatus;
+use App\Enums\Services;
 use App\Models\Countries\Country;
 use App\Models\Countries\Currency;
 use App\Models\Services\Service;
@@ -21,13 +22,14 @@ class Purchase extends Model {
 
     protected $casts = [
         'status' => PaymentStatus::class,
+        'service_code' => Services::class,
         'meta' => 'array'
     ];
 
-    protected $attributes = [
-        'meta' => [],
-        'status' => PaymentStatus::PENDING
-    ];
+    // protected $attributes = [
+    //     'meta' => [],
+    //     'status' => PaymentStatus::PENDING
+    // ];
 
     function user(){
         return $this->belongsTo(User::class, 'user_id');

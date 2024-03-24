@@ -3,8 +3,10 @@
 namespace App\Services\Providers;
 
 use App\Enums\ServiceProviders;
+use App\Enums\Services;
 use App\Models\Services\ServiceProvider;
-use App\Models\Transactions\VtuHistory;
+use App\Models\Transactions\Purchase;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
 class ClubKonnectService {
@@ -12,41 +14,50 @@ class ClubKonnectService {
     private $api;
     private $provider;
 
-    private $meta = [];
+    protected $meta = [];
+    protected $purchase;
 
-    // public $networks = [
-    //     'MTN' => '01',
-    //     'GLO' => '02',
-    //     'ETISALAT' => '03',
-    //     'AIRTEL' => '04'
-    // ];
+    private $successCodes = [200, 201];
+    private $pendingCodes = [201, ];
 
+    function __construct(Purchase $purchase){
+        $this->purchase = $purchase;
 
-    function __construct(){
         $this->provider = ServiceProvider::whereShortcode(ServiceProviders::CLUBKONNECT)->first();
         $this->meta = $this->provider->meta;
-        $this->api =  Http::baseUrl();
+        $this->api =  Http::baseUrl($this->meta['CLUB_KONNECT_URL']);
     }
 
-    function airtime($vtuHistory, $amount, $phoneNo, $requestId){
-        // $services = $this->rechargePinServices();
-        $data = $vtuHistory->data;
-        $req = $this->api->get('/APIAirtimeV1.asp', [
-            'UserID' => $this->meta['CLUB_KONNECT_USER'],
-            'APIKey' => $this->meta['CLUB_KONNECT_KEY'],
-            'MobileNetwork' => $data['network'],
-            'Amount' => $vtuHistory->amount,
-            'MobileNumber' => $vtuHistory['phone'],
-            'RequestID' => $vtuHistory->reference,
-            'CallBackURL' => route('rechargepins.callback')
-        ]);
+    function resolve(Response $res) {
+        if($res->failed()) throw new \Exception('Your request could not be completed');
+        $data = $res->json();
+        dd($data);
 
-        if(!$req->ok()) {
-            return status(false, '');
+        return status(true);
+    }
+
+    function handle(){
+        try {
+            $res = match ($this->purchase->service->shortcode) {
+                Services::AIRTIME => $this->airtime($this->purchase)
+            };
+        } catch (\Throwable $th) {
+            return status(false, $th->getMessage());
         }
 
-        $data = $req->json();
-        return true;
+        return $this->resolve($res);
+    }
+
+    function airtime(){
+        return $this->api->get('/APIAirtimeV1.asp', [
+            'UserID' => $this->purchase->provider->meta['CLUB_KONNECT_USER'],
+            'APIKey' => $this->purchase->provider->meta['CLUB_KONNECT_KEY'],
+            'MobileNetwork' => $this->purchase->meta['network'],
+            'Amount' => $this->purchase->amount,
+            'MobileNumber' => $this->purchase->meta['phone'],
+            'RequestID' => $this->purchase->reference,
+            // 'CallBackURL' => route('rechargepins.callback')
+        ]);
     }
 
 

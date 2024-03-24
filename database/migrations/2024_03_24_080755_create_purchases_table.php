@@ -19,7 +19,9 @@ return new class extends Migration
             $table->integer('amount');
             $table->string('provider_code');
             $table->string('country_code');
+            $table->string('currency_code');
             $table->string('narration');
+            $table->text('remark')->nullable();
             $table->string('product_code')->nullable();
             $table->string('product_item_code')->nullable();
             $table->string('mode');

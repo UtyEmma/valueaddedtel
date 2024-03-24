@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('max_level')->default(0);
             $table->string('point_value')->default(0);
             $table->string('status');
+            $table->boolean('cashback');
             $table->boolean('is_default')->default(false);
             $table->timestamps();
         });

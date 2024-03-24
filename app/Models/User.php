@@ -17,6 +17,7 @@ use App\Models\Packages\PackageHistory;
 use App\Models\Services\CountryService;
 use App\Models\Services\Service;
 use App\Models\Transactions\PaymentMethod;
+use App\Models\Transactions\Purchase;
 use App\Models\Transactions\Transaction;
 use App\Traits\HasStatus;
 use App\Traits\VerifyEmail;
@@ -117,6 +118,10 @@ class User extends Authenticatable implements FilamentUser, HasName, MustVerifyE
 
     function services(){
         return $this->hasManyThrough(Service::class, CountryService::class, 'country_code', 'shortcode', 'country_code', 'service_code');
+    }
+
+    function purchases(){
+        return $this->hasMany(Purchase::class, 'user_id');
     }
 
     function accounts(){

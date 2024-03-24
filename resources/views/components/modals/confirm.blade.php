@@ -5,10 +5,14 @@
                 <form wire:submit="pay" class="modal-body">
                     <h3 class="mb-4">Confirm your purchase details</h3>
 
+                    @isset($product)
+                        @if ($product->status == $statuses::DELAYED)
+                            <div class="p-2 alert alert-warning fs-7">
+                                Please note that there might be a delay on {{$product->name}} {{$service->name}}.
+                            </div>
+                        @endif
+                    @endisset
                     {{-- @if ($warning) --}}
-                        <div class="p-2 alert alert-warning fs-7">
-                            Please note that there is a delay on your MTN airtime purchases.
-                        </div>
                     {{-- @endif --}}
 
                     <div class="p-5 rounded bg-light" >

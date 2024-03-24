@@ -10,13 +10,13 @@ class WalletService implements Payment {
     function pay(Transaction $transaction){
         $user = authenticated();
         $wallet = $user->wallet;
-        if($transaction->amount < 0) return status(PaymentStatus::FAILED, 'Invalid Transaction Amount');
-        if($wallet->amount < $transaction->amount) return status(PaymentStatus::FAILED, 'Insufficient Funds');
+        if($transaction->amount < 0) return status(false, 'Invalid Transaction Amount');
+        if($wallet->amount < $transaction->amount) return status(false, 'Insufficient Funds');
 
         $wallet->amount -= $transaction->amount;
         $wallet->save();
 
-        return status(PaymentStatus::SUCCESS);
+        return status(true);
     }
 
     function verify($reference){

@@ -26,8 +26,13 @@ class CountryService extends Model {
     function service(){
         return $this->belongsTo(Service::class, 'service_code', 'shortcode');
     }
+
     function country(){
         return $this->belongsTo(Country::class, 'country_code', 'iso_code');
+    }
+
+    function getProductsAttribute(){
+        return $this->service->products()->where('country_code', $this->country_code)->get();
     }
 
     // function provider(){
