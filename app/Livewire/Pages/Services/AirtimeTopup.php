@@ -36,20 +36,32 @@ class AirtimeTopup extends Component {
     public $countryService;
 
     public $step = 1;
-
-    public $payment_method;
     public $amount;
     public $phone;
     public $network;
+    public $pin;
+
     public ServiceProduct $product;
 
     function mount(){
         $this->user = authenticated();
         $this->service = $this->user->service(Services::AIRTIME);
         $this->countryService = $this->service->serviceCountries()->where('country_code', $this->user->country_code)->first();
-
         $this->products = $this->service->products()->where('country_code', $this->user->country_code)->get();
-        $this->methods = (new PaymentMethodService)->service($this->service);
+    }
+
+    function rules(){
+        $rules = [
+            'amount' => 'required|min:1',
+            'phone' => 'required',
+            'network' => 'required|exists:service_products,shortcode',
+        ];
+
+        if($this->step == 2) {
+            $rules = array_merge($rules, ['pin' => []]);
+        }
+
+        return $rules;
     }
 
     function cancel(){
@@ -58,49 +70,12 @@ class AirtimeTopup extends Component {
         return $this->js("$('#confirm-modal').modal('hide')");
     }
 
-    function completed(){
-
-    }
-
     function complete(){
-        $validated = $this->validate([
-
-        ]);
-
-        $module = new AirtimeModule;
-        [$status, $message, $data] = $module->initiate($this->transaction);
-        if(!$status) return $this->toast($message);
-
-        if($message == Status::COMPLETED) {
-            [$status, $message, $vtuHistory] = $data;
-            if(!$status) return $this->toast($message)->error();
-
-            if($vtuHistory->status == PaymentStatus::SUCCESS) {
-                return $this->toast("Your airtime purchase was successful")->success();
-            }
-
-        }
-
-        if($message == Status::PENDING) {
-            $payment_method = $this->transaction->paymentMethod;
-            return $this->dispatch('pay:'.$payment_method, $data);
-        }
+        $validated = $this->validate();
     }
 
     function pay(){
-        $validated = $this->validate([
-            'payment_method' => ['required', 'in:'.implode(',', $this->methods)],
-            'amount' => 'required|min:1',
-            'phone' => 'required',
-            'network' => 'required|exists:service_products,shortcode',
-        ]);
-
-        $module = new AirtimeModule;
-        [$status, $message, $transaction] = $module->create($validated);
-
-        if(!$status) return $this->toast($message)->error();
-
-        $this->transaction = $transaction;
+        $validated = $this->validate();
         return $this->step = 2;
     }
 
@@ -109,18 +84,13 @@ class AirtimeTopup extends Component {
     }
 
     function initiate(){
-
-        $this->validate([
-            'amount' => 'required|min:1',
-            'phone' => 'required',
-            'network' => 'required|exists:service_products,shortcode'
-        ]);
-
-
-        return $this->dispatch('pay:paystack');
-
+        $this->validate();
         $this->product = ServiceProduct::where('shortcode', $this->network)->first();
-        if(!$this->product?->is_available) return $this->toast('The selected network is unavailable at the moment! Please try again later.', 'Network unavailable')->error();
+        
+        if(!$this->product?->is_available) {
+            return $this->toast('The selected network is unavailable at the moment! Please try again later.', 'Network unavailable')->error();
+        }
+
         return $this->confirm();
     }
 

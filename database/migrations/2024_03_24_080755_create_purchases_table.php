@@ -9,20 +9,22 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('vtu_histories', function (Blueprint $table) {
+    public function up(): void {
+        Schema::create('purchases', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('transaction_id')->nullable();
-            $table->string('service_code');
             $table->string('user_id');
+            $table->string('transaction_id')->nullable();
+            $table->string('reference');
+            $table->string('service_code');
             $table->integer('amount');
             $table->string('provider_code');
             $table->string('country_code');
-            $table->string('currency_code');
             $table->string('narration');
+            $table->string('product_code')->nullable();
+            $table->string('product_item_code')->nullable();
             $table->string('mode');
-            $table->json('data');
+            $table->json('meta');
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -30,8 +32,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
-        Schema::dropIfExists('vtu_histories');
+    public function down(): void {
+        Schema::dropIfExists('purchases');
     }
 };

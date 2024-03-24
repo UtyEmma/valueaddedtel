@@ -36,5 +36,7 @@ class ServiceProvider extends Model {
         return $this->hasMany(CountryServiceProvider::class, 'provider_code', 'shortcode');
     }
 
+    // function
+
 
 }

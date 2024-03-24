@@ -81,10 +81,7 @@
                     if(current == position) return $el.focus();
                 })
             "
-            autocomplete="off"
-            x-on:keyup="
-                $event.key == 'Backspace' ? previous(position) : null;
-            "
+            x-on:keyup="$event.key == 'Backspace' ? previous(position) : null"
             placeholder="{{$placeholder}}"
             class="text-center appearance-none w-50px h-50px fs-1"
         />
