@@ -6,6 +6,7 @@ use App\Enums\PaymentMethods;
 use App\Enums\PaymentStatus;
 use App\Enums\Services;
 use App\Enums\Status;
+use App\Enums\TransactionType;
 use App\Models\Countries\Currency;
 use App\Models\Transactions\PaymentMethod;
 use App\Models\Transactions\Transaction;
@@ -31,7 +32,8 @@ class TransactionService {
             return status(false, 'The transaction details are invalid.');
         }
 
-        $data['amount'] = abs(filter_var($data['amount'], FILTER_SANITIZE_NUMBER_INT));
+        $data['amount'] = positiveInt($data['amount']);
+        // $data['amount'] = abs(filter_var($data['amount'], FILTER_SANITIZE_NUMBER_INT));
 
         return status(true, '', collect($data)->only(['amount', 'payment_method', 'type', 'narration'])->toArray());
     }
@@ -58,7 +60,7 @@ class TransactionService {
         return new $payment_methods[$paymentMethod];
     }
 
-    function create($data, User $user = null, $state = PaymentStatus::PENDING){
+    function create($data, TransactionType $flow, User $user = null, $state = PaymentStatus::PENDING){
         $user = $user ?? authenticated();
 
         [$status, $message, $data] = $this->validate($data, $user);
@@ -73,6 +75,7 @@ class TransactionService {
             'currency_code' => $user->currency->code,
             'user_id' => $user->id,
             'reference' => $this->reference(),
+            'flow' => $flow,
             'status' => $state
         ]);
 

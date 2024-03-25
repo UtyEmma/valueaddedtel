@@ -20,5 +20,6 @@ enum Services:string {
     case SHOWMAX = 'showmax';
     case ELECTRICITY = 'electricity';
     case EDUCATION = 'education';
+    case CASHBACK = 'cashback';
 
 }

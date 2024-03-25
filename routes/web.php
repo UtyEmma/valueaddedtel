@@ -17,9 +17,6 @@ use Livewire\Livewire;
 |
 */
 
-Livewire::setUpdateRoute(function ($handle) {
-    return Route::post('/wire/set', $handle);
-});
 
 Route::view('/', 'welcome');
 

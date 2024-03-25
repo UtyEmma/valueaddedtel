@@ -41,3 +41,10 @@ if(!function_exists('jsonify')) {
     }
 }
 
+if(!function_exists('positiveInt')) {
+    function positiveInt(float $num) : float {
+        // dd($num);
+        return (float) str_replace(['+', '-'], '', (string) $num);
+    }
+}
+

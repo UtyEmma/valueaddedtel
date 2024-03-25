@@ -12,8 +12,6 @@
                             </div>
                         @endif
                     @endisset
-                    {{-- @if ($warning) --}}
-                    {{-- @endif --}}
 
                     <div class="p-5 rounded bg-light" >
                         <div class="gap-2 fs-6 d-flex flex-column">
@@ -91,7 +89,7 @@
                     <div class="my-5 separator"></div>
 
                     <div class="gap-5 d-flex justify-content-end">
-                        <button type="button" data-bs-dismiss="modal" wire:loading.attr="disabled" wire:target="pay" wire:click="cancel" class="btn btn-light">Cancel <x-spinner wire:target="cancel" color="muted" wire:loading/></button>
+                        <button type="button" wire:loading.attr="disabled" wire:target="pay" wire:click="cancel" class="btn btn-light">Cancel <x-spinner wire:target="cancel" color="muted" wire:loading/></button>
                         <button type="submit" wire:loading.attr="disabled" wire:target="cancel" @disabled($amount > $authenticated->wallet->main_bal) class="px-10 btn btn-primary">Proceed <x-spinner wire:target="pay" wire:loading/></button>
                     </div>
                 </form>
@@ -123,6 +121,33 @@
                         </div>
                     </div>
                 </form>
+            @endif
+
+            @if ($step == 3)
+                <div class="p-10">
+                    <div class="mb-10 text-center">
+                        <div class="mb-4">
+                            <i class="ki-duotone ki-like fs-4x text-success">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>
+                        </div>
+                        <h1 class="text-success">Your Purchase was completed successfully!</h1>
+                    </div>
+
+                    <div class="row row-cols-2">
+                        <div>
+                            <x-button class="btn-light w-100">View Transaction</x-button>
+                        </div>
+                        <div>
+                            <x-button class="btn-primary w-100">Download Reciept</x-button>
+                        </div>
+                    </div>
+
+                    <div class="my-5 separator"></div>
+
+                    <x-button wire:click="cancel" data-bs-dismiss="modal" class="px-5 text-center btn btn-light">Close</x-button>
+                </div>
             @endif
         </div>
     </div>

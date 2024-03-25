@@ -10,8 +10,11 @@ use App\Models\Services\ServiceProduct;
 use App\Models\Transactions\Transaction;
 use App\Models\User;
 use App\Modules\AirtimeModule;
+use App\Rules\ValidPin;
+use App\Rules\ValidProduct;
 use App\Services\PaymentMethodService;
 use App\Traits\Livewire\WithToast;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -27,20 +30,16 @@ class AirtimeTopup extends Component {
 
     public User $user;
     public Service $service;
-    public Transaction $transaction;
-
     public $products = [];
     public $methods = [];
 
     public $countryService;
 
     public $step = 1;
-    public $amount;
-    public $phone;
-    public $network;
+    public $amount, $phone,  $network;
     public $pin;
 
-    public ServiceProduct $product;
+    public ServiceProduct | null $product = null;
 
     function mount(){
         $this->user = authenticated();
@@ -51,22 +50,19 @@ class AirtimeTopup extends Component {
 
     function rules(){
         $rules = [
-            'amount' => 'required|min:1',
-            'phone' => 'required',
-            'network' => 'required|exists:service_products,shortcode',
+            'amount' => 'required|numeric|min:50,max:50000',
+            'phone' => 'required|phone:'.$this->user->country_code,
+            'network' => ['required', new ValidProduct($this->service, $this->user)],
         ];
 
-        if($this->step == 2) {
-            $rules = array_merge($rules, ['pin' => []]);
-        }
-
+        if($this->step == 2) $rules = array_merge($rules, ['pin' => ['required', 'size:4', new ValidPin($this->user)]]);
         return $rules;
     }
 
     function cancel(){
+        // $this->reset('amount', 'phone', 'network');
+        // $this->product = null;
         $this->step = 1;
-        $this->reset(['amount', 'phone', 'network', 'product']);
-        // $this->toast('If you are encountering any challenges, please contact our support center', 'Purchase Cancelled')->warning();
         return $this->js("$('#confirm-modal').modal('hide')");
     }
 
@@ -74,8 +70,16 @@ class AirtimeTopup extends Component {
         $validated = $this->validate();
         $data = collect($validated)->only(['amount', 'phone', 'network'])->toArray();
         [$status, $message, $purchase] = $airtimeModule->purchase($data, $this->user);
-        if(!$status) return $this->toast($message, 'Purchase Failed')->error();
-        return $this->toast($message, PaymentStatus::title($purchase->status), PaymentStatus::alert($purchase->status));
+
+        if(!$status) {
+            $this->toast($message, 'Purchase Failed')->error();
+        }else{
+            $this->toast($message, PaymentStatus::title($purchase->status))->trigger(PaymentStatus::alert($purchase->status));
+            $this->step = 3;
+            return;
+        }
+
+        $this->cancel();
     }
 
     function pay(){
@@ -88,15 +92,12 @@ class AirtimeTopup extends Component {
     }
 
     function initiate(){
-        $this->validate();
-        // $product ServiceProduct::where('shortcode', $this->network)->first();
-        // dd($this->product);
+        $validated = $this->validate();
 
-        // if(!$this->product?->is_available) {
-        //     return $this->toast('The selected network is unavailable at the moment! Please try again later.', 'Network unavailable')->error();
-        // }
-
-        // $this->product = $product;
+        $this->product = $this->service
+                            ->products()
+                            ->whereShortcode($this->network)
+                            ->whereCountryCode($this->user->country_code)->first();
 
         return $this->confirm();
     }

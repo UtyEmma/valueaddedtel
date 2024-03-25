@@ -8,9 +8,9 @@ class Toast {
     private $data;
 
     public function __construct(
-        private $message, private $title = null, private $status = null
+        private $message, private $title = null
     ) {
-        if($status) return $this->set($status);
+
     }
 
     function wire(){
@@ -29,6 +29,10 @@ class Toast {
         }
 
         session()->flash('toast', $this->data);
+    }
+
+    function trigger($status){
+        $this->set($status);
     }
 
     function success() {

@@ -23,7 +23,8 @@ class Purchase extends Model {
     protected $casts = [
         'status' => PaymentStatus::class,
         'service_code' => Services::class,
-        'meta' => 'array'
+        'meta' => 'array',
+        'payload' => 'array'
     ];
 
     // protected $attributes = [

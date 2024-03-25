@@ -4,6 +4,7 @@ namespace App\Models\Transactions;
 
 use App\Enums\PaymentMethods;
 use App\Enums\PaymentStatus;
+use App\Enums\TransactionType;
 use App\Models\Countries\Currency;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -14,11 +15,12 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['reference', 'payment_method_code', 'user_id', 'narration', 'amount', 'transactable_id', 'transactable_type', 'type', 'currency_code', 'status'];
+    protected $fillable = ['reference', 'payment_method_code', 'user_id', 'narration', 'amount', 'transactable_id', 'transactable_type', 'type', 'flow', 'currency_code', 'status'];
 
     protected $casts = [
         'status' => PaymentStatus::class,
-        'payment_method_code' => PaymentMethods::class
+        'payment_method_code' => PaymentMethods::class,
+        'flow' => TransactionType::class
     ];
 
     // protected $with = ['paymentMethod', 'user'];

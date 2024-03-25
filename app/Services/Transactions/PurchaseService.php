@@ -7,12 +7,14 @@ use App\Enums\PaymentStatus;
 use App\Enums\ServiceProviders;
 use App\Enums\Services;
 use App\Enums\Status;
+use App\Enums\TransactionType;
 use App\Library\Token;
 use App\Models\Services\Service;
 use App\Models\Services\ServiceProduct;
 use App\Models\Transactions\Purchase;
 use App\Models\User;
 use App\Services\Account\WalletService;
+use Exception;
 
 class PurchaseService {
 
@@ -111,8 +113,9 @@ class PurchaseService {
 
         if(!$status) return status($status, $message);
         [$status, $message, $data] = $provider->handle();
+
         if(!$status) {
-            $this->onCancelled($this->purchase, $message);
+            $this->onCancelled($this->purchase, $data['remark']);
             return status(false, $message);
         };
 
@@ -134,26 +137,29 @@ class PurchaseService {
     }
 
     function resolve($status, $message, $data) {
-        if($status == PaymentStatus::FAILED) {
+        if(in_array($message, [PaymentStatus::FAILED, PaymentStatus::PENDING])) {
             [$status, $message, $data] = $this->verify($this->purchase);
+
             if(!$status) {
                 $this->onCancelled($this->purchase, $message);
                 return status($status, $message);
             }
         }
 
-        $this->purchase->status = $status;
-        $this->purchase->meta = $data;
-        $this->purchase->remark = $message;
+        $this->purchase->status = $message;
+        $this->purchase->payload = $data;
+        $this->purchase->remark = $data['remark'];
         $this->purchase->save();
 
         if(in_array($this->purchase->status, [PaymentStatus::SUCCESS, PaymentStatus::PENDING])) {
-            $this->charge(); //Charge the user's wallet if the user's wallet is pending
+            $this->charge(); //Charge the user's wallet if the purchase is successful or is pending
         }
 
-        if(PaymentStatus::SUCCESS){
+        if($this->purchase->status == PaymentStatus::SUCCESS) {
             $this->reward();
         }
+
+        // Send Notification
 
         return status(true, PaymentStatus::message($this->purchase->status), $this->purchase);
     }
@@ -167,26 +173,32 @@ class PurchaseService {
             'narration' => 'Payment for '.$this->service->name,
             'amount' => $this->purchase->amount,
             'payment_method' => PaymentMethods::WALLET
-        ], $this->user, PaymentStatus::SUCCESS);
+        ], TransactionType::DEBIT, $this->user, PaymentStatus::PENDING);
 
         if(!$status) return status($status, $message);
-
         $transaction->transactable()->associate($this->purchase);
         $transaction->save();
+
+        [$status, $message] = (new WalletService)->fulfill($this->user->wallet, $transaction);
+        if(!$status) throw new \Exception($message);
     }
 
     function reward() {
         if(!$this->user->package->cashback) return;
 
-        if($cashbackAmount = $this->purchase->product->cashbackAmount) {
-            (new WalletService)->fund($this->user->wallet, $cashbackAmount);
+        if($cashbackAmount = $this->purchase->product->cashbackAmount($this->purchase->amount)) {
+            if($cashbackAmount) {
+                [$status, $message, $transaction] = (new TransactionService)->create([
+                    'type' => Services::CASHBACK->value,
+                    'narration' => 'Cashback for '.$this->purchase->service->name,
+                    'amount' => $cashbackAmount,
+                    'payment_method' => PaymentMethods::WALLET
+                ], TransactionType::CREDIT, $this->purchase->user, PaymentStatus::PENDING);
 
-            (new TransactionService)->create([
-                'type' => Services::DEPOSIT->value,
-                'narration' => 'Cashback for '.$this->purchase->service->name,
-                'amount' => $cashbackAmount,
-                'payment_method' => PaymentMethods::WALLET
-            ], $this->purchase->user, PaymentStatus::SUCCESS);
+                if(!$status) throw new \Exception($message);
+                [$status, $message] = (new WalletService)->fulfill($this->user->wallet, $transaction, 'cashback_bal');
+                if(!$status) throw new \Exception($message);
+            }
         }
     }
 
@@ -195,6 +207,18 @@ class PurchaseService {
         if(!$status) return status($status, $message);
 
         return $provider->verify();
+    }
+
+    function refund(Purchase $purchase){
+        if($purchase->status == PaymentStatus::REVERSED) {
+            return status(false, 'This purchase has already been refunded to the user');
+        }
+
+        $purchase->status = PaymentStatus::REVERSED;
+        $purchase->save();
+
+
+
     }
 
 }

@@ -17,11 +17,14 @@ return new class extends Migration
             $table->string('payment_method_code');
             $table->string('user_id');
             $table->string('type');
+            $table->string('flow');
             $table->string('currency_code');
             $table->uuidMorphs('transactable');
             $table->string('amount');
             $table->text('narration');
             $table->string('status');
+            $table->integer('old_bal')->nullable();
+            $table->integer('new_bal')->nullable();
             $table->timestamps();
         });
     }

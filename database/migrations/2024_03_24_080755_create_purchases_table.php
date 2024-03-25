@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('currency_code');
             $table->string('narration');
             $table->text('remark')->nullable();
+            $table->json('payload')->nullable();
             $table->string('product_code')->nullable();
             $table->string('product_item_code')->nullable();
             $table->string('mode');
