@@ -34,8 +34,7 @@ class DepositService {
         $transactionService = new TransactionService;
         $data['type'] = Services::DEPOSIT->value;
         $data['narration'] = "Funds Deposit";
-        $data['flow'] = TransactionType::CREDIT;
-        [$status, $message, $transaction] = $transactionService->create($data, $this->user);
+        [$status, $message, $transaction] = $transactionService->create($data, TransactionType::CREDIT, $this->user);
         if(!$status) return status($status, $message);
 
         return $transactionService->init($transaction);
@@ -46,7 +45,7 @@ class DepositService {
         [$status, $message, $transaction] = (new TransactionService)->verify($transaction);
 
         if($status) {
-            if($transaction->message = PaymentStatus::SUCCESS) {
+            if($transaction->status == PaymentStatus::SUCCESS) {
                 [$status, $message] = (new WalletService)->fulfill($transaction->user->wallet, $transaction);
                 if(!$status) throw new \Exception($message);
             }

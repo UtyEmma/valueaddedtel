@@ -84,7 +84,6 @@
                         <th>Reference</th>
                         <th>Purpose</th>
                         <th>Amount</th>
-                        <th>Payment Method</th>
                         <th>Status</th>
                         <th>Date</th>
                         <td></td>
@@ -102,7 +101,6 @@
                             </td>
                             <td>{{$transaction->narration}}</td>
                             <td><x-currency /> {{number_format($transaction->amount, 2)}}</td>
-                            <td>{{$transaction->paymentMethod->name}}</td>
                             <td>
                                 <span class="badge badge-{{$paymentStatuses::color($transaction->status)}}">{{$transaction->status}}</span>
                             </td>

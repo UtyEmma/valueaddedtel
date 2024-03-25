@@ -37,7 +37,7 @@
 
                     <div class="menu-sub menu-sub-accordion">
                         <div class="menu-item">
-                            <a class="menu-link" href="{{route('services.airtime')}}">
+                            <a class="menu-link {{request()->routeIs('services.airtime') ? 'active' : ''}}" href="{{route('services.airtime')}}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
