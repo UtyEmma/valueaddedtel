@@ -33,4 +33,8 @@ class Package extends Model{
         return $this->cashback;
     }
 
+    function getIsHighestAttribute(){
+        return $this->where('fee', '>=', $this->fee)->whereNot('id', $this->id)->doesntExist();
+    }
+
 }

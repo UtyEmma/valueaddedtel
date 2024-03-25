@@ -242,7 +242,7 @@
     </div>
 
     <div class="py-5 aside-footer flex-column-auto" id="kt_aside_footer">
-        <a href="https://preview.keenthemes.com/html/metronic/docs" class="btn btn-flex btn-custom btn-primary w-100" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click" title="200+ in-house components and 3rd-party plugins">
+        <a href="{{route('packages')}}" class="btn btn-flex btn-custom btn-primary w-100" >
             <span class="btn-label">Upgrade Package</span></a>
     </div>
 </div>

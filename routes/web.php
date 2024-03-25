@@ -2,6 +2,8 @@
 
 use App\Enums\Services;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Web\PackageController;
+use App\Livewire\Pages\Packages\Packages;
 use App\Livewire\Pages\Services\AirtimeTopup;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
@@ -28,6 +30,10 @@ Route::middleware(['auth', 'verified', 'user.pin'])->group(function(){
         Route::get('wallet', [ProfileController::class, 'wallet'])->name('profile.wallet');
         Route::get('referrals', [ProfileController::class, 'referrals'])->name('profile.referrals');
         Route::get('edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    });
+
+    Route::prefix('packages')->group(function(){
+        Route::get('', [PackageController::class, 'index'])->name('packages');
     });
 
     Route::middleware('service.module:'.Services::AIRTIME->value)->group(function(){

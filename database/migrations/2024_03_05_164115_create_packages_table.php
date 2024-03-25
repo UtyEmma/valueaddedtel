@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('packages', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->string('fee');
-            $table->string('bonus');
-            $table->string('max_level')->default(0);
-            $table->string('point_value')->default(0);
+            $table->integer('fee');
+            $table->integer('bonus');
+            $table->integer('max_level')->default(0);
+            $table->integer('point_value')->default(0);
             $table->string('status');
             $table->boolean('cashback');
             $table->boolean('is_default')->default(false);

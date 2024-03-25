@@ -65,7 +65,12 @@
                             <div>
                                 <div class="symbol symbol-50px">
                                     <div class="symbol-label bg-light-primary">
-                                        <i class="ki-outline ki-wallet fs-2x text-primary"></i>
+                                        <i class="ki-duotone ki-wallet fs-2x text-primary">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                            <span class="path4"></span>
+                                        </i>
                                     </div>
                                 </div>
                             </div>
