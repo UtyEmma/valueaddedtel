@@ -1,55 +1,66 @@
-<div class="card">
+<div class="card h-100">
     <div class="text-center card-body">
-        <div class="mb-5">
-            <h4 class="fw-bold">{{$package->name}}
-                @if ($package->is_default)
-                    <span class="badge badge-light-success text-uppercase badge-sm">Default Package</span>
+        <div class="d-flex flex-column justify-content-between">
+            <div class="mb-5">
+                <h4 class="fw-bold">{{$package->name}}
+                    @if ($package->is_default)
+                        <span class="badge badge-light-success text-uppercase badge-sm">Default Package</span>
+                    @else
+                        @if ($package->is_highest)
+                            <span class="badge badge-light-primary text-uppercase badge-sm">Recommended</span>
+                        @endif
+                    @endif
+                </h4>
+                <p class="fs-5 fw-semibold text-muted"><x-currency /> {{number_format($package->fee, 2)}}</p>
+            </div>
+
+            <div>
+                <div class="text-start">
+                    <p class="mb-2 text-black fs-6 fw-bold">What you will get:</p>
+                    <div class="mb-4 separator separator-dashed"></div>
+                </div>
+
+                <div class="gap-3 text-muted d-flex flex-column">
+                    <div class="d-flex justify-content-between">
+                        <p class="mb-0 fw-semibold">Upgrade Bonus</p>
+                        <p class="mb-0 text-end"><x-currency/>{{number_format($package->bonus, 2)}}</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="mb-0 fw-semibold">Max Comission Level</p>
+                        <p class="mb-0 text-end">{{$package->max_level}} {{str('level')->plural($package->max_level)}}</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="mb-0 fw-semibold">Point Value</p>
+                        <p class="mb-0 text-end">{{$package->point_value}}</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="mb-0 fw-semibold">Earn Cashback</p>
+                        <p class="mb-0 text-end">
+                            @if ($package->cashback)
+                                <span class="badge badge-light-primary">Yes</span>
+                            @else
+                                <span class="badge badge-light">No</span>
+                            @endif
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="mt-10 mb-3 text-center">
+                @if ($package->id == $authenticated->package->id)
+                    <x-button class="btn-light-success disabled" disabled>Current Package</x-button>
                 @else
-                    @if ($package->is_highest)
-                        <span class="badge badge-light-primary text-uppercase badge-sm">Recommended</span>
+                    @if ($package->fee < $authenticated->package->fee)
+                        <div>
+                            <p class="fs-7 text-muted">This package is not available on your current account</p>
+                        </div>
+                        <x-button disabled class="btn-primary" >Upgrade Package</x-button>
+                    @else
+                        <x-button wire:loading wire:target="select('{{$package->id}}')" wire:click="select('{{$package->id}}')" class="btn-primary" >Upgrade Package</x-button>
                     @endif
                 @endif
-            </h4>
-            <p class="fs-5 fw-semibold text-muted"><x-currency /> {{number_format($package->fee, 2)}}</p>
-        </div>
-
-        <div class="text-start">
-            <p class="mb-2 text-black fs-6 fw-bold">What you will get:</p>
-            <div class="mb-4 separator separator-dashed"></div>
-        </div>
-
-        <div class="gap-3 text-muted d-flex flex-column">
-            <div class="d-flex justify-content-between">
-                <p class="mb-0 fw-semibold">Upgrade Bonus</p>
-                <p class="mb-0 text-end"><x-currency/>{{number_format($package->bonus, 2)}}</p>
             </div>
-            <div class="d-flex justify-content-between">
-                <p class="mb-0 fw-semibold">Max Comission Level</p>
-                <p class="mb-0 text-end">{{$package->max_level}} {{str('level')->plural($package->max_level)}}</p>
-            </div>
-            <div class="d-flex justify-content-between">
-                <p class="mb-0 fw-semibold">Point Value</p>
-                <p class="mb-0 text-end">{{$package->point_value}}</p>
-            </div>
-            <div class="d-flex justify-content-between">
-                <p class="mb-0 fw-semibold">Earn Cashback</p>
-                <p class="mb-0 text-end">
-                    @if ($package->cashback)
-                        <span class="badge badge-light-primary">Yes</span>
-                    @else
-                        <span class="badge badge-light">No</span>
-                    @endif
-                </p>
-            </div>
-
-        </div>
-
-        <div class="mt-10 mb-3 text-center">
-            @if ($package->id == $authenticated->package->id)
-                <x-button class="btn-light-success disabled" disabled>Current Package</x-button>
-            @else
-                <x-button wire:loading wire:target="select('{{$package->id}}')" wire:click="select('{{$package->id}}')" class="btn-primary">Upgrade Package</x-button>
-            @endif
         </div>
     </div>
 </div>
