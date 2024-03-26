@@ -11,6 +11,7 @@ use App\Models\Countries\Currency;
 use App\Models\Transactions\PaymentMethod;
 use App\Models\Transactions\Transaction;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class TransactionService {

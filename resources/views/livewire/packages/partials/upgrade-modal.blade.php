@@ -1,4 +1,4 @@
-<x-modal id="{{$id}}" class="w-450px">
+<x-modal id="{{$id}}" class="w-450px" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="text-center">
         @if ($selectedPackage)
             <div class="mb-10">
@@ -18,7 +18,7 @@
                     </div>
                     <div class="d-flex justify-content-between">
                         <p class="mb-0 fw-semibold">Max Comission Level</p>
-                        <p class="mb-0 text-end">{{$selectedPackage->max_level}}</p>
+                        <p class="mb-0 text-end">{{$selectedPackage->max_level}} {{str('level')->plural($selectedPackage->max_level)}}</p>
                     </div>
                     <div class="d-flex justify-content-between">
                         <p class="mb-0 fw-semibold">Point Value</p>
@@ -34,7 +34,12 @@
                             @endif
                         </p>
                     </div>
+                    <div class="d-flex justify-content-between">
+                        <p class="mb-0 fw-semibold">Amount to pay</p>
+                        <p class="mb-0 text-end"><x-currency/>{{number_format($selectedPackage->currentPackageDiff(), 2)}}</p>
+                    </div>
 
+                    <p class="mb-0 fs-7 text-start">The amount to pay is the difference between the fee for your current plan and your new plan</p>
                 </div>
             </div>
 
@@ -61,7 +66,7 @@
                     </div>
                 </div>
 
-                @if ($selectedPackage->fee > $authenticated->wallet->main_bal)
+                @if ($selectedPackage->currentPackageDiff() > $authenticated->wallet->main_bal)
                     <div class="p-2 alert alert-warning">
                         You do not have sufficient funds in your wallet to complete this purchase.
                         <x-swal class="mb-0 fw-semibold" href="{{route('profile.wallet')}}">Fund Wallet</x-swal>
@@ -70,8 +75,8 @@
             </div>
 
             <div>
-                <x-button class="mb-3 w-100 btn-success">Upgrade to {{$selectedPackage->name}}</x-button>
-                <x-button class="px-10 btn-light" data-bs-dismiss="modal">Close</x-button>
+                <x-button wire:loading wire:target="upgrade" wire:click="upgrade" class="mb-3 w-100 btn-success">Upgrade to {{$selectedPackage->name}}</x-button>
+                <x-button class="px-10 btn-light" wire:loading.attr="disabled" wire:target="upgrade" data-bs-dismiss="modal">Close</x-button>
 
             </div>
 

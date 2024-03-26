@@ -21,5 +21,6 @@ enum Services:string {
     case ELECTRICITY = 'electricity';
     case EDUCATION = 'education';
     case CASHBACK = 'cashback';
+    case PACKAGE_UPGRADE = 'package_upgrade';
 
 }

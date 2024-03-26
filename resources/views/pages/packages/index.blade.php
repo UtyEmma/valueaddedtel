@@ -6,6 +6,6 @@
     ]"
 >
 
-    <livewire:packages.list-packages :packages="$packages" />
+    <livewire:packages.list-packages />
 
 </x-dashboard-layout>

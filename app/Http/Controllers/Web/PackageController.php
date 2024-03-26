@@ -9,8 +9,7 @@ use Illuminate\Http\Request;
 class PackageController extends Controller {
 
     function index(){
-        $packages = Package::isActive()->whereIsDefault(false)->latest('fee')->get();
-        return view('pages.packages.index', compact('packages'));
+        return view('pages.packages.index');
     }
 
 }

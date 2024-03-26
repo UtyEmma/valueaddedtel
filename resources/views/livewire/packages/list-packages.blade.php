@@ -6,6 +6,7 @@
                 'package' => $authenticated->package
             ])
         </div>
+
         @forelse ($packages as $package)
             @if ($package->id != $authenticated->package->id)
                 <div>

@@ -37,4 +37,9 @@ class Package extends Model{
         return $this->where('fee', '>=', $this->fee)->whereNot('id', $this->id)->doesntExist();
     }
 
+    function currentPackageDiff(User $user = null){
+        $user = $user ?? authenticated();
+        return $this->fee - $user->package->fee;
+    }
+
 }

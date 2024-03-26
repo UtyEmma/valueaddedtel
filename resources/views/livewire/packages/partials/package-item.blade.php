@@ -13,7 +13,7 @@
             <p class="fs-5 fw-semibold text-muted"><x-currency /> {{number_format($package->fee, 2)}}</p>
         </div>
 
-        <div class="text-start ">
+        <div class="text-start">
             <p class="mb-2 text-black fs-6 fw-bold">What you will get:</p>
             <div class="mb-4 separator separator-dashed"></div>
         </div>
@@ -25,7 +25,7 @@
             </div>
             <div class="d-flex justify-content-between">
                 <p class="mb-0 fw-semibold">Max Comission Level</p>
-                <p class="mb-0 text-end">{{$package->max_level}}</p>
+                <p class="mb-0 text-end">{{$package->max_level}} {{str('level')->plural($package->max_level)}}</p>
             </div>
             <div class="d-flex justify-content-between">
                 <p class="mb-0 fw-semibold">Point Value</p>
@@ -43,13 +43,13 @@
             </div>
 
         </div>
-    </div>
 
-    <div class="py-3 text-center card-footer">
-        @if ($package->id == $authenticated->package->id)
-            <x-button class="btn-light-success disabled" disabled>Current Package</x-button>
-        @else
-            <x-button wire:loading wire:target="select('{{$package->id}}')" wire:click="select('{{$package->id}}')" class="btn-primary">Upgrade Package</x-button>
-        @endif
+        <div class="mt-10 mb-3 text-center">
+            @if ($package->id == $authenticated->package->id)
+                <x-button class="btn-light-success disabled" disabled>Current Package</x-button>
+            @else
+                <x-button wire:loading wire:target="select('{{$package->id}}')" wire:click="select('{{$package->id}}')" class="btn-primary">Upgrade Package</x-button>
+            @endif
+        </div>
     </div>
 </div>
